@@ -1,0 +1,25 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "product-on-purpose",
+  "owner": {
+    "name": "Product on Purpose",
+    "url": "https://github.com/product-on-purpose"
+  },
+  "metadata": {
+    "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "pm-skills",
+      "source": {
+        "source": "github",
+        "repo": "product-on-purpose/pm-skills",
+        "sha": "b6ff373fdcd8ea75a5a71f8ae551aa5959dbbf74"
+      },
+      "description": "Product management skills, sub-agents, and sprint tools across the full product lifecycle. Follows the agentskills.io specification.",
+      "version": "2.17.0",
+      "strict": true
+    }
+  ]
+}
