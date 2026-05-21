@@ -1,3 +1,6 @@
+# Local-only notes and scratch (never published, even if repo goes public)
+_LOCAL/
+
 # Local agent/memory tooling artifacts
 .memsearch/
 .claude/
