@@ -1,0 +1,31 @@
+name: validate-registry
+
+# Enforcing gate for the marketplace registry. A malformed, unpinned, or
+# uninstallable entry is a user-facing break, so this blocks merge.
+# Implements registry-ci-spec.md (design) / docs/internal/registry-maintenance.md (ops).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".claude-plugin/marketplace.json"
+      - "scripts/validate-registry.mjs"
+      - ".github/workflows/validate-registry.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate marketplace registry
+        run: node scripts/validate-registry.mjs
+        env:
+          # Raises the GitHub API rate limit (checks 5 + 7 read the listed plugin repos)
+          # and authorizes reads of any private plugin repo. pm-skills is public.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
