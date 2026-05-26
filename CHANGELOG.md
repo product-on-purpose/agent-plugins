@@ -15,7 +15,7 @@ First launch configuration of the marketplace, tied to the pm-skills v2.21.0 mar
 ### Added
 
 - `scripts/validate-registry.mjs` - enforcing registry validator (JSON, schema, per-entry fields, source shape + pinned sha, sha-on-release-tag, no-placeholder, installability smoke), with transient/rate-limit retry handling.
-- `.github/workflows/validate-registry.yml` - runs the validator on push/PR to `main`.
+- `.github/workflows/validate-registry.yml` - runs the validator on push/PR to `main` and on a weekly drift-check cron (catches a pinned tag being deleted/moved in a plugin repo between pushes).
 - `docs/internal/registry-maintenance.md` - operations doc (add/bump a plugin, CI contract, go-public checklist, rollback).
 
 ### Changed

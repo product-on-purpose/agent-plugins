@@ -13,6 +13,11 @@ on:
       - ".github/workflows/validate-registry.yml"
   pull_request:
     branches: [main]
+  schedule:
+    # Weekly drift check. The registry pins a sha-on-a-release-tag in another repo
+    # (pm-skills); a tag deleted or moved there would silently invalidate the registry
+    # between pushes. This re-runs the validator so that drift surfaces as a failure.
+    - cron: "0 0 * * 1"
   workflow_dispatch:
 
 jobs:
