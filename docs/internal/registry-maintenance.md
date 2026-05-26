@@ -13,7 +13,12 @@ This repo has its own version line in `metadata.version` (independent of any plu
 `.claude-plugin/marketplace.json` carries every field the CI enforces:
 
 - Top level: `$schema`, `name`, `owner`, `plugins` (and an optional `metadata` with `description` + `version`).
-- Each `plugins[]` entry: `name`, `source` (`{ source: "github", repo: "owner/repo", sha: "<40-char commit>" }`), `description`, `version`, `strict`.
+- Each `plugins[]` entry: `name`, `source`, `description`, `version`, `strict`.
+- **`source` - prefer the explicit https `url` form**, not the `github` shorthand:
+  ```jsonc
+  "source": { "source": "url", "url": "https://github.com/owner/repo.git", "sha": "<40-char commit>" }
+  ```
+  **Why:** Claude Code resolves a `github` shorthand source (`{ source: "github", repo, sha }`) to an **SSH** clone (`git@github.com:`), which fails for any user without an authorized SSH key - i.e. most users of a public plugin. An explicit https `url` clones over HTTPS and works for everyone (verified during the v2.21.0 launch smoke). The validator accepts both forms, but `url` https is the standard for github-hosted plugins here.
 
 ## Adding or bumping a plugin
 
@@ -31,7 +36,7 @@ Runs on push/PR to `main` and on demand. Enforcing: CI fails and blocks merge on
 | 1 | JSON parse | `marketplace.json` is not valid JSON |
 | 2 | Schema | `$schema` / `name` / `owner` / `plugins` missing or wrong type |
 | 3 | Per-entry required fields | an entry lacks `name`, `source`, `version`, or `description` |
-| 4 | `source` shape + pinned `sha` | `source.source != "github"`, `repo` not `owner/repo`, or `sha` not a 40-char hex |
+| 4 | `source` shape + pinned `sha` | `source.source` not `github`/`url`; a `github` source's `repo` not `owner/repo`; a `url` source's `url` not https; or `sha` not a 40-char hex |
 | 5 | `sha` is a release-tag target | the `sha` is not the exact commit a release tag points at (annotated tags are dereferenced) |
 | 6 | No placeholder in production | an entry looks like a placeholder, or is `strict: true` without a valid pinned source |
 | 7 | Installability | the pinned commit's `.claude-plugin/plugin.json` is missing/invalid or lacks `name`/`version`/`description`/`license` |

@@ -22,6 +22,7 @@ First launch configuration of the marketplace, tied to the pm-skills v2.21.0 mar
 
 - Pinned the `pm-skills` entry to the v2.21.0 release tag (commit `1065c3e`), from the v2.17.0 preview pin; entry `version` 2.17.0 -> 2.21.0.
 - Bumped registry `metadata.version` 0.1.0 -> 1.0.0.
+- Switched the `pm-skills` source from `github` shorthand to an explicit https `url` source. The `github` shorthand made Claude Code clone over SSH (`git@github.com:`), which fails for any user without an authorized SSH key; the https `url` clones over HTTPS and works for everyone. The validator now accepts both `github` and `url` sources.
 
 ## [0.1.0] - 2026-05-21
 

@@ -18,6 +18,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY_PATH = join(ROOT, ".claude-plugin", "marketplace.json");
 const SHA_RE = /^[0-9a-f]{40}$/;
 const REPO_RE = /^[^/\s]+\/[^/\s]+$/;
+// Matches an https GitHub repo URL (with or without a trailing .git), capturing owner/repo.
+const GITHUB_URL_RE = /^https:\/\/github\.com\/([^/\s]+\/[^/\s]+?)(?:\.git)?$/;
 
 const errors = [];
 const warnings = [];
@@ -98,6 +100,18 @@ async function fetchPluginJson(repo, sha) {
 // so a human reading CI can tell "re-run" from "fix the registry".
 const labelErr = (e) => (e instanceof TransientError ? `transient/infra - ${e.message}` : e.message);
 
+// Derive owner/repo for the GitHub-API checks (5, 7) from either a `github` source
+// (source.repo) or an https `url` source pointing at github.com. Returns null for a
+// non-github-hosted url (valid, but not checkable via the GitHub API).
+function deriveRepo(s) {
+  if (s.source === "github") return typeof s.repo === "string" && REPO_RE.test(s.repo) ? s.repo : null;
+  if (s.source === "url" && typeof s.url === "string") {
+    const m = s.url.match(GITHUB_URL_RE);
+    return m ? m[1] : null;
+  }
+  return null;
+}
+
 async function main() {
   // --- Check 1: JSON parse ---
   let raw;
@@ -138,20 +152,26 @@ async function main() {
     if (p?.source == null) continue;
 
     // --- Check 4: source shape + pinned sha ---
+    // Accept `github` (repo shorthand) or `url` (explicit https). The launch uses `url`
+    // with an https github.com URL so Claude Code clones over HTTPS, not SSH - a github
+    // shorthand source is resolved to an SSH clone, which breaks installs for any user
+    // without an authorized SSH key (a public plugin must not require one).
     const s = p.source;
-    if (s.source !== "github") {
-      fail(4, `${id} source.source must be "github" (got ${JSON.stringify(s.source)})`);
+    const shaOk = typeof s.sha === "string" && SHA_RE.test(s.sha);
+    if (!shaOk) fail(4, `${id} source.sha must be a 40-char commit hash (got ${JSON.stringify(s.sha)})`);
+
+    if (s.source === "github") {
+      if (typeof s.repo !== "string" || !REPO_RE.test(s.repo))
+        fail(4, `${id} source.repo must be "owner/repo" (got ${JSON.stringify(s.repo)})`);
+    } else if (s.source === "url") {
+      if (typeof s.url !== "string" || !/^https:\/\//.test(s.url))
+        fail(4, `${id} source.url must be an https URL (got ${JSON.stringify(s.url)})`);
+    } else {
+      fail(4, `${id} source.source must be "github" or "url" (got ${JSON.stringify(s.source)})`);
       continue;
     }
-    if (typeof s.repo !== "string" || !REPO_RE.test(s.repo)) {
-      fail(4, `${id} source.repo must be "owner/repo" (got ${JSON.stringify(s.repo)})`);
-    }
-    if (typeof s.sha !== "string" || !SHA_RE.test(s.sha)) {
-      fail(4, `${id} source.sha must be a 40-char commit hash (got ${JSON.stringify(s.sha)})`);
-    }
 
-    const repoOk = typeof s.repo === "string" && REPO_RE.test(s.repo);
-    const shaOk = typeof s.sha === "string" && SHA_RE.test(s.sha);
+    const repo = deriveRepo(s); // owner/repo for GitHub-API checks, or null for non-github hosts
 
     // --- Check 6: no placeholder in production / strict requires a real pinned plugin ---
     const looksPlaceholder =
@@ -159,33 +179,37 @@ async function main() {
     if (looksPlaceholder) {
       fail(6, `${id} looks like a placeholder entry; remove it before it ships in production`);
     }
-    if (p.strict === true && !(repoOk && shaOk)) {
-      fail(6, `${id} is strict:true but lacks a valid pinned source`);
+    if (p.strict === true && !shaOk) {
+      fail(6, `${id} is strict:true but lacks a valid pinned sha`);
     }
 
-    if (!(repoOk && shaOk)) continue;
+    if (!shaOk) continue;
+    if (!repo) {
+      warn("5/7", `${id} source is not github-hosted; skipping sha-on-tag + installability (GitHub-API checks)`);
+      continue;
+    }
 
     // --- Check 5: sha is a release-tag target ---
     try {
-      const tagged = await tagTargetCommits(s.repo);
+      const tagged = await tagTargetCommits(repo);
       if (!tagged.has(s.sha)) {
-        fail(5, `${id} sha ${s.sha} is not the target of any release tag in ${s.repo}`);
+        fail(5, `${id} sha ${s.sha} is not the target of any release tag in ${repo}`);
       }
     } catch (e) {
-      fail(5, `${id} could not verify sha-on-tag for ${s.repo}: ${labelErr(e)}`);
+      fail(5, `${id} could not verify sha-on-tag for ${repo}: ${labelErr(e)}`);
     }
 
     // --- Check 7: installability smoke (pinned commit's plugin.json parses + required fields) ---
     try {
-      const pj = await fetchPluginJson(s.repo, s.sha);
+      const pj = await fetchPluginJson(repo, s.sha);
       for (const field of ["name", "version", "description", "license"]) {
         if (pj?.[field] == null) {
-          const m = `${id} pinned plugin.json missing \`${field}\` at ${s.repo}@${s.sha}`;
+          const m = `${id} pinned plugin.json missing \`${field}\` at ${repo}@${s.sha}`;
           check7Advisory ? warn(7, m) : fail(7, m);
         }
       }
     } catch (e) {
-      const m = `${id} installability check failed for ${s.repo}@${s.sha}: ${labelErr(e)}`;
+      const m = `${id} installability check failed for ${repo}@${s.sha}: ${labelErr(e)}`;
       check7Advisory ? warn(7, m) : fail(7, m);
     }
   }

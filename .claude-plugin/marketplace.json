@@ -13,8 +13,8 @@
     {
       "name": "pm-skills",
       "source": {
-        "source": "github",
-        "repo": "product-on-purpose/pm-skills",
+        "source": "url",
+        "url": "https://github.com/product-on-purpose/pm-skills.git",
         "sha": "1065c3ec249692c7c1c0a476e4e7e40257478cce"
       },
       "description": "Product management skills, sub-agents, and sprint tools across the full product lifecycle. Follows the agentskills.io specification.",
