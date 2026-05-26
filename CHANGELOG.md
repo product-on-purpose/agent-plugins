@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Pending the public launch (`metadata.version` 1.0.0), tied to the pm-skills v2.21.0 marketplace launch:
+Remaining before the registry is publicly live (the launch flip): remove the README Preview banner, enable branch protection requiring `validate-registry`, run a secret scan, and flip the repo public. After a successful public install check (pm-skills smoke S8), nothing else is pending. See the go-public checklist in `docs/internal/registry-maintenance.md`.
+
+## [1.0.0] - 2026-05-26
+
+First launch configuration of the marketplace, tied to the pm-skills v2.21.0 marketplace launch. Staged and validated while private; the configuration goes public at the launch flip.
 
 ### Added
 
@@ -14,10 +18,10 @@ Pending the public launch (`metadata.version` 1.0.0), tied to the pm-skills v2.2
 - `.github/workflows/validate-registry.yml` - runs the validator on push/PR to `main`.
 - `docs/internal/registry-maintenance.md` - operations doc (add/bump a plugin, CI contract, go-public checklist, rollback).
 
-### Pending at launch (1.0.0)
+### Changed
 
-- Pin the `pm-skills` entry to the v2.21.0 release tag (from the v2.17.0 preview pin) and bump `metadata.version` to 1.0.0.
-- Remove the README Preview banner; enable branch protection requiring `validate-registry`; flip the repo public.
+- Pinned the `pm-skills` entry to the v2.21.0 release tag (commit `1065c3e`), from the v2.17.0 preview pin; entry `version` 2.17.0 -> 2.21.0.
+- Bumped registry `metadata.version` 0.1.0 -> 1.0.0.
 
 ## [0.1.0] - 2026-05-21
 
