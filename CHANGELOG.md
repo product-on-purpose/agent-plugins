@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Remaining before the registry is publicly live (the launch flip): remove the README Preview banner, enable branch protection requiring `validate-registry`, run a secret scan, and flip the repo public. After a successful public install check (pm-skills smoke S8), nothing else is pending. See the go-public checklist in `docs/internal/registry-maintenance.md`.
+Remaining before the registry is publicly live (the launch flip): enable branch protection requiring `validate-registry`, then flip the repo public. The README Preview banner has been removed and a secret scan run clean. After a successful public install check (pm-skills smoke S8), nothing else is pending. See the go-public checklist in `docs/internal/registry-maintenance.md`.
 
 ## [1.0.0] - 2026-05-26
 

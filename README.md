@@ -2,7 +2,7 @@
 
 Thematic AI agent skill and tool collections for product work. One marketplace, multiple independent plugins. Install only the collections you want.
 
-> **Preview.** This marketplace is being stood up for the Product on Purpose multi-plugin launch. During the transition, `pm-skills` also remains available through its existing install path. See [Migration during transition](#migration-during-transition).
+> `pm-skills` also remains available through its existing self-hosted install path during the transition; existing installs are unaffected. See [Migration during transition](#migration-during-transition).
 
 ## Quick start
 
