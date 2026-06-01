@@ -26,7 +26,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/thinking-framework-skills.git",
-        "sha": "4608649dcd9f6c1ddc8526fe79180a88e36af704"
+        "sha": "d13e962c73a5d82a79770d293ce1e063e05ba2d9"
       },
       "description": "Evidence-graded, agent-executable thinking-method skills: each is reduced to its working mechanism, graded honestly on its evidence, and produces a concrete artifact. Follows the agentskills.io specification.",
       "version": "0.1.0",
