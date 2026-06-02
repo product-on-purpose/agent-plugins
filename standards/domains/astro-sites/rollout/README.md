@@ -5,7 +5,7 @@ One self-contained packet per family repo. Each packet is the "how" for one repo
 | Packet | Repo | Distance | Headline work |
 |---|---|---|---|
 | [`pm-skills.md`](pm-skills.md) | pm-skills | reference, closest | P1 base de-dup; P2 robots.txt, accent, version pin |
-| [`thinking-framework-skills.md`](thinking-framework-skills.md) | thinking-framework-skills | close | P1 delete 7 sidecars; add link/route guards |
+| [`thinking-framework-skills.md`](thinking-framework-skills.md) | thinking-framework-skills | close | P1 delete 7 sidecars; P2 node-pin + editLink; 14.11 deferred to Phase 1.3 pilot |
 | [`agent-skills-toolkit.md`](agent-skills-toolkit.md) | agent-skills-toolkit | close | P2 modernize deploy majors + node pin; brand mermaid |
 | [`writing-style-catalog.md`](writing-style-catalog.md) | writing-style-catalog | close (Pattern S shipped, PR #11) | P2 mermaid branding, title, CI dash check; + 14.11 guards |
 

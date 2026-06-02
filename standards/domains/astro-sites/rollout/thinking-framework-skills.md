@@ -1,6 +1,6 @@
 # thinking-framework-skills - Astro site conformance packet
 
-> Target: full compliance with the family Astro site standard ([`../SITE-STANDARD.md`](../SITE-STANDARD.md), clauses 14.1-14.11). Current state from the 2026-06-02 audit (tfs `main` @ 0673399). The site is Pattern S, fully Node, with the cleanest generator pipeline; the drift `--check` is wired. Two P1s remain (config sidecars, link/route guards) plus one P2.
+> Target: full compliance with the family Astro site standard ([`../SITE-STANDARD.md`](../SITE-STANDARD.md), clauses 14.1-14.11). Current state from the 2026-06-02 audit (tfs `main` @ 0673399). The site is Pattern S, fully Node, with the cleanest generator pipeline; the drift `--check` is wired. One P1 to fix this session (delete the config sidecars); 14.11 (the link/route guards) is **deferred** to the shared-workflow pilot (ROADMAP Phase 1.3, where tfs is the pilot) and recorded, not ported locally; plus two P2s.
 
 ## 1. Kickoff prompt (copy-paste, or point a session at this file and say "go")
 
@@ -54,32 +54,32 @@ the PR(s).
 | 14.8 Versions + Node | PARTIAL (P2) | `engines.node >=22.12.0`; `.nvmrc=24`; Astro resolves `6.4.2`. | P2: align the `check` job to `node-version-file: .nvmrc`. |
 | 14.9 Search + SEO | PASS | Pagefind + sitemap; `robots.txt` present; no `og:image` (preset-owned). | - |
 | 14.10 No config sidecars | **FAIL (P1)** | Seven tracked `.md` sidecars: `library.json.md`, `manifest.generated.json.md`, `scripts/gen-site.mjs.md`, `scripts/gen-recommendable.mjs.md`, `skills/think-framework-advisor/references/recommendable.json.md`, `.claude-plugin/plugin.json.md`, `.codex-plugin/plugin.json.md`. | **Delete all seven; fold rationale into config comments or one docs page.** |
-| 14.11 Link/route integrity | **FAIL (P1)** | None of the four build-aware validators present. | **Adopt the link/route guards** (shared workflow preferred; repo-local port acceptable now). |
+| 14.11 Link/route integrity | **non-conformant (DEFERRED)** | None of the four build-aware validators present. | **Deferred to ROADMAP Phase 1.3** (tfs is the shared-workflow pilot; it gains all four guards via the preset). Do NOT port locally now. Record the deferral. |
 
-**Net: 2 FAIL-P1, 1 PARTIAL-P2, rest PASS.** No P0.
+**Net: 1 FAIL-P1 to fix this session (14.10 sidecars), 14.11 deferred to Phase 1.3 (tracked), 2 P2, rest PASS.** No P0.
 
 ## 3. Corrections to reach full compliance
 
 - **P1 (14.10) Delete the seven `.md` sidecars.** Remove each; move any rationale they carry into a comment in the config/generator itself or into one short `docs/` page (for example a "generated artifacts" reference). Confirm `git ls-files | grep -E '\.(mjs|json)\.md$'` is empty.
-- **P1 (14.11) Add link/route integrity guards.** Preferred: adopt the shared reusable workflow once it exists (ROADMAP Phase 1), which carries the four validators. If proceeding before that lands, port `check-rendered-links.mjs` (with `STRICT_ANCHORS=1`) and `check-route-parity.mjs` (+ a committed `route-manifest.txt`) from pm-skills into `scripts/`, parameterized by this repo's base, and run them in the `site-build` job against `dist`. Include `verify-edit-links.mjs` since most pages carry a per-page `editUrl`.
+- **14.11 (DEFERRED, do NOT port locally now) - Link/route integrity guards.** Adopt them via the shared reusable workflow at ROADMAP Phase 1.3, where tfs is the designated pilot and gains all four guards (`check-rendered-links`, `check-route-parity`, `verify-edit-links`, `remark-resolve-links`) from the preset. Porting locally now is the wrong order: three of the four carry a `BASE` / edit-URL literal whose single-source extraction must land in pm-skills (the donor) first, with a test, because a wrong base makes the rendered-link check pass while the live site 404s; a hand-ported guard also risks the documented crash-on-malformed-input failure. **This session: do not add local validators. Instead record the deferral** (in this repo's `release-plan.md` and `spec.md`): "14.11 deferred to Astro standard ROADMAP Phase 1.3 (shared `workflow_call` pilot)." Do NOT pre-commit a `route-manifest.txt`; its format is defined by the shared check at pilot time.
 - **P2 (14.8) Align the `check` job Node pin** to `node-version-file: .nvmrc` so every job reads the single pin (currently the `check` job hardcodes `22`).
-- **P2 (14.11 detail) Verify the `editLink` `/site/` segment.** `editLink.baseUrl` is `.../edit/main/` without the `/site/` segment the other Pattern S repos carry; confirm hand-authored page edit links resolve (and add `verify-edit-links` to catch it), fixing to `.../edit/main/site/` if they 404.
+- **P2 (editLink) Verify and fix the `editLink` `/site/` segment by hand now.** `editLink.baseUrl` is `.../edit/main/` without the `/site/` segment the other Pattern S repos carry. This is the one latent correctness item `verify-edit-links` would have caught, so do not let the 14.11 deferral hide it: spot-check that a hand-authored page's "Edit" link resolves to a real `.../edit/main/site/src/content/docs/...` path, and add `/site/` to `editLink.baseUrl` if it 404s.
 
 ## 4. Implementation checklist (the agent updates this; copy into release-plan.md)
 
 - [ ] Create `docs/internal/release-plans/astro-starlight-conformance/spec.md` + `release-plan.md`.
 - [ ] **P1** Delete the 7 `.md` sidecars; relocate any rationale into config comments or one docs page.
 - [ ] **P1** Confirm `git ls-files | grep -E '\.(mjs|json)\.md$'` is empty; site still builds.
-- [ ] **P1** Add link/route guards (shared workflow, or port `check-rendered-links` + `check-route-parity` [+ `verify-edit-links`]) wired into the PR `site-build` job.
+- [ ] **14.11 DEFERRED** Record the deferral in `spec.md` + `release-plan.md` ("14.11 deferred to Astro ROADMAP Phase 1.3, shared `workflow_call` pilot"). Do NOT add local validators or a `route-manifest.txt`.
 - [ ] **P2** Set the `check` job to `node-version-file: .nvmrc`.
-- [ ] **P2** Verify/fix the `editLink` `/site/` segment.
-- [ ] Run `cd site && npm run build`; link + route checks green; `git ls-files` shows no build output.
+- [ ] **P2 (editLink)** By hand: confirm a hand-authored page's edit link resolves; add `/site/` to `editLink.baseUrl` if it 404s.
+- [ ] Run `cd site && npm run build`; site builds; `git ls-files` shows no build output.
 - [ ] Open PR(s); CI green; await maintainer review.
 
 ## 5. Acceptance criteria (done = all true)
 
 - `git ls-files | grep -E '\.(mjs|json|yml|yaml)\.md$'` returns nothing.
-- The PR build runs a rendered-link check (anchors enforced) and a route-parity check against a committed manifest; both green.
-- Edit links on hand-authored pages resolve to real source paths (verified).
+- 14.11 is recorded as deferred to Phase 1.3 in `spec.md` + `release-plan.md`; no local validators or `route-manifest.txt` were added this session.
+- Edit links on hand-authored pages resolve to real source paths (verified by hand; `editLink.baseUrl` carries `/site/`).
 - Every CI job resolves Node from `.nvmrc` (=24); no hardcoded `node-version` remains.
 - `cd site && npm run build` green; no tracked build output; PR(s) prepared, not merged without confirmation.
