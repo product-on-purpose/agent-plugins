@@ -79,7 +79,7 @@ Upgrades are deliberate: bump the pin in one site, run that site's build + drift
 
 ## 6. Migration (extract from a converged baseline)
 
-Prerequisite: all four apps on Pattern S (so the preset can assume the stock loader) and the per-repo generators emitting Starlight-correct slug links. As of 2026-06-02 that is three on `main` plus writing-style-catalog on its branch; do the preset after that branch merges.
+Prerequisite: all four apps on Pattern S (so the preset can assume the stock loader) and the per-repo generators emitting Starlight-correct slug links. As of 2026-06-02 all four are Pattern S on `main` (writing-style-catalog shipped via PR #11), so this prerequisite is met; extract the preset once the per-repo P2s settle.
 
 1. **Create the package** `product-on-purpose/astro-docs-preset`: `type: 'module'`, `engines.node >=22.12.0`, exports map for `.`, `./schema`, `./styles/accent.css`, `./ci/ci-checks.mjs`; `astro`/`@astrojs/starlight`/`astro-mermaid` as `peerDependencies` pinned to the family matrix. No em/en dashes in any emitted file.
 2. **Extract the invariants** from a now-conformant config (thinking-framework-skills or agent-skills-toolkit) into `defineDocsConfig()`, `docsSchemaShared()`, and `accent.css`. Lift the four validators' `BASE` / edit-base-URL out of their inline consts into parameters (do this in pm-skills first, the donor, with a test).

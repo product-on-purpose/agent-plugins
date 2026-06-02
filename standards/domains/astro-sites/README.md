@@ -18,16 +18,16 @@ The evidence this domain rests on is the committed audit: [`../../../docs/intern
 
 ## Conformance snapshot (2026-06-02)
 
-Status against the shipped branch (`main` for three repos; writing-style-catalog shown `main -> branch`).
+Status against `main` for all four repos (writing-style-catalog's Pattern S shipped via PR #11).
 
 | Repo | Pattern S | Generator | Drift guard | Deploy + PR build | Link/route guards | Sidecars | Net |
 |---|---|---|---|---|---|---|---|
 | **pm-skills** | yes | Node | gitignored-rebuilt | v5/v5, PR build | all four (donor) | none | reference; 1 P1 (base de-dup) |
 | **thinking-framework-skills** | yes | Node | gitignored + `--check` | v5/v5, PR build | none | **7 (P1)** | close; delete sidecars |
 | **agent-skills-toolkit** | yes | hand + coverage test | catalog coverage test | v5/v5, PR build | none | none | close; modernize deploy majors |
-| **writing-style-catalog** | no -> yes | Python -> Node | taxonomy guard + gitignored | no PR build -> v5/v5 | none | none | one merge away |
+| **writing-style-catalog** | yes (PR #11) | Node | taxonomy guard + gitignored | v5/v5, PR build | none | none | close; P2 polish (mermaid, title, CI dash) |
 
-Two facts that changed since the 2026-06-01 drafts: **both former High-severity drift findings are closed** (tfs `--check` wired; askit catalog guarded by `tests/unit/catalog-coverage.test.mjs`), and **the live frontier is shared infrastructure** - the four link/route validators live only in pm-skills, so three siblings can ship broken links undetected. That is [`ROADMAP.md`](ROADMAP.md) Phase 1.
+Three facts that changed since the 2026-06-01 drafts: **both former High-severity drift findings are closed** (tfs `--check` wired; askit catalog guarded by `tests/unit/catalog-coverage.test.mjs`); **all four are now Pattern S on `main`** (writing-style-catalog shipped via PR #11); and **the live frontier is shared infrastructure** - the four link/route validators live only in pm-skills, so three siblings can ship broken links undetected. That is [`ROADMAP.md`](ROADMAP.md) Phase 1.
 
 ## How to use this domain
 

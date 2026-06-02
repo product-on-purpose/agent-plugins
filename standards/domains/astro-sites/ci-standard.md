@@ -117,7 +117,7 @@ Portable where possible (Node `scripts/ci-checks.mjs`, shared from the preset, s
 
 | Check | Purpose | Sev | Live status |
 |---|---|---|---|
-| **PR site build verification** | The same build recipe the deploy job runs, event-gated to skip artifact/deploy, so a green PR predicts a green deploy. | error | Present in all four on the shipped branch (pm-skills, tfs, askit; wsl on its branch). |
+| **PR site build verification** | The same build recipe the deploy job runs, event-gated to skip artifact/deploy, so a green PR predicts a green deploy. | error | Present in all four on `main` (wsl shipped its PR `build-site` job via PR #11). |
 | **Generated-content drift guard** | `committed` mode: `git diff --exit-code` on the generated tree. `gitignored` mode: assert the output dir is git-ignored and `git ls-files` returns nothing for it. | error | Satisfied: pm-skills/tfs/wsl-branch gitignored-rebuilt; askit catalog via `tests/catalog-coverage.test.mjs`; tfs `recommendable.* --check`. |
 | **Base-path single-source guard** | `git grep -nF "$BASE_LITERAL"` outside `astro.config.mjs` (excluding `node_modules`, `dist`, validators that import the base). Any hit fails. | error | Would catch pm-skills' `check-rendered-links.mjs:28` duplicate (the one live 14.7 violation). |
 | **No-committed-build-output guard** | `git ls-files` against `site/dist/**`, `**/.astro/**`, `site/sitemap*.xml`, `dist/**`. Any match fails. | error | All four pass; this guard locks it in. |
@@ -153,7 +153,7 @@ These are the payload that fixes the one live-harm gap (three siblings can ship 
 1. **Step 0 (prereq).** Create the reusable workflow in `product-on-purpose/.github`, tag `@v1` (moving major tag so callers pin `@v1` and pick up patches). Land `scripts/ci-checks.mjs` in `@product-on-purpose/astro-docs-preset`, seeded from donors (agent-skills-toolkit `no-dashes.mjs` + internal-exclusion; pm-skills `check-rendered-links.mjs` + `verify-edit-links.mjs` + `check-route-parity.mjs`). Lift `BASE` / edit-base-URL out of the inline consts (this is the one piece of new work, not lift-and-shift; do it in pm-skills first, the donor, with a test).
 2. **Pilot on thinking-framework-skills** (cleanest: already Pattern S, pure Node, branded). It gains the four guards it lacks. Run the new caller alongside its existing workflow as a non-required check for >=3 PRs + 1 main deploy, confirm parity, then make the new build job required and retire the old.
 3. **agent-skills-toolkit** second. Its deploy drift (stale `checkout`/`setup-node` majors, hardcoded `node-version`) is normalized by the shared workflow's `node-version-file` step; keep its `scripts/check.mjs` conformance gate as a separate job.
-4. **writing-style-catalog** third, after its Pattern S branch merges (A-6 confirmed). This is where the `.md` vs `.mdx` remark passthrough proves out.
+4. **writing-style-catalog** third (already Pattern S on `main` since PR #11). This is where the `.md` vs `.mdx` remark passthrough proves out, because of its `@astrojs/mdx` + `remark-gfm` pipeline.
 5. **pm-skills** last (highest blast radius: redirects map, samples sidebar, the four validators it donates). Confirm the base single-source extraction landed first.
 6. After all four are green on the shared workflow, record the registry-promotion trigger for the preset and proceed to land `STANDARD.md` Section 14.
 

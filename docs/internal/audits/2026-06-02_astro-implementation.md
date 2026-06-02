@@ -2,48 +2,51 @@
 
 > Committed audit. It measures the four family plugins against the proposed Astro documentation-site standard (clauses 14.1 to 14.10, the CI guardrails, and the shared-preset readiness signals) as they actually stand in their live repositories on 2026-06-02. It supersedes the conformance snapshots in the gitignored working docs under `_LOCAL/astro/`, which were written 2026-06-01 and are now stale in several load-bearing places (Section 5). The refined standard this audit feeds lives at [`standards/domains/astro-sites/`](../../../standards/domains/astro-sites/README.md).
 
+> **Update (2026-06-02, later same day): the family is now 4/4 Pattern S on `main`.** When the audit ran, writing-style-catalog's Pattern S work was on an unmerged branch (`refactor/astro-pattern-s-convergence`) and its `main` was still Pattern W. That work has since shipped to `main` via **PR #11 (`197c426`, "refactor(site): converge the docs site to Pattern S")**. The rows for writing-style-catalog below have been updated to reflect `main`; the original branch-vs-main caveat is retained as provenance. wsl's residual gaps on `main` are now P2 only (mermaid branding, the stale Starlight title, a CI dash check) plus the shared 14.11 validators gap it has in common with agent-skills-toolkit and thinking-framework-skills.
+
 ## 0. How this was produced (provenance)
 
 Each repository was deep-audited against its actual files on disk (`astro.config.mjs`, `src/content.config.ts`, `package.json` + lockfile, `.github/workflows/*`, generators, `.gitignore`, `public/`) by one agent per repo, then a second independent agent adversarially re-ran the load-bearing and surprising claims with `git`, `grep`, and `Read`, trying to refute each one. Eight agents total. The adversarial pass changed the result in two material ways, both carried into this audit and flagged **[corrected]**:
 
 - **agent-skills-toolkit's catalog IS drift-guarded.** The first pass called the hand-authored `catalog.md` an unguarded P1 gap. That was **refuted**: `tests/unit/catalog-coverage.test.mjs` runs in CI via `npm test` on every push and PR and asserts both directions (every `library.json` component appears in the catalog; no phantom `askit-*` name appears that is absent from `library.json`). The first pass missed it by grepping `scripts/` and not `tests/`.
-- **writing-style-catalog was audited on a branch, not `main`.** The repo is checked out on `refactor/astro-pattern-s-convergence`, seven commits ahead of `main`. Its Pattern S conformance is real on that branch but **not yet shipped**: `main` is still Pattern W with a Python generator. Every wsl row below distinguishes branch from main.
+- **writing-style-catalog was audited mid-merge.** When the audit ran, the repo was checked out on `refactor/astro-pattern-s-convergence`, seven commits ahead of a `main` that was still Pattern W with a Python generator. That branch has since shipped to `main` via PR #11 (`197c426`), so `main` is now Pattern S. The rows below reflect the shipped `main`; the branch-vs-main split is retained only where it explains the timeline.
 
 A third, smaller correction: tfs's `gen-recommendable.mjs --check` is **wired** into CI (the `recommendable-drift` job), so the "one High-severity unguarded `--check`" finding from the 2026-06-01 docs is also stale.
 
 ## 1. TL;DR
 
-**The convergence has largely happened, and both original High-severity findings are closed.** The 2026-06-01 audit found two High-severity drift gaps (tfs's unwired `--check`, agent-skills-toolkit's unguarded catalog). Both are now resolved in the live repos. Three of the four sites are Pattern S on `main` (agent-skills-toolkit, pm-skills, thinking-framework-skills); the fourth (writing-style-catalog) has a complete Pattern S migration staged on an unmerged branch. No repo commits build output. All four set `site`, register `astro-mermaid` before `starlight`, pin `.nvmrc` to `24`, declare `engines.node >=22.12.0`, deploy via the Pages artifact flow with `deploy-pages@v5`, and run a PR-time non-deploying build (on the shipped branch).
+**The convergence has happened, and both original High-severity findings are closed.** The 2026-06-01 audit found two High-severity drift gaps (tfs's unwired `--check`, agent-skills-toolkit's unguarded catalog). Both are now resolved in the live repos. **All four sites are Pattern S on `main`** (writing-style-catalog shipped its migration via PR #11 after the audit run). No repo commits build output. All four set `site`, register `astro-mermaid` before `starlight`, pin `.nvmrc` to `24`, declare `engines.node >=22.12.0`, deploy via the Pages artifact flow with `deploy-pages@v5`, and run a PR-time non-deploying build (on the shipped branch).
 
 **The frontier has moved from per-repo conformance to shared infrastructure.** The biggest live risk is no longer site layout; it is that **the four build-aware link/route validators exist only in pm-skills**, so the other three siblings can ship browser-broken internal links or silently removed routes undetected. The shared preset and the reusable CI workflow are specified but not built. The remaining per-repo conformance gaps reduce to three P1s and a handful of P2 polish items.
 
 The real remaining work, ranked:
 
 1. **Spread the link/route integrity guards** (the four pm-skills validators) to the three siblings, via a reusable workflow. This is the one finding with concrete, already-live harm.
-2. **Merge writing-style-catalog's Pattern S branch** (resolves its layout, Python-to-Node, CI, accent, and robots gaps in one move; A-6 / ADR 0011 was already amended on the branch).
-3. **Delete thinking-framework-skills' seven `.md` sidecars** (the one clean 14.10 violation left).
-4. **De-duplicate pm-skills' base literal** (the one clean 14.7 violation left).
-5. **Extract the shared preset + reusable workflow** from the now-converged baseline.
+2. **Delete thinking-framework-skills' seven `.md` sidecars** (the one clean 14.10 violation left).
+3. **De-duplicate pm-skills' base literal** (the one clean 14.7 violation left).
+4. **Extract the shared preset + reusable workflow** from the now-converged baseline.
+
+Done since the 2026-06-01 drafts: writing-style-catalog's Pattern S migration shipped to `main` (PR #11), resolving its layout, Python-to-Node, CI, accent, and robots gaps in one move (A-6 / ADR 0011 = migrate, executed); its residual is P2 polish only.
 
 ## 2. Conformance matrix
 
-Status is reported against the **shipped** branch (`main`) for agent-skills-toolkit, pm-skills, thinking-framework-skills. For writing-style-catalog, `main` (Pattern W) and the staged `refactor/astro-pattern-s-convergence` branch are shown as `main -> branch`.
+Status is reported against `main` for all four repos. writing-style-catalog's Pattern S work shipped via PR #11 (`197c426`) after the audit run, so its earlier `main -> branch` split is resolved and the column below is its shipped `main`.
 
-| Clause | agent-skills-toolkit | pm-skills | thinking-framework-skills | writing-style-catalog (main -> branch) |
+| Clause | agent-skills-toolkit | pm-skills | thinking-framework-skills | writing-style-catalog (main, post #11) |
 |---|---|---|---|---|
-| **14.1 Pattern S** (site/, stock `docsLoader()`) | conformant | conformant | conformant | non-conformant -> conformant |
-| **14.2 Framework** (Astro+Starlight, `site`, mermaid before starlight) | conformant | conformant | conformant | conformant -> conformant |
-| **14.3 Generate from source** (Node `.mjs`, no Python site gen) | conformant (via 14.4 catalog path) | conformant | conformant | non-conformant (Python) -> conformant |
-| **14.4 Drift guard** | conformant **[corrected]** | conformant | conformant **[corrected]** | conformant -> conformant |
-| **14.5 No committed build output** | conformant | conformant | conformant | conformant -> conformant |
-| **14.6 Deploy + PR build + pinned actions** | partial (stale majors, hardcoded node) | conformant | conformant | partial (no PR build, `./dist`) -> conformant |
-| **14.7 Base single source** | conformant | partial (dup in `check-rendered-links.mjs`) | conformant | conformant -> conformant |
-| **14.8 Versions + Node** | partial (node-pin mechanism) | partial (one workflow hardcode) | partial (one job hardcode) | partial -> partial (astro 6.4.2) |
-| **14.9 Search + SEO** | conformant (robots, no og) | partial (no robots.txt) | conformant (robots, no og) | conformant -> conformant |
-| **14.10 No config sidecars** | conformant | conformant | **non-conformant (7 sidecars)** | conformant -> conformant |
-| Build-aware validators (4) | none | all four (donor) | none | none -> none |
-| Mermaid branded (#5C7CFA) | no | yes | yes | no -> no |
-| Accent #5C7CFA | yes | no (default) | yes | yes -> yes |
+| **14.1 Pattern S** (site/, stock `docsLoader()`) | conformant | conformant | conformant | conformant |
+| **14.2 Framework** (Astro+Starlight, `site`, mermaid before starlight) | conformant | conformant | conformant | conformant (+ mdx) |
+| **14.3 Generate from source** (Node `.mjs`, no Python site gen) | conformant (via 14.4 catalog path) | conformant | conformant | conformant |
+| **14.4 Drift guard** | conformant **[corrected]** | conformant | conformant **[corrected]** | conformant |
+| **14.5 No committed build output** | conformant | conformant | conformant | conformant |
+| **14.6 Deploy + PR build + pinned actions** | partial (stale majors, hardcoded node) | conformant | conformant | conformant |
+| **14.7 Base single source** | conformant | partial (dup in `check-rendered-links.mjs`) | conformant | conformant |
+| **14.8 Versions + Node** | partial (node-pin mechanism) | partial (one workflow hardcode) | partial (one job hardcode) | conformant (no `.node-version`; minor) |
+| **14.9 Search + SEO** | conformant (robots, no og) | partial (no robots.txt) | conformant (robots, no og) | conformant (robots, no og) |
+| **14.10 No config sidecars** | conformant | conformant | **non-conformant (7 sidecars)** | conformant |
+| Build-aware validators (4) | none | all four (donor) | none | none |
+| Mermaid branded (#5C7CFA) | no | yes | yes | no |
+| Accent #5C7CFA | yes | no (default) | yes | yes |
 
 "partial" on 14.8 means the floor and pin are correct (`engines.node >=22.12.0`, `.nvmrc=24`) but one or more workflow jobs hardcode a Node version instead of reading `.nvmrc`, and the resolved Astro version is not pinned family-wide (6.3.3 in pm-skills, 6.4.2 in the other three).
 
@@ -88,17 +91,20 @@ Pattern S, fully Node, the cleanest generator pipeline. One real conformance gap
 - **Preset divergence:** mermaid branded; accent `#5c7cfa`; schema extension medium (8 fields). One latent item worth verifying: `editLink.baseUrl` is `.../edit/main/` without the `/site/` segment the other Pattern S repos carry, so edit links on hand-authored pages may resolve to the wrong repo path. Low confidence, low severity; verify before acting.
 - **Distance to standard:** one P1 (sidecars), small P2 (node-pin in the `check` job).
 
-### 3.4 writing-style-catalog (`main` Pattern W; `refactor/astro-pattern-s-convergence` Pattern S, 7 commits ahead, unmerged)
+### 3.4 writing-style-catalog (`main` @ 197c426, Pattern S, shipped via PR #11)
 
-This is the one repo whose state depends entirely on which ref you read.
+The Pattern S migration shipped to `main` (PR #11, "refactor(site): converge the docs site to Pattern S"). What the audit saw on the branch is now the `main` state, so wsl joins agent-skills-toolkit and thinking-framework-skills as a close-conformance Pattern S repo with P2 polish left.
 
-- **On `main`:** Pattern W. `astro.config.mjs` at the repo root, a Python `scripts/generate_site_pages.py` generator plus `scripts/check_generated_fresh.py`, no `site/src/content.config.ts`, deploy uploads `./dist` with a hardcoded `node-version: "22.12.0"`, and no PR non-deploying build job. Non-conformant on 14.1, 14.3, 14.6.
-- **On the branch:** full Pattern S. App under `site/`, stock `docsLoader()` (`content.config.ts:10`, stock `docsSchema()`), a zero-dependency Node `scripts/gen-site.mjs` (with an `assertSafeOutRoot` guard at lines 677-700 refusing to generate into source trees) replacing the Python generator, generated catalog gitignored and rebuilt, accent + favicon unified to `#5C7CFA`, `robots.txt` added, ADR 0011 amended for the migration. Deploy uploads `./site/dist`, `setup-node` reads `.nvmrc`, and a PR `build-site` job exists. The seven branch commits resolve 14.1, 14.3, 14.6 together.
-- **14.4 conformant on both.** The `taxonomy.json` drift guard (`build-indexes.py` then `git diff --exit-code taxonomy.json`) runs in CI on both branch and main; the branch additionally gitignores-and-rebuilds the catalog.
-- **14.8 partial.** `.nvmrc=24`, `engines.node >=22.12.0`; astro resolves to `6.4.2`. No `.node-version`. On main the workflows hardcode `22.12.0`; the branch fixes this.
-- **Carry-over nits:** the Starlight `title` is still "Writing Style Library" (the repo renamed to `-catalog`); mermaid is **unbranded** even on the branch; the em/en-dash check exists only as a pre-commit hook, not in CI, so a contributor who bypasses pre-commit can land a dash.
-- **A-6 status:** the branch's commit `73eca0a` ("amend ADR 0011 for the Pattern S migration") indicates the migrate-vs-exception decision (A-6) was effectively taken as **migrate** on the branch. Confirm this is intended, then merging the branch is the action.
-- **Distance to standard:** one decision (confirm A-6 = migrate) plus a merge closes nearly everything; mermaid branding and the CI dash check remain.
+- **14.1 / 14.3 / 14.5 conformant.** App under `site/`; stock `docsLoader()` (`site/src/content.config.ts:10`, stock `docsSchema()`); a zero-dependency Node `scripts/gen-site.mjs` (with an `assertSafeOutRoot` guard refusing to generate into source trees) replaced the Python `generate_site_pages.py`, which is gone from `main`; generated catalog gitignored and rebuilt; no committed build output. The Python that remains (`tools/build-indexes.py`, `tools/taxonomy.py`, `tools/diff-pair-generator.py`, `tools/validate.py`, a skill build script) is taxonomy/skill tooling, not a site generator, so 14.3 is satisfied for the site.
+- **14.2 conformant (branding gap).** Astro + Starlight; `site` set; `astro-mermaid` before `starlight`; `@astrojs/mdx` after `starlight` (correct order, for GFM tables in `.mdx`). Mermaid is **unbranded** (`theme:'default'`, no `themeVariables`) - the P2 branding gap it shares with agent-skills-toolkit.
+- **14.4 conformant.** The `taxonomy.json` drift guard (`tools/build-indexes.py` then `git diff --exit-code taxonomy.json`) runs in CI; the generated catalog is gitignored-and-rebuilt.
+- **14.6 conformant.** `checkout@v5` + `setup-node@v5` (`node-version-file: .nvmrc`) + `upload-pages-artifact@v5` (`./site/dist`) + `deploy-pages@v5` + `environment`; a PR non-deploying `build-site` job (`validate.yml`, `if: github.event_name == 'pull_request'`). The earlier `./dist` path and hardcoded `22.12.0` are gone.
+- **14.7 / 14.9 / 14.10 conformant.** Base once in `astro.config`; `robots.txt` + favicon present, no `og:image`; no config sidecars.
+- **14.8 conformant (minor).** `engines.node >=22.12.0`, `.nvmrc=24`, CI reads `node-version-file`. No `.node-version` companion (optional). Astro resolves `6.4.2`.
+- **14.11 non-conformant (shared gap).** None of the four build-aware validators present - the same gap as agent-skills-toolkit and thinking-framework-skills; closed by the shared workflow.
+- **Carry-over P2s:** the Starlight `title` is still "Writing Style Library" (the repo renamed to `-catalog`); mermaid is unbranded; the em/en-dash check exists only as a pre-commit hook, not in CI, so a contributor who bypasses pre-commit can land a dash.
+- **A-6 = migrate, executed.** The migrate decision shipped with #11 (the Pattern S catalog now lives under `site/`); A-6 is closed, not pending.
+- **Distance to standard:** close. P2 only: brand mermaid, fix the Starlight title, add the CI dash check, optional `.node-version`; plus the shared 14.11 validators.
 
 ## 4. Cross-cutting findings
 
@@ -138,8 +144,8 @@ The Standard's own runner floor was raised from EOL Node 20 to `>=22.12.0` (pin 
 The gitignored `_LOCAL/astro/` docs and `_LOCAL/standards-plan.md` predate the convergence work and are wrong in these load-bearing places. The refined standard fixes them:
 
 - **Both High-severity findings are resolved.** "tfs `gen-recommendable --check` unwired" and "agent-skills-toolkit catalog has no drift guard" are both closed in the live repos.
-- **All sites are Pattern S** (3 on main, 1 on a branch). The "pm-skills and writing-style-library are Pattern W" framing, the "move app to site/ is P2 polish" line, and the "two-and-two Pattern S/W split" are stale.
-- **The big Python-to-Node refactor is largely done.** pm-skills ported to one Node `gen-site.mjs` (PR #154); writing-style-catalog ported on its branch. The only Python that touches a SITE was pm-skills' (retired) and wsl's (on main, retired on the branch). pm-skills' surviving `build-skill-catalog.py` writes a SKILL reference, not the site.
+- **All four sites are Pattern S on `main`.** The "pm-skills and writing-style-library are Pattern W" framing, the "move app to site/ is P2 polish" line, and the "two-and-two Pattern S/W split" are stale. writing-style-catalog was the last to ship (PR #11).
+- **The big Python-to-Node refactor is done.** pm-skills ported to one Node `gen-site.mjs` (PR #154); writing-style-catalog ported and shipped to `main` (PR #11). No Python touches any SITE now: pm-skills' surviving `build-skill-catalog.py` writes a SKILL reference, and wsl's surviving `tools/*.py` are taxonomy/skill tooling, not site generators.
 - **The repo was renamed** `writing-style-library` -> `writing-style-catalog`. The rollout docs hardcode the old name and base literal (`/writing-style-library`); the live base is `/writing-style-catalog`.
 - **Deploy actions already moved to `@v5`.** The "v3/v4 and v5/v5 coexist" drift is gone for the Pages actions; do not re-bump backward. The residual is stale `checkout`/`setup-node` majors in agent-skills-toolkit only.
 - **The post-build HTML rewriter is retired** in pm-skills (replaced by `remark-resolve-links.mjs`); the `_unreleased` plan's "third base duplicate in the rewriter" is stale.
@@ -150,7 +156,7 @@ The gitignored `_LOCAL/astro/` docs and `_LOCAL/standards-plan.md` predate the c
 **P0 (correctness now):** none. Both former High-severity items are closed.
 
 **P1 (conformance-blocking):**
-- writing-style-catalog: confirm A-6 = migrate (ADR 0011 already amended on the branch), then merge `refactor/astro-pattern-s-convergence` to `main`. Resolves 14.1, 14.3, 14.6 together.
+- ~~writing-style-catalog: merge the Pattern S branch~~ - DONE (PR #11). wsl's residual is P2 only.
 - thinking-framework-skills: delete the seven `.md` config/data sidecars (14.10).
 - pm-skills: extract the base literal to a single source so `check-rendered-links.mjs:28` stops duplicating it (14.7); land it with a test, since a wrong base passes the check while the site 404s.
 - Family: carry the four build-aware validators to the three siblings (via the reusable workflow). The only finding with already-live harm.
@@ -179,7 +185,7 @@ The audit feeds five refinements, carried into [`standards/domains/astro-sites/S
 | agent-skills-toolkit | main | 674257f | 6.4.2 | 0.39.2 | 2.0.1 | 0.34.5 | `.nvmrc`+`.node-version`=24 |
 | pm-skills | main | 1eea16f | 6.3.3 | 0.39.2 | 2.0.1 | 0.34.5 | `.nvmrc`=24 |
 | thinking-framework-skills | main | 0673399 | 6.4.2 | 0.39.2 | 2.0.1 | 0.34.5 | `.nvmrc`=24 |
-| writing-style-catalog | refactor/astro-pattern-s-convergence (+7 vs main) | - | 6.4.2 | 0.39.2 | 2.0.1 | 0.34.5 | `.nvmrc`=24 |
+| writing-style-catalog | main (post PR #11) | 197c426 | 6.4.2 | 0.39.2 | 2.0.1 | 0.34.5 | `.nvmrc`=24 |
 
 All four: `site: 'https://product-on-purpose.github.io'`, `base: '/<repo>'`, Pagefind search, sitemap emitted (because `site` is set), GitHub Pages Actions artifact deploy, no committed build output, no custom domain, no `og:image`.
 

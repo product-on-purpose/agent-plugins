@@ -4,7 +4,7 @@
 
 ## Where the family stands
 
-The hard part is done. Both original High-severity drift findings are closed, three of four sites are Pattern S on `main`, and the fourth has Pattern S staged on a branch. No repo commits build output; all set `site`, deploy via `@v5`, and pin `.nvmrc=24`. The roadmap is therefore short on rescue and long on alignment: close three P1s, build the shared infra that carries the link/route guards to the siblings, and formalize the standard.
+The hard part is done. Both original High-severity drift findings are closed, and **all four sites are Pattern S on `main`** (writing-style-catalog shipped via PR #11). No repo commits build output; all set `site`, deploy via `@v5`, and pin `.nvmrc=24`. The roadmap is therefore short on rescue and long on alignment: close two remaining P1s, build the shared infra that carries the link/route guards to the siblings, and formalize the standard.
 
 The single highest-value item is not a clause; it is **carrying pm-skills' four build-aware validators to the three siblings that lack them**, because that is the only place a real failure (a shipped broken link or a lost route) can happen today undetected.
 
@@ -14,12 +14,12 @@ These are correctness/conformance items with no dependency on the shared infra. 
 
 | # | Repo | Action | Acceptance |
 |---|---|---|---|
-| 0.1 | writing-style-catalog | Confirm A-6 = migrate (ADR 0011 already amended on the branch); merge `refactor/astro-pattern-s-convergence` to `main`. | `main` is Pattern S; Python generator gone; `astro build` green; `git ls-files` shows no build output; deploy uploads `site/dist`. |
-| 0.2 | thinking-framework-skills | Delete the 7 `.md` config/data sidecars; fold any rationale into config comments or one docs page. | `git ls-files \| grep -E '\.(mjs\|json)\.md$'` is empty; site still builds. |
-| 0.3 | pm-skills | Extract the base literal to one source (e.g. `scripts/site-base.mjs`) imported by `astro.config.mjs` and `check-rendered-links.mjs`; land with a test that a wrong base fails the check. | `git grep -nF "/pm-skills"` shows the literal only in the single source; rendered-link check still green. |
-| 0.4 | agent-skills-toolkit | Modernize deploy: `checkout@v5` + `setup-node@v5` with `node-version-file: .nvmrc` (drop the hardcoded `node-version: "24"`). | All site jobs read `.nvmrc`; deploy green. |
+| ~~0.0~~ | writing-style-catalog | ~~Merge the Pattern S branch~~ | **DONE (PR #11).** `main` is Pattern S; Python site generator gone; deploy uploads `site/dist`. Residual is P2 (mermaid branding, stale title, CI dash check) in its [packet](rollout/writing-style-catalog.md). |
+| 0.1 | thinking-framework-skills | Delete the 7 `.md` config/data sidecars; fold any rationale into config comments or one docs page. | `git ls-files \| grep -E '\.(mjs\|json)\.md$'` is empty; site still builds. |
+| 0.2 | pm-skills | Extract the base literal to one source (e.g. `scripts/site-base.mjs`) imported by `astro.config.mjs` and `check-rendered-links.mjs`; land with a test that a wrong base fails the check. | `git grep -nF "/pm-skills"` shows the literal only in the single source; rendered-link check still green. |
+| 0.3 | agent-skills-toolkit | Modernize deploy: `checkout@v5` + `setup-node@v5` with `node-version-file: .nvmrc` (drop the hardcoded `node-version: "24"`). | All site jobs read `.nvmrc`; deploy green. |
 
-Phase 0 is parallelizable across repos. It leaves four fully per-repo-conformant sites (wsl merged, tfs sidecar-free, pm-skills base single-sourced, askit on the current toolchain). Each repo's Phase 0 work is dispatched by its packet in [`rollout/`](rollout/README.md) (scorecard + corrections + checklist + a kickoff prompt to run in that repo's working directory).
+Phase 0 is parallelizable across repos. It leaves four fully per-repo-conformant sites (wsl already shipped via #11, tfs sidecar-free, pm-skills base single-sourced, askit on the current toolchain). Each repo's work is dispatched by its packet in [`rollout/`](rollout/README.md) (scorecard + corrections + checklist + a kickoff prompt to run in that repo's working directory).
 
 ## Phase 1 - Build the shared CI workflow + validators (NEXT, the high-value infra)
 
@@ -67,15 +67,16 @@ Ideas that make the standard more valuable or close known limitations. None is b
 ## Dependency graph (text)
 
 ```
+wsl Pattern S merge (PR #11) ............ DONE
 Phase 0 (close P1s, parallel)
    |
-   +--> 0.3 base single-source ---> Phase 1 (reusable workflow + validators)
-   |                                     |
-   +--> 0.1 wsl merge -----------------> Phase 2 (shared preset)  [also needs 0.* converged]
-                                              |
-                                         Phase 3 (land Section 14) ---> re-adopt via library.json
-                                              |
-                                         Phase 4 (features, each independent)
+   +--> 0.2 pm-skills base single-source ---> Phase 1 (reusable workflow + validators)
+   |                                                |
+   +--> 0.1 / 0.3 converged ----------------------> Phase 2 (shared preset)  [needs all four converged]
+                                                          |
+                                                     Phase 3 (land Section 14) ---> re-adopt via library.json
+                                                          |
+                                                     Phase 4 (features, each independent)
 ```
 
 ## Risks to carry
