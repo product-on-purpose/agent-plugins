@@ -102,7 +102,7 @@ This is why drafts reference sections by **name plus a `(provisional)` number**.
 
 ## 7. How a standard is drafted (the bundle template)
 
-The best-developed standards body in the family, the Astro documentation-site standard now promoted to [`domains/astro-sites/`](domains/astro-sites/README.md) (refined against the 2026-06-02 implementation audit; original drafts retained in `../_LOCAL/astro/` as provenance), is the template for how any new standards domain SHOULD be drafted. It demonstrates the shape:
+The best-developed standards body in the family, the Astro documentation-site standard now promoted to [`domains/astro-sites/`](domains/astro-sites/README.md) (refined against the 2026-06-02 implementation audit; the superseded drafts were swept, leaving two evidence docs in `../_LOCAL/astro/` as provenance), is the template for how any new standards domain SHOULD be drafted. It demonstrates the shape:
 
 | Artifact | Role |
 |---|---|

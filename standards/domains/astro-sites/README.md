@@ -14,7 +14,7 @@ The family standard for Product on Purpose documentation sites: Astro + Starligh
 | [`ROADMAP.md`](ROADMAP.md) | The sequenced plan: close the P1s, build the infra, add features, land Section 14. | the execution |
 | [`rollout/`](rollout/README.md) | Per-repo execution packets: pass/fail scorecard, corrections, an agent-updatable checklist, and a copy-paste kickoff prompt for each of the four repos. | the dispatch |
 
-The evidence this domain rests on is the committed audit: [`../../../docs/internal/audits/2026-06-02_astro-implementation.md`](../../../docs/internal/audits/2026-06-02_astro-implementation.md). The original gitignored working drafts (and the inline-annotated findings doc) remain in [`../../../_LOCAL/astro/`](../../../_LOCAL/astro/) as provenance.
+The evidence this domain rests on is the committed audit: [`../../../docs/internal/audits/2026-06-02_astro-implementation.md`](../../../docs/internal/audits/2026-06-02_astro-implementation.md). The original gitignored working drafts were superseded by this bundle and swept; the two evidence docs they rested on (`astro-layout-findings_*.md` and the inline-annotated `findings-suggestions/2026-06-02_*.md`) are retained under `_LOCAL/astro/` as provenance.
 
 ## Conformance snapshot (2026-06-02)
 
