@@ -193,7 +193,7 @@ All four: `site: 'https://product-on-purpose.github.io'`, `base: '/<repo>'`, Pag
 
 - Audit method: 8-agent workflow (4 audit + 4 adversarial verify), 2026-06-02; raw transcript in this session's workflow output.
 - Branch states verified via `git rev-parse` / `git log main..HEAD` per repo (Section 3.4, Appendix A).
-- Source standard (pre-refinement): `_LOCAL/astro/astro-site-standards.md`, `ci-standard.md`, `shared-preset-spec.md` (gitignored, 2026-06-01).
+- Source standard (pre-refinement): the gitignored 2026-06-01 drafts `_LOCAL/astro/astro-site-standards.md`, `ci-standard.md`, `shared-preset-spec.md`, now promoted and refined into `standards/domains/astro-sites/` and swept from `_LOCAL/` (their content lives, refined, in the tracked bundle).
 - Session log reviewed: `agent-skills-toolkit/_agent-context/session-logs/2026-06-02_08-00_claude_readme-depth-tier-mirror-and-standards-home.md`.
 - Findings annotated: `_LOCAL/astro/findings-suggestions/2026-06-02_pm-skills-session_after-astro.md` (inline audit-response blocks added this session).
 - Refined standard: `standards/domains/astro-sites/` (this session).
