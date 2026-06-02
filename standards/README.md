@@ -18,4 +18,4 @@ The canonical home is `agent-plugins/standards/`, but the move is deliberately s
 - **the enforcing checks**: currently in `agent-skills-toolkit/scripts/`, entangled with that plugin's own validation; they relocate to `standards/checks/` when the generic spine is extracted.
 - **`CHANGELOG.md` / `RELEASE-NOTES.md`** for the Standard: arrive with the text.
 
-Working drafts (gitignored) live in [`../_LOCAL/`](../_LOCAL/): `standards-plan.md` (the full family analysis) and `astro/` (the original documentation-site drafts, now promoted to [`domains/astro-sites/`](domains/astro-sites/README.md) and refined against the 2026-06-02 implementation audit; the `_LOCAL/astro/` copies remain as provenance).
+Working drafts (gitignored) live in [`../_LOCAL/`](../_LOCAL/): `standards-plan.md` (the full family analysis) and `astro/` (the documentation-site drafts were promoted to [`domains/astro-sites/`](domains/astro-sites/README.md), refined against the 2026-06-02 implementation audit, and then swept; only the two evidence docs remain there as provenance).
