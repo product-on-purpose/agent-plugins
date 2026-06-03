@@ -2,6 +2,8 @@
 
 > Target: full compliance with the family Astro site standard ([`../SITE-STANDARD.md`](../SITE-STANDARD.md), clauses 14.1-14.11). Current state from the 2026-06-02 audit (tfs `main` @ 0673399). The site is Pattern S, fully Node, with the cleanest generator pipeline; the drift `--check` is wired. One P1 to fix this session (delete the config sidecars); 14.11 (the link/route guards) is **deferred** to the shared-workflow pilot (ROADMAP Phase 1.3, where tfs is the pilot) and recorded, not ported locally; plus two P2s.
 
+> **Status: EXECUTED (PR #30), with a follow-up now open.** This packet ran on 2026-06-02 and deferred 14.11 per the recommendation at the time. The post-rollout family learning **reverses that default**: the other three repos implemented 14.11 locally and it caught real shipped breakage (a family-wide favicon 404; sixteen live 404s in writing-style-catalog), and the shared workflow is unbuilt, so deferring leaves a MUST unmet for an unbounded time. **Follow-up for tfs: add the two local bridge guards now** (rendered-link + route-parity), reusing the FIXED agent-skills-toolkit versions (`agent-skills-toolkit/site/scripts/`), which already carry the hardened fixes - do not wait for the pilot. tfs has a favicon already (no favicon 404), but its hand-authored pages have had no rendered-link guard, so expect it to surface pre-existing broken links the way it did for the siblings. See `SITE-STANDARD.md` section 1 item 6 and clause 14.11.
+
 ## 1. Kickoff prompt (copy-paste, or point a session at this file and say "go")
 
 ```

@@ -49,7 +49,7 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version-file: ${{ inputs.working-directory }}/../.nvmrc   # read the pin, never hardcode
+          node-version-file: .nvmrc   # repo-root pin; setup-node resolves this from GITHUB_WORKSPACE, NOT the job working-directory, so one root .nvmrc feeds every job
           cache: npm
           cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
 
@@ -122,7 +122,7 @@ Portable where possible (Node `scripts/ci-checks.mjs`, shared from the preset, s
 | **Base-path single-source guard** | `git grep -nF "$BASE_LITERAL"` outside `astro.config.mjs` (excluding `node_modules`, `dist`, validators that import the base). Any hit fails. | error | Would catch pm-skills' `check-rendered-links.mjs:28` duplicate (the one live 14.7 violation). |
 | **No-committed-build-output guard** | `git ls-files` against `site/dist/**`, `**/.astro/**`, `site/sitemap*.xml`, `dist/**`. Any match fails. | error | All four pass; this guard locks it in. |
 | **No-config-sidecars guard** | Fail on any tracked `*.{mjs,json,ts,yml}.md` sidecar beside config/generators. | error | Would catch thinking-framework-skills' 7 sidecars (the one live 14.10 violation). |
-| **Em/en-dash check** | Scan authored content + generator source for U+2014/U+2013. Donor: agent-skills-toolkit `no-dashes.mjs`. | error | askit has it (U10); wsl has it only as a pre-commit hook (not CI); spread via the suite. |
+| **Em/en-dash check** | Scan authored content + generator source for U+2014/U+2013. Canonical scan set includes `.md/.mdx/.mjs/.ts/.astro/.css/.yml/.yaml` and **`.py`** (authored docstrings - a real gap found in wsl, where `tools/validate.py` carried both code points yet passed). Exclude `.json` (lockfile + third-party license false-positives). The detector MUST build the forbidden chars from code points (`chr(0x2014)`, `String.fromCharCode(0x2013)`) so the checker's own source stays dash-free. Donor: agent-skills-toolkit `no-dashes.mjs`. | error | askit has it (U10); wsl added a CI check (was pre-commit only); spread via the suite. |
 | **Node-version pin check** | `engines.node` satisfies `>=22.12.0`, `.nvmrc`/`.node-version` reads `24`, and the `setup-node` input matches `.nvmrc`. | error | Value correct everywhere; mechanism drift (hardcoded `node-version`) in askit (3 jobs), tfs (`check` job), pm-skills (1 workflow). |
 | **Internal-content leak check** | After build, fail if any `dist` path matches `*internal*` or an agreed private marker. Donor: agent-skills-toolkit. | error | askit + pm-skills gate on this; spread to all four. |
 | **Stock-docsLoader / Pattern S guard** | Assert `site/src/content/docs` is non-empty, `content.config` calls `docsLoader()` with no path argument, and repo-root `docs/` is not referenced by any Astro config. | error | Locks Pattern S in once wsl merges. |
@@ -133,12 +133,20 @@ These are the payload that fixes the one live-harm gap (three siblings can ship 
 
 | Validator | What it guards | Parameterization | Notes |
 |---|---|---|---|
-| `check-rendered-links` | Every internal href in `dist/*.html` resolves to an emitted route; every `#anchor` resolves to a real element id (enforcing via `STRICT_ANCHORS=1`). | `BASE` lifted out of the inline const. | Hard-fail on empty-but-existing `dist`. |
+| `check-rendered-links` | Every internal href in `dist/*.html` resolves to an emitted route; every `#anchor` resolves to a real element id (enforcing via `STRICT_ANCHORS=1`). | `BASE` lifted out of the inline const into a `site-base.mjs`-style module reading `astro.config`. | Hard-fail on empty `dist`. Resolve **bare-relative** hrefs via `new URL()` (not only `./`/`../` - the donor silently skipped them); match **both quote styles** on the href, not just the id; **decode** percent-escapes before fs lookup; null-check `process.argv[1]` in the run-as-CLI guard. |
 | `check-route-parity` | No previously published URL disappears without a redirect, against a committed `route-manifest.txt`. | base-agnostic; only the manifest is per-repo. | Presence-only by design (a route that regresses to a stub passes); document the limitation in the header. |
 | `verify-edit-links` | Every Starlight edit link resolves to a real source path (carries the `/site/` segment under Pattern S). | edit-base-URL lifted out of the inline const. | Catches the tfs `editLink` `/site/` question. |
 | `remark-resolve-links` | The generator emits Starlight-correct slug links at build time (an mdast transform), so there is no post-build HTML rewriter to drift. | base passed as plugin option. | `.md` via `markdown.remarkPlugins`; `.mdx` needs the transform inside `@astrojs/mdx` too (the writing-style-catalog gotcha). |
 
 **Guard robustness is normative (clause 14.11).** A guard MUST decode defensively (an unguarded `decodeURIComponent` on a `%` fragment crashed pm-skills' entire rendered-link check), fail on its own assertions rather than on a parse error, accept single and double quotes in the id regex so a future markdown plugin cannot turn a real anchor into a false failure, and hard-fail an empty `dist` (symmetric with route-parity). A guard that crashes on a content typo is worse than no guard: it turns a typo into an opaque CI red far from its cause.
+
+**Hardened by the 2026-06-02 rollout (fold these into the shared validator before extraction).** The donor `check-rendered-links` classified an href as relative only when it started with `./` or `../`, so **bare-relative** hrefs (`getting-started/`, `Card`/`LinkButton` targets) were skipped entirely - invisible in pm-skills (its generator emits base-absolute links) but a silent pass on any hand-authored Starlight site. Resolve every non-external, non-anchor href via `new URL(clean, pageUrl)`. Match **both attribute quote styles** on the href (not only the id). **Decode** percent-escaped path segments before the filesystem lookup (in `try/catch`). A parameterized validator gains a run-as-CLI guard (`import.meta.url === pathToFileURL(process.argv[1]).href`); that guard MUST **null-check `process.argv[1]`** or it throws on a bare import. Start sibling ports from the FIXED agent-skills-toolkit versions, not the raw donor.
+
+**CI condition (L5).** Gate the build-aware guard steps on the build step's own outcome - `if: ${{ !cancelled() && steps.build.outcome == 'success' }}` - not `if: always()`. `always()` masks the real Astro error with a secondary "dist not found" and runs on cancellation; the outcome gate keeps "both guards report independently" while surfacing the true failure. In the reusable workflow this is implicit (sequential steps stop at the build failure); per-repo interim wiring MUST use the outcome gate, and MUST wire the guards into the **deploy** build too, not only the PR build, so the deployed artifact is guarded.
+
+**Commit hygiene (L8).** An enforcing guard that depends on a committed input (the favicon source, the `route-manifest.txt`) goes red on a clean CI checkout if the input is left untracked. After generating such files, verify they are tracked (`git ls-files`); working-tree green is not checkout green.
+
+**Validator subset for small sites.** A small, hand-authored site MAY run only the two load-bearing guards (rendered-link + route-parity) and skip `verify-edit-links` (its link floor is meaningless at small scale) and `remark-resolve-links` (when there are no relative `.md` links to repair). The MUST is the two behaviors (no browser-broken links/anchors; no silent route removal), not the count of files. agent-skills-toolkit ported two-of-four on exactly this basis (ADR 0026).
 
 ## 5. Reusable-workflow gotchas (carry into execution)
 
