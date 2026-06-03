@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
   "plugins": [
     {
@@ -29,6 +29,17 @@
         "sha": "2b8731e72739717529bfc73fbfb85cb1ed660809"
       },
       "description": "Evidence-graded, agent-executable thinking-method skills: each is reduced to its working mechanism, graded honestly on its evidence, and produces a concrete artifact. Follows the agentskills.io specification.",
+      "version": "0.2.0",
+      "strict": true
+    },
+    {
+      "name": "writing-style-catalog",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/product-on-purpose/writing-style-catalog.git",
+        "sha": "3685d65402bd66101ad5300958f04a49479403af"
+      },
+      "description": "Composable writing instructions on four orthogonal axes (Voice, Tone, Style, Format). Select one entry per axis and the compose-instruction skill assembles a ready-to-paste prompt prefix that steers any LLM toward a precise register, reasoning pattern, and layout. Ships 60 curated entries (15 per axis), 195 worked examples across three anchor topics, 12 diff-pairs, and 5 horizontal-slice recipes. Follows the agentskills.io specification.",
       "version": "0.2.0",
       "strict": true
     }
