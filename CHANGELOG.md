@@ -6,7 +6,53 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Remaining before the registry is publicly live (the launch flip): enable branch protection requiring `validate-registry`, then flip the repo public. The README Preview banner has been removed and a secret scan run clean. After a successful public install check (pm-skills smoke S8), nothing else is pending. See the go-public checklist in `docs/internal/registry-maintenance.md`.
+## [1.3.0] - 2026-06-02
+
+Added `writing-style-catalog`.
+
+### Added
+
+- `writing-style-catalog` listed, pinned to its `v0.2.0` release tag (commit `3685d65`), https `url` source, `strict: true`. Registry `metadata.version` 1.2.0 -> 1.3.0.
+
+## [1.2.0] - 2026-06-01
+
+> Backfilled (this bump shipped without a CHANGELOG entry at the time).
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to the `v0.2.0` tag (commit `2b8731e`), from 0.1.0; entry `version` 0.1.0 -> 0.2.0. Registry `metadata.version` 1.1.0 -> 1.2.0.
+
+## [1.1.0] - 2026-06-01
+
+> Backfilled.
+
+### Added
+
+- `thinking-framework-skills` listed (pinned to the `v0.1.0` commit `df7f90e`), https `url` source, `strict: true`. Registry `metadata.version` 1.0.3 -> 1.1.0.
+
+## [1.0.3] - 2026-06-01
+
+> Backfilled.
+
+### Changed
+
+- Re-pinned `pm-skills` to `v2.24.0` (commit `d3f1549`), from v2.23.0. Registry `metadata.version` 1.0.2 -> 1.0.3.
+
+## [1.0.2] - 2026-05-31
+
+> Backfilled.
+
+### Changed
+
+- Re-pinned `pm-skills` to `v2.23.0` (commit `b54cef0`), from v2.22.0. Registry `metadata.version` 1.0.1 -> 1.0.2.
+
+## [1.0.1] - 2026-05-30
+
+> Backfilled.
+
+### Changed
+
+- Re-pinned `pm-skills` to `v2.22.0` (commit `be1e400`), from v2.21.0. Registry `metadata.version` 1.0.0 -> 1.0.1.
 
 ## [1.0.0] - 2026-05-26
 
