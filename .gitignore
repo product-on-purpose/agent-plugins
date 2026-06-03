@@ -5,6 +5,10 @@ _LOCAL/
 .memsearch/
 .claude/
 
+# Agent working context: local scratch is ignored, but the session-log timeline is committed
+_agent-context/*
+!_agent-context/session-logs/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
