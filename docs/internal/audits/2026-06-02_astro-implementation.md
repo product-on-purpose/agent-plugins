@@ -121,6 +121,8 @@ agent-skills-toolkit, thinking-framework-skills, and writing-style-catalog have 
 
 A guard-robustness lesson from pm-skills' own hardening (worth codifying for the shared validators): an unguarded `decodeURIComponent` on a URL fragment threw an uncaught `URIError` on any literal `%`, crashing the entire rendered-link check. A guard that crashes on malformed input is worse than no guard. The shared validators MUST decode defensively, fail on their own assertions rather than on parse errors, and hard-fail on an empty-but-existing `dist` (symmetric with route-parity).
 
+A second, narrower instance of the same class surfaced during the thinking-framework-skills conformance session (2026-06-02): **generated pages' Edit links 404** when the generator lets Starlight auto-derive `editUrl` from the page's on-disk path, because that path is gitignored and rebuilt each build. This is the exact failure `verify-edit-links` exists to catch, and it is not family-wide: pm-skills sets each generated page's `editUrl` to its true source (`skills/<skill>/SKILL.md`, `_workflows/<name>`) or `false`, and writing-style-catalog sets `editUrl: false` on all generated pages; only thinking-framework-skills had the gap (its `gen-site.mjs` did no `editUrl` handling), now recorded for the Phase 1.3 pilot. The rule is carried into the standard (reference architecture "Generated-page Edit links" + the 14.11 edit-link verifier): a generated page MUST set `editUrl` to its true source or `false`, never an auto-derived gitignored path.
+
 ### 4.2 Shared-preset divergence (what one preset would unify)
 
 | Signal | askit | pm-skills | tfs | wsl |
