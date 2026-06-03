@@ -24,7 +24,8 @@ You **add** the marketplace by its repo path (`product-on-purpose/agent-plugins`
 | Plugin | What it is | Repo | Status |
 |---|---|---|---|
 | `pm-skills` | Product management skills, sub-agents, and sprint tools across the full product lifecycle | `product-on-purpose/pm-skills` | listed |
-| `thinking-framework-skills` | Canonical thinking and reasoning frameworks (SCQA, MECE, Pyramid Principle, First Principles, OODA) | `product-on-purpose/thinking-framework-skills` | _planned_ |
+| `thinking-framework-skills` | Canonical thinking and reasoning frameworks (SCQA, MECE, Pyramid Principle, First Principles, OODA) | `product-on-purpose/thinking-framework-skills` | listed |
+| `writing-style-catalog` | Composable writing instructions on four orthogonal axes (Voice, Tone, Style, Format) with a compose-instruction skill | `product-on-purpose/writing-style-catalog` | listed |
 
 Each plugin lives in its **own repo** with its own version, changelog, and release cadence. This repo holds only the registry (`.claude-plugin/marketplace.json`); it contains no plugin code.
 
