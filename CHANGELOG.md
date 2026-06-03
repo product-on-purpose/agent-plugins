@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-06-03
+
+Re-pinned `agent-skills-toolkit` to its second Gold release (`v1.1.0`).
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.1.0` release tag (commit `f3250c0`), from `v1.0.0`; entry `version` 1.0.0 -> 1.1.0. Registry `metadata.version` 1.6.0 -> 1.7.0.
+
+## [1.6.0] - 2026-06-03
+
+> Backfilled (the bump shipped in #13 without a CHANGELOG entry).
+
+### Changed
+
+- Re-pinned `pm-skills` to its `v2.25.0` release tag (commit `23e65da`), from 2.24.0; entry `version` 2.24.0 -> 2.25.0. Registry `metadata.version` 1.5.0 -> 1.6.0.
+
+## [1.5.0] - 2026-06-03
+
+> Backfilled (the bump shipped in #11 without a CHANGELOG entry).
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.2.1` release tag (commit `056dbc8`), from 0.2.0; entry `version` 0.2.0 -> 0.2.1. Registry `metadata.version` 1.4.0 -> 1.5.0.
+
 ## [1.4.0] - 2026-06-02
 
 Added `agent-skills-toolkit` at its first Gold release (`v1.0.0`).
