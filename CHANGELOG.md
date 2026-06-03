@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-02
+
+Added `agent-skills-toolkit` at its first Gold release (`v1.0.0`).
+
+### Added
+
+- `agent-skills-toolkit` listed, pinned to its `v1.0.0` release tag (commit `f5291c0`), https `url` source, `version` 1.0.0, `strict: true`. Registry `metadata.version` 1.3.0 -> 1.4.0.
+
+### Changed
+
+- `CONTRIBUTING.md` section 5 example now uses the https `url` source form (the `github` shorthand resolves to an install-breaking SSH clone for users without an authorized key), matching `registry-maintenance.md` and the live entries.
+
 ## [1.3.0] - 2026-06-02
 
 Added `writing-style-catalog`.

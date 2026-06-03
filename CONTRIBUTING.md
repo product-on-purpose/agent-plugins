@@ -40,14 +40,14 @@ Add one entry to `.claude-plugin/marketplace.json` in this repo, in the `plugins
 ```jsonc
 {
   "name": "<plugin-name>",
-  "source": { "source": "github", "repo": "product-on-purpose/<repo>", "sha": "<released-commit>" },
+  "source": { "source": "url", "url": "https://github.com/product-on-purpose/<repo>.git", "sha": "<released-commit>" },
   "description": "...",
   "version": "<matches the plugin's released version>",
   "strict": true
 }
 ```
 
-- `source` forms: `github` (`repo` shorthand), `url` (full `.git` URL, any host), `git-subdir` (a subdirectory of another repo), or a relative path string (only if the plugin lives inside this repo).
+- `source` forms: `url` (full `.git` URL, any host - the standard for github-hosted plugins here), `github` (`repo` shorthand), `git-subdir` (a subdirectory of another repo), or a relative path string (only if the plugin lives inside this repo). Prefer the https `url` form: a `github` shorthand resolves to an SSH clone, which breaks installs for any user without an authorized SSH key (see `docs/internal/registry-maintenance.md`).
 - **Pin `sha`** to a released commit. This is what makes the marketplace authoritative over what users receive.
 - Set `strict: true` once the plugin passes strict validation.
 
