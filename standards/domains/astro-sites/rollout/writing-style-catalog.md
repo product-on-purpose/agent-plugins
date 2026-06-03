@@ -2,6 +2,8 @@
 
 > Target: full compliance with the family Astro site standard ([`../SITE-STANDARD.md`](../SITE-STANDARD.md), clauses 14.1-14.11). Current state from the 2026-06-02 audit, **updated after PR #11**. The Pattern S migration has **shipped to `main`** (`197c426`, "refactor(site): converge the docs site to Pattern S"): the site is now Pattern S with a Node generator, `robots.txt`, and the `#5C7CFA` accent. So this is conformance polish against `main`, not a migration or a merge. Remaining: a few P2s plus the shared 14.11 link/route guards.
 
+> **Status: EXECUTED (PR #12, `1d7eac1`).** This packet ran on 2026-06-02; review findings in [`2026-06-02_astro-standard_writing-style-catalog_review-findings.md`](2026-06-02_astro-standard_writing-style-catalog_review-findings.md). Two corrections the execution surfaced, applied below: (1) the "fix the stale Starlight title" item (C2) was **wrong and is withdrawn** - the title "Writing Style Library" is deliberately retained per the repo's ADR 0014; (2) the 14.6 deploy chain lives in `build-site.yml`, not `validate.yml` (the PR `build-site` job). The session also implemented the 14.11 guards locally (two-of-four, with a `site-base.mjs` base extraction) rather than deferring, and the rendered-link guard exposed 16 pre-existing live 404s, now fixed.
+
 ## 1. Kickoff prompt (copy-paste, or point a session at this file and say "go")
 
 ```
@@ -65,7 +67,7 @@ the PR(s).
 ## 3. Corrections to reach full compliance
 
 - **P2 (branding) Brand mermaid.** Add `mermaidConfig.themeVariables` (`lineColor:'#5C7CFA'`, system-ui, 14px) to the `mermaid()` call (or adopt from the shared preset when it lands).
-- **P2 (identity) Fix the Starlight `title`** from "Writing Style Library" to "Writing Style Catalog" (`astro.config.mjs:30`) - the repo was renamed.
+- ~~**P2 (identity) Fix the Starlight `title`**~~ **WITHDRAWN.** The title "Writing Style Library" is deliberately retained per the repo's ADR 0014 (the rename changed only the slug; the display title is intentional, used in ~39 places). Do not change it. Lesson folded into the standard: a packet MUST cross-check a repo's ADRs/CHANGELOG before asserting a value is "stale."
 - **P2 (family rule) Add the em/en-dash check to CI.** It currently runs only as a pre-commit hook (`.pre-commit-config.yaml`); a contributor who bypasses pre-commit can land a dash. Add it as a CI step.
 - **P1/P2 (14.11) Add link/route guards.** Preferred: adopt the shared reusable workflow (ROADMAP Phase 1). If proceeding now, port `check-rendered-links.mjs` (anchors enforced) and `check-route-parity.mjs` from pm-skills, parameterized by this repo's base, run in the PR `build-site` job. **Mind the `.md` vs `.mdx` caveat:** this repo carries `@astrojs/mdx` + `remark-gfm`, so any link resolver must run inside the mdx pipeline too, not only `markdown.remarkPlugins`, or `.mdx` links are not rewritten/checked.
 - **P2 (optional) Add `.node-version=24`** companion alongside `.nvmrc` for tools that read it.
