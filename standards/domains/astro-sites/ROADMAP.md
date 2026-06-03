@@ -4,9 +4,9 @@
 
 ## Where the family stands
 
-The hard part is done. Both original High-severity drift findings are closed, and **all four sites are Pattern S on `main`** (writing-style-catalog shipped via PR #11). No repo commits build output; all set `site`, deploy via `@v5`, and pin `.nvmrc=24`. The roadmap is therefore short on rescue and long on alignment: close two remaining P1s, build the shared infra that carries the link/route guards to the siblings, and formalize the standard.
+The hard part is done. Both original High-severity drift findings are closed, **all four sites are Pattern S on `main`**, and **all four per-repo conformance sessions have landed** (pm-skills #160, thinking-framework-skills #30, agent-skills-toolkit #83, writing-style-catalog #11+#12). No repo commits build output; all set `site`, deploy via `@v5`, pin `.nvmrc=24`, and ship a favicon. The roadmap is now alignment, not rescue: consolidate the per-repo guards into the shared infra, and formalize the standard.
 
-The single highest-value item is not a clause; it is **carrying pm-skills' four build-aware validators to the three siblings that lack them**, because that is the only place a real failure (a shipped broken link or a lost route) can happen today undetected.
+**Update (post-rollout):** three of the four repos (askit, pm-skills, wsl) implemented the 14.11 link/route guards **locally** rather than deferring, and were right to - the shared workflow is unbuilt, 14.11 is a MUST, and the local guards caught real shipped breakage (a family-wide favicon 404; sixteen live 404s in wsl). Only thinking-framework-skills deferred; its follow-up (add the two local bridge guards now) is open in its [packet](rollout/thinking-framework-skills.md). So the highest-value item is no longer "carry the guards to repos that lack them" - it is **consolidating the now-three local guard ports into one shared, hardened validator** so they stop drifting, and adding tfs's. The per-repo reviews hardened the donor guard (bare-relative resolution, quote symmetry, defensive decode, CLI `argv` null-check); extract the shared validator from the FIXED agent-skills-toolkit versions, not the raw pm-skills donor.
 
 ## Phase 0 - Close the P1s (NOW, independent, days)
 
@@ -14,10 +14,10 @@ These are correctness/conformance items with no dependency on the shared infra. 
 
 | # | Repo | Action | Acceptance |
 |---|---|---|---|
-| ~~0.0~~ | writing-style-catalog | ~~Merge the Pattern S branch~~ | **DONE (PR #11).** `main` is Pattern S; Python site generator gone; deploy uploads `site/dist`. Residual is P2 (mermaid branding, stale title, CI dash check) in its [packet](rollout/writing-style-catalog.md). |
-| 0.1 | thinking-framework-skills | Delete the 7 `.md` config/data sidecars; fold any rationale into config comments or one docs page. | `git ls-files \| grep -E '\.(mjs\|json)\.md$'` is empty; site still builds. |
-| 0.2 | pm-skills | Extract the base literal to one source (e.g. `scripts/site-base.mjs`) imported by `astro.config.mjs` and `check-rendered-links.mjs`; land with a test that a wrong base fails the check. | `git grep -nF "/pm-skills"` shows the literal only in the single source; rendered-link check still green. |
-| 0.3 | agent-skills-toolkit | Modernize deploy: `checkout@v5` + `setup-node@v5` with `node-version-file: .nvmrc` (drop the hardcoded `node-version: "24"`). | All site jobs read `.nvmrc`; deploy green. |
+| ~~0.0~~ | writing-style-catalog | ~~Merge the Pattern S branch~~ | **DONE (PR #11).** `main` is Pattern S; Python site generator gone; deploy uploads `site/dist`. Residual P2 (mermaid branding, CI dash check) closed in PR #12. |
+| ~~0.1~~ | thinking-framework-skills | ~~Delete the 7 `.md` config/data sidecars~~ | **DONE (PR #30).** Sidecars deleted; rationale consolidated into `AUTHORING.md` + generator headers. (14.11 deferred; follow-up open - see Update above.) |
+| ~~0.2~~ | pm-skills | ~~Extract the base literal to one source + wrong-base-fails test~~ | **DONE (PR #160).** `scripts/site-base.mjs` single-sources the base; 5-case test; robots.txt + accent + Astro 6.4.2 also landed. |
+| ~~0.3~~ | agent-skills-toolkit | ~~Modernize deploy majors + `node-version-file`~~ | **DONE (PR #83).** `@v5` actions + `node-version-file`; also branded mermaid, shipped the favicon, and ported two 14.11 guards (ADR 0026). |
 
 Phase 0 is parallelizable across repos. It leaves four fully per-repo-conformant sites (wsl already shipped via #11, tfs sidecar-free, pm-skills base single-sourced, askit on the current toolchain). Each repo's work is dispatched by its packet in [`rollout/`](rollout/README.md) (scorecard + corrections + checklist + a kickoff prompt to run in that repo's working directory).
 
@@ -26,7 +26,7 @@ Phase 0 is parallelizable across repos. It leaves four fully per-repo-conformant
 Depends on Phase 0.3 (the base single-source extraction is the one piece of genuinely new work). Full design in [`ci-standard.md`](ci-standard.md).
 
 1. **1.1** Create `product-on-purpose/.github` `.github/workflows/astro-site.yml` (`workflow_call`); tag `@v1` (moving major tag).
-2. **1.2** Land `scripts/ci-checks.mjs` + the four parameterized validators in the preset package skeleton (see Phase 2), seeded from donors (askit `no-dashes.mjs` + internal-exclusion; pm-skills `check-rendered-links` + `verify-edit-links` + `check-route-parity` + `remark-resolve-links`). Lift `BASE` / edit-base-URL into parameters.
+2. **1.2** Land `scripts/ci-checks.mjs` + the four parameterized validators in the preset package skeleton (see Phase 2). Seed from the **FIXED agent-skills-toolkit versions** (`agent-skills-toolkit/site/scripts/`), which already carry the rollout-hardened fixes (bare-relative resolution, both quote styles, defensive decode, the CLI `argv[1]` null-check), plus askit `no-dashes.mjs` (`.py` + code-point detector) and internal-exclusion; take `remark-resolve-links` from pm-skills. Use the `site-base.mjs` base extraction (pm-skills / wsl) as the reference for the `BASE` / edit-base-URL parameterization. Bake in the CI build-outcome gate and the deploy-build guarding (ci-standard section 4).
 3. **1.3** Pilot the caller on **thinking-framework-skills** (cleanest). It gains the four link/route guards. Run alongside the existing workflow as a non-required check for >=3 PRs + 1 main deploy, confirm parity, then make it required and retire the old.
 4. **1.4** Roll to **agent-skills-toolkit** (its `node-version` mechanism drift normalizes for free), then **writing-style-catalog** (proves the `.md` vs `.mdx` remark passthrough), then **pm-skills** last (it donates the validators; confirm parity).
 
