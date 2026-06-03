@@ -61,7 +61,7 @@ export const collections = {
 - The integration ORDERING invariant (`astro-mermaid` before `starlight`), enforced inside the factory so no site can re-break it.
 - Mermaid branding (theme variables), currently in only 2 of 4 sites; the preset gives all four branded diagrams.
 - The `#5C7CFA` accent + mermaid SVG polish + `<details>` styling, as one `accent.css`.
-- The editLink org+URL shape (with the Pattern S `/site/` segment), replacing four hand-written `baseUrl` strings.
+- The editLink org+URL shape (with the Pattern S `/site/` segment), replacing four hand-written `baseUrl` strings. (Per-page `editUrl` on generated pages stays a generator concern - the true source or `false`, per SITE-STANDARD "Generated-page Edit links" - the preset only sets the `editLink.baseUrl` default that hand-authored pages inherit.)
 - The content frontmatter schema superset, replacing the two divergent `z.object()` extensions and giving the bare sites validation parity.
 - The SEO surface the standard names (`robots.txt` policy, default `og:image`, favicon), so one bump reaches all sites.
 - The shared dependency matrix (`astro`, `@astrojs/starlight`, `astro-mermaid` as `peerDependencies`), so the family pins one resolved set, not four (closing the 6.3.3-vs-6.4.2 drift).
