@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-06-06
+
+Re-pinned `agent-skills-toolkit` to its `v1.2.0` release.
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.2.0` release tag (commit `c1ecd26`), from `v1.1.0`; entry `version` 1.1.0 -> 1.2.0. Registry `metadata.version` 1.7.0 -> 1.8.0. v1.2.0 retires the `U10` (no-dashes) check from the Standard spine (Standard v0.11, 29-check spine).
+
 ## [1.7.0] - 2026-06-03
 
 Re-pinned `agent-skills-toolkit` to its second Gold release (`v1.1.0`).
