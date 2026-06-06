@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-06-06
+
+Re-pinned `pm-skills` to its `v2.25.1` maintenance release.
+
+### Changed
+
+- Re-pinned `pm-skills` to its `v2.25.1` release tag (commit `2b5044a`), from `v2.25.0`; entry `version` 2.25.0 -> 2.25.1. Registry `metadata.version` 1.8.0 -> 1.9.0.
+
 ## [1.8.0] - 2026-06-06
 
 Re-pinned `agent-skills-toolkit` to its `v1.2.0` release.
