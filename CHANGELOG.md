@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-06-06
+
+Re-pinned `agent-skills-toolkit` to its `v1.3.0` release (the gate-evolution release).
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.3.0` release tag (commit `d8279c2`), from `v1.2.0` (`c1ecd26`); entry `version` 1.2.0 -> 1.3.0. v1.3.0 makes the deterministic gate standard-version-aware (ADR 0027) and configurable (per-rule severity, named profiles, a suppressions baseline, per-check provenance, and a published-verdict trust clamp); no new spine check, so the spine stays 29 and the Standard stays 0.11. Registry `metadata.version` 1.9.0 -> 1.10.0.
+
 ## [1.9.0] - 2026-06-06
 
 Re-pinned `pm-skills` to its `v2.25.1` maintenance release.
