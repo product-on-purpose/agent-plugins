@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-06-09
+
+Re-pinned `thinking-framework-skills` to its `v0.4.0` release (the Framework Library platform).
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.4.0` release tag (commit `0ffda49`), from `v0.3.0` (`f70d7b7`); entry `version` 0.3.0 -> 0.4.0. v0.4.0 ships the Framework Library platform: the registry as a single source of truth with strong CI, the `think-research-framework` engine, the `think-top3` / `think-random-frameworks` applicators, the published Framework Library, a `/tools/` section for the meta-skills, the calibrated advisor gate, and a registry-era documentation refresh. Registry `metadata.version` 1.10.0 -> 1.11.0.
+
 ## [1.10.0] - 2026-06-06
 
 Re-pinned `agent-skills-toolkit` to its `v1.3.0` release (the gate-evolution release).
