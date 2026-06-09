@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-06-09
+
+Re-pinned `agent-skills-toolkit` to its `v1.5.0` release (outward grading).
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.5.0` release tag (commit `6bd2daa`), from `v1.4.1` (`01a5fac`); entry `version` 1.4.1 -> 1.5.0. v1.5.0 is the outward-grading release: a `--profile` flag grades a third-party plugin under a chosen profile without writing config into its tree, and `U2` / `U5` are reclassified as house conventions (ADR 0029) so a plain plugin is graded only on portable defects. No spine or Standard change (29 checks, Standard 0.11); a plugin graded the default way is unaffected. Registry `metadata.version` 1.14.0 -> 1.15.0.
+
+## [1.14.0] - 2026-06-09
+
+Re-pinned `thinking-framework-skills` to its `v0.5.0` release. (Backfilled: the re-pin shipped in marketplace PR #22.)
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.5.0` release tag, from `v0.4.0`; entry `version` 0.4.0 -> 0.5.0. Registry `metadata.version` 1.13.0 -> 1.14.0.
+
+## [1.13.0] - 2026-06-09
+
+Re-pinned `agent-skills-toolkit` to its `v1.4.1` release (a hardening patch over v1.4.0). (Backfilled: the re-pin shipped in marketplace PR #21.)
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.4.1` release tag (commit `01a5fac`), from `v1.4.0` (`da6eded`); entry `version` 1.4.0 -> 1.4.1. v1.4.1 hardens the report renderer (graceful malformed-advisory handling, full Markdown HTML-escaping, invalid-target-tier rejection); no spine or Standard change. Registry `metadata.version` 1.12.0 -> 1.13.0.
+
 ## [1.12.0] - 2026-06-09
 
 Re-pinned `agent-skills-toolkit` to its `v1.4.0` release (the designed evaluation report, F2 / E1).
