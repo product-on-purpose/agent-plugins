@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-06-09
+
+Re-pinned `agent-skills-toolkit` to its `v1.4.0` release (the designed evaluation report, F2 / E1).
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.4.0` release tag (commit `da6eded`), from `v1.3.0` (`d8279c2`); entry `version` 1.3.0 -> 1.4.0. v1.4.0 ships the designed evaluation-report renderer: one pure renderer over the `evaluate.mjs` report object emits a self-contained HTML page or a Markdown twin in five report types (conformance, migration, release, review, behavioral). A presentation layer over the deterministic gate, with no spine or Standard change (29 checks, Standard 0.11). Registry `metadata.version` 1.11.0 -> 1.12.0.
+
 ## [1.11.0] - 2026-06-09
 
 Re-pinned `thinking-framework-skills` to its `v0.4.0` release (the Framework Library platform).
