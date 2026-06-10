@@ -1,6 +1,9 @@
 # Local-only notes and scratch (never published, even if repo goes public)
 _LOCAL/
 
+# jp-library skill outputs (strategy briefs, guides) - local working artifacts
+_output-jp-library/
+
 # Local agent/memory tooling artifacts
 .memsearch/
 .claude/
