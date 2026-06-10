@@ -22,14 +22,14 @@ New listings MUST meet L1-L4 from day one. Members listed before this contract c
 - `.claude-plugin/plugin.json` exists at the repo root.
 - Required fields: `name` (kebab-case, unique within the marketplace), `version` (SemVer), `description`, `license`.
 - Recommended fields: `homepage`, `repository`, `author`, `keywords`.
-- Skill frontmatter follows the [agentskills.io spec](https://agentskills.io/specification): top level keeps `name` / `description` / `license`; proprietary fields nest under `metadata:`.
+- Component frontmatter follows the **pinned Standard** (Section 3.8 and the agentskills.io mapping in Section 6); this contract does not restate frontmatter law. (Corrected 2026-06-10: an earlier restated bullet here conflicted with the Standard's own top-level `chain:` mechanism - the audits caught the contract violating its own restate-nothing rule.)
 - The plugin installs cleanly on a fresh Claude Code.
 
 ## 3. L2 - independently valid (the one-way rule)
 
 - The plugin installs and runs standalone.
-- The plugin repo MUST NOT reference the marketplace. Association is declared only here, in this repo's `marketplace.json`. Pointing is one-way: marketplace to plugin.
-- The plugin repo MUST NOT ship an embedded self-listing `marketplace.json` (the Standard's Section 12 anti-pattern). The external registry here is the one source of listing truth.
+- The plugin repo MUST NOT carry any **machine-readable** marketplace association: no embedded self-listing `marketplace.json` (the Standard's Section 12 anti-pattern), no registry metadata pointing back here. Association is declared only here, in this repo's `marketplace.json`; pointing is one-way: marketplace to plugin.
+- Prose install instructions that name the external marketplace (README, getting-started, release notes) are expected, not a violation. (Corrected 2026-06-10: all three audits flagged the earlier "MUST NOT reference" wording as over-broad - it banned the install docs every member is required to carry.)
 
 ## 4. L3 - the Standard, bound by version
 
@@ -41,7 +41,7 @@ New listings MUST meet L1-L4 from day one. Members listed before this contract c
 ## 5. L4 - release hygiene
 
 - The registry pins each plugin by `sha`. That `sha` MUST sit on a release tag `vX.Y.Z` in the plugin repo.
-- Versions MUST agree everywhere they appear: the registry entry `version` == the release tag == `library.json` `version` == `.claude-plugin/plugin.json` `version`.
+- Versions MUST agree everywhere they appear: the registry entry `version` == the release tag == `library.json` `version` == **every native manifest the repo emits** (`.claude-plugin/plugin.json`, and `.codex-plugin/plugin.json` where present).
 - The plugin repo MUST have a `CHANGELOG.md` entry for the released version, and SHOULD maintain user-facing `RELEASE-NOTES` for milestone releases.
 - The registry holds itself to the same bar: every re-pin bumps `metadata.version` in `marketplace.json` and adds an entry to this repo's [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -53,7 +53,8 @@ New listings MUST meet L1-L4 from day one. Members listed before this contract c
 
 - `_agent-context/` holds **committed** agent-facing context; session logs (the wrap-session skill's output) live under it (`session-log/` today in most members; singular vs plural is one of the things E2 will pin down).
 - `_local/` (or `_LOCAL/`) is **fully gitignored** local scratch. It is never published, even if the repo goes public.
-- `agents/` is **reserved for plugin subagents** (native registration, see the component palette below) and MUST NOT hold session logs or agent knowledge. Lineage: `agents/` originally held session logs and agent-based knowledge; that collided with the subagent namespace, and `_agent-context/` was created to relieve it. One member still carries the legacy layout; the audit records it.
+- `agents/` is **reserved for plugin subagents** (native registration, see the component palette below) and MUST NOT hold session logs or agent knowledge. Lineage: `agents/` originally held session logs and agent-based knowledge; that collided with the subagent namespace, and `_agent-context/` was created to relieve it.
+- What the 2026-06-10 audits actually found (the E2 evidence): all four members now use `agents/` only for subagents (pm-skills completed its migration in v2.17.0); members **differ** on whether `_agent-context/` is committed (pm-skills) or fully gitignored (thinking-framework-skills, agent-skills-toolkit), and on session-log naming (`session-log/` vs `session-logs/`). E2 ratifies clauses from this evidence; until then these conventions stay SHOULD.
 
 ## 7. Operations - getting listed, staying pinned
 
@@ -108,11 +109,11 @@ A plugin can ship any subset of these. It does not have to ship all of them.
 
 **Enforced now:** the registry `validate` CI check (registry shape), install validation, and maintainer review against the Section 7 checklist.
 
-**Advisory now (tracked, not waived):**
+**Advisory now (tracked, not waived; state as of 2026-06-10, post-audit):**
 
-- **L3**: two legacy members carry no `library.json` and so cannot pin the Standard yet - `pm-skills` and `writing-style-catalog`. Convergence packets are queued in [`docs/internal/convergence/`](docs/internal/convergence/).
-- **L2**: two legacy embedded self-listing marketplaces remain - in `pm-skills` and `writing-style-catalog` - slated for removal in their convergence work.
-- **L6**: scaffolding is unstandardized; the audits gather the evidence.
+- **L3**: `pm-skills` carries no `library.json` (convergence scoped in [its packet](docs/internal/convergence/pm-skills-conformance.md)); `writing-style-catalog`'s manifest is in its open convergence PR (its repo PR #19) and clears on merge. `thinking-framework-skills` and `agent-skills-toolkit` pass.
+- **L2**: one embedded self-listing marketplace remains, in `pm-skills` (a recorded deliberate back-compat retention; removal scoped in its packet, decision D6). `writing-style-catalog`'s is deleted in its open convergence PR.
+- **L6**: scaffolding is unstandardized; the audit evidence is recorded in the four convergence packets (the E2 input).
 
 **The ratchet (deliberate, in order):**
 
