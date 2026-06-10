@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
+
+## [1.17.0] - 2026-06-10
+
+Re-pinned `pm-skills` to its `v2.25.2` release. (Backfilled: the re-pin shipped in marketplace PR #25.)
+
+### Changed
+
+- Re-pinned `pm-skills` to its `v2.25.2` release tag (commit `f7f3622`), from `v2.25.1` (`2b5044a`); entry `version` 2.25.1 -> 2.25.2. Registry `metadata.version` 1.16.0 -> 1.17.0.
+
+## [1.16.0] - 2026-06-10
+
+Re-pinned `thinking-framework-skills` to its `v0.6.0` release. (Backfilled: the re-pin shipped in marketplace PR #24.)
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.6.0` release tag (commit `d0b4a33`), from `v0.5.0` (`12f4613`); entry `version` 0.5.0 -> 0.6.0. v0.6.0 is the phase-2 catalog expansion (40 -> 47 shipped frameworks, 7 builds + 11 folds + 2 recipes + 6 rejects reconciled). Registry `metadata.version` 1.15.0 -> 1.16.0.
+
 ## [1.15.0] - 2026-06-09
 
 Re-pinned `agent-skills-toolkit` to its `v1.5.0` release (outward grading).

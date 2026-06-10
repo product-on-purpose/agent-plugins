@@ -10,6 +10,8 @@ The family's standards home: the Advanced Skill Library Standard and the process
 | [`decisions/`](decisions/) | The Standard's own MADR ADRs (numbered, immutable), starting at 0001. |
 | [`domains/`](domains/) | Promoted standards domains: tracked, refined drafts proposed for landing into `STANDARD.md`. The first is [`domains/astro-sites/`](domains/astro-sites/README.md) (documentation sites, proposed as Section 14). |
 
+The **listing contract** (what makes a repo listable in the marketplace) lives at the repo root, [`CONTRIBUTING.md`](../CONTRIBUTING.md), per GOVERNANCE.md Section 2: it binds to the Standard by version and restates nothing from it.
+
 ## Not here yet (sequenced relocation)
 
 The canonical home is `agent-plugins/standards/`, but the move is deliberately staged (ADR 0001). Until the relocation lands, these live elsewhere:
