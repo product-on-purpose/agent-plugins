@@ -11,6 +11,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.19.0] - 2026-06-10
+
+Re-pinned `agent-skills-toolkit` to its `v1.5.1` release.
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.5.1` release tag (commit `6f1d8b0`), from `v1.5.0` (`6bd2daa`); entry `version` 1.5.0 -> 1.5.1. Registry `metadata.version` 1.18.0 -> 1.19.0. v1.5.1 is the batch-2 calibration patch (the ADR 0030/0031/0032 grading calibrations plus the token-usage dossier); no Standard or spine change.
+
+## [1.18.0] - 2026-06-10
+
+Re-pinned `pm-skills` to its `v2.26.0` release. (Backfilled: the re-pin shipped in marketplace PR #28.)
+
+### Changed
+
+- Re-pinned `pm-skills` to its `v2.26.0` release tag (commit `c11de12`), from `v2.25.2` (`f7f3622`); entry `version` 2.25.2 -> 2.26.0. Registry `metadata.version` 1.17.0 -> 1.18.0.
+
 ## [1.17.0] - 2026-06-10
 
 Re-pinned `pm-skills` to its `v2.25.2` release. (Backfilled: the re-pin shipped in marketplace PR #25.)
