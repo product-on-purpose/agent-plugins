@@ -11,6 +11,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.22.0] - 2026-06-12
+
+Re-pinned `agent-skills-toolkit` to its `v1.5.2` release.
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.5.2` release tag (commit `7b1ba92`), from `v1.5.1` (`6f1d8b0`); entry `version` 1.5.1 -> 1.5.2. Registry `metadata.version` 1.21.0 -> 1.22.0. v1.5.2 is the eval-run patch (the ADR 0033 U5 description-scorer recalibration, the ADR 0034 component-scope gate-config fix, the advisory delegates' doc-fix batch, the eval-run record + methodology + measured token dossier, and the responsive-table render fix); no Standard or spine change.
+
+### Fixed
+
+- Backfilled the missing `[1.20.0]` and `[1.21.0]` entries below (the two `thinking-framework-skills` re-pins, PRs #30 and #31, bumped `metadata.version` without changelog lines).
+
+## [1.21.0] - 2026-06-11
+
+Re-pinned `thinking-framework-skills` to its `v0.7.1` release. (Backfilled 2026-06-12: PR #31 bumped `metadata.version` without a changelog entry.)
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.7.1` release tag; entry `version` 0.7.0 -> 0.7.1. Registry `metadata.version` 1.20.0 -> 1.21.0.
+
+## [1.20.0] - 2026-06-11
+
+Re-pinned `thinking-framework-skills` to its `v0.7.0` release. (Backfilled 2026-06-12: PR #30 bumped `metadata.version` without a changelog entry.)
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` to its `v0.7.0` release tag; entry `version` 0.6.0 -> 0.7.0. Registry `metadata.version` 1.19.0 -> 1.20.0.
+
 ## [1.19.0] - 2026-06-10
 
 Re-pinned `agent-skills-toolkit` to its `v1.5.1` release.
