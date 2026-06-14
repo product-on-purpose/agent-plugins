@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.24.0] - 2026-06-14
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` to its `v1.6.0` release tag (commit `c2bcbe2`), from `v1.5.2` (`7b1ba92`); entry `version` 1.5.2 -> 1.6.0. Registry `metadata.version` 1.23.0 -> 1.24.0. v1.6.0 is the manifest-completeness release: a new Universal check `U13` (`skill-registration`) catches a plugin that ships a skill on disk it never registered (invisible to installers), growing the Standard 0.11 -> 0.12 and the spine 29 -> 30 - the first Standard growth since v0.11, shipped under the warn-for-one-minor burndown so no existing plugin newly fails (ADR 0035). It also adds a per-check report glossary and the Bronze `universal-checks.md` reference page.
+
 ## [1.23.0] - 2026-06-13
 
 Re-pinned `thinking-framework-skills` to its `v0.8.0` release.
