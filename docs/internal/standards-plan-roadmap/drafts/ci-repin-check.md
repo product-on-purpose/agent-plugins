@@ -37,7 +37,7 @@ The workflow runs the validator on push to `main` (path-filtered), on every PR t
 | # | Check | Enforces | Initial level | Becomes blocking when |
 |---|---|---|---|---|
 | 8 | Re-pin conformance: the pinned-commit repo carries a `library.json` with a `standard` version pin and a `tier`, and the repo's own CI is green at that `sha` | CONTRIBUTING.md L3 (binds the Standard by version) + L4 (CI green at the pinned sha) | advisory | all four current members pass |
-| 9 | Truth-in-targeting: every declared `agent-targets` entry has its native distribution + context shim present at the pinned commit; Codex is scoped to the portability level, not native packaging | Standard Section 5.1 `agent-targets`; decision D10 (cross-tool / truth-in-targeting) | advisory | landed in advisory in Phase 2; flips to blocking in Phase 4 |
+| 9 | Truth-in-targeting: every declared `agent-targets` entry has its native distribution + context shim present at the pinned commit; per D17 a `"codex"` claim is verified against codex-distributed artifacts (native packaging), not merely the portability floor | Standard Section 5.1 `agent-targets`; decision D10 (cross-tool / truth-in-targeting), D17 (Codex = deliver) | advisory | landed in advisory in Phase 2; the codex-distributed native verification flips on after the path-reconfirm spike; flips to blocking in Phase 4 |
 
 Both checks read only the pinned commit (`repo@sha`) via the GitHub API and raw content, never `HEAD`. This keeps the gate authoritative over exactly what users receive (the same principle that makes the sha pin load-bearing, CONTRIBUTING.md Section 7).
 
@@ -156,14 +156,14 @@ Design notes:
 
 Decision D10 (cross-tool / truth-in-targeting) makes `agent-targets` load-bearing: a plugin MUST emit, and the gate MUST verify, the native distribution plus the context shim for every declared target. If a target is not actually shipped, it MUST be dropped from `agent-targets` (no claiming a target you do not deliver). Check 9 is the gate side of that rule, evaluated at the pinned commit.
 
-Codex is scoped to truth (D10, scope-to-truth): declaring `"codex"` claims PORTABILITY (agentskills.io-compatible skills plus a root `AGENTS.md`, which is essentially free and already true), NOT native `.agents/plugins/` marketplace distribution. So for `"codex"` the gate verifies the portability floor, not a native Codex plugin manifest. Native Codex packaging is deferred until a real Codex consumer exists.
+Per D17 (Codex = deliver; supersedes D10 Codex-defer), declaring `"codex"` claims codex-distributed (native Codex plugin packaging plus a Codex marketplace install), not merely the portability floor. So for `"codex"` the gate verifies the codex-distributed artifacts: a native Codex plugin manifest (`.codex-plugin/plugin.json`) present at the pinned commit, and the Codex marketplace entry (`.agents/plugins/marketplace.json`) resolving. The D10 truth-in-targeting principle (declare == emit == verify) is unchanged; only the artifacts a `"codex"` claim resolves to change. The native verification flips on only after the Codex path-reconfirm spike lands (the on-disk discovery paths have version churn, see `drafts/cross-tool-targeting.md` Section 4); until then check 9 verifies the portability floor (skills tree plus `AGENTS.md`) as an interim signal. The advisory-then-blocking rollout below applies to the codex-distributed verification exactly as to the rest of check 9.
 
 ### 4.2 The target-to-evidence table (what "shipped" means at the pinned commit)
 
 | Declared target | Native distribution evidence (at `repo@sha`) | Context shim evidence |
 |---|---|---|
 | `claude` | `.claude-plugin/plugin.json` parses (already proven by check 7) | root `AGENTS.md` present, and a `CLAUDE.md` shim present (Standard Section 3.10; D10 fixes the missing-shim drift) |
-| `codex` (portability scope) | agentskills.io-compatible skills present (a `skills/` tree with at least one `SKILL.md`) | root `AGENTS.md` present (the cross-tool canonical source, agents.md) |
+| `codex` (codex-distributed, D17; native verification gated on the path-reconfirm spike) | `.codex-plugin/plugin.json` present at the pinned commit AND the Codex marketplace entry (`.agents/plugins/marketplace.json`) resolves for this plugin; until the spike lands, the interim signal is an agentskills.io-compatible skills tree (`skills/` with at least one `SKILL.md`) | root `AGENTS.md` present (the cross-tool canonical source, agents.md) |
 
 The CLAUDE.md and any other native-target shim MUST be a thin pointer to `AGENTS.md`, never a divergent copy (D10). Check 9 verifies presence at the pinned commit; it does not parse shim contents for divergence in Phase 2 (a contents check is a Phase 4 hardening, noted in Section 7).
 
@@ -171,7 +171,7 @@ The CLAUDE.md and any other native-target shim MUST be a thin pointer to `AGENTS
 
 ### 4.3 Inputs and outputs
 
-- Inputs: `repo`, `s.sha`, and `lib` (the parsed `library.json` from check 8); raw content reads at the pinned commit for `AGENTS.md`, `CLAUDE.md`, `.claude-plugin/plugin.json`, and a `skills/` listing via the git-tree API.
+- Inputs: `repo`, `s.sha`, and `lib` (the parsed `library.json` from check 8); raw content reads at the pinned commit for `AGENTS.md`, `CLAUDE.md`, `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, and a `skills/` listing via the git-tree API. Env: `REGISTRY_CODEX_NATIVE` (new toggle; off until the path-reconfirm spike lands, see Section 4.1 and Section 5).
 - Outputs: `fail(9, ...)` / `warn(9, ...)` via a `REGISTRY_CHECK9` toggle (defaults to advisory in Phase 2 regardless, see Section 5); non-github hosts warn-and-skip.
 
 ### 4.4 Validation logic (pseudocode)
@@ -188,8 +188,10 @@ if (!lib) {
 } else {
   const targets = Array.isArray(lib["agent-targets"]) ? lib["agent-targets"] : [];
   // Universal-with-no-targets is conformant: skills are agent-agnostic (Standard 5.1).
+  const codexNative = process.env.REGISTRY_CODEX_NATIVE === "on";  // gated on the path-reconfirm spike (D17)
   const present = await pathsPresent(repo, s.sha, [
-    "AGENTS.md", "CLAUDE.md", ".claude-plugin/plugin.json"
+    "AGENTS.md", "CLAUDE.md", ".claude-plugin/plugin.json",
+    ".codex-plugin/plugin.json", ".agents/plugins/marketplace.json"
   ]);
   const hasSkills = await hasSkillTree(repo, s.sha);  // any skills/**/SKILL.md
 
@@ -202,9 +204,18 @@ if (!lib) {
       if (!present["CLAUDE.md"])
         emit9(`${id} declares target "claude" but ships no CLAUDE.md shim pointing at AGENTS.md (D10)`);
     } else if (t === "codex") {
-      // scope-to-truth: portability floor, NOT native .agents/plugins packaging
-      if (!hasSkills)
-        emit9(`${id} declares target "codex" (portability) but ships no agentskills.io skills/ tree at ${repo}@${s.sha}`);
+      // D17: "codex" resolves to codex-distributed (native packaging), not the portability floor.
+      // The native verification is gated on REGISTRY_CODEX_NATIVE, which flips on only after the
+      // Codex path-reconfirm spike lands (cross-tool-targeting.md Section 4).
+      if (codexNative) {
+        if (!present[".codex-plugin/plugin.json"])
+          emit9(`${id} declares target "codex" (codex-distributed) but ships no .codex-plugin/plugin.json at ${repo}@${s.sha}`);
+        if (!await codexMarketplaceResolves(id, s.sha))
+          emit9(`${id} declares target "codex" but no .agents/plugins/marketplace.json entry resolves for it`);
+      } else if (!hasSkills) {
+        // interim signal until the spike lands: the portability floor must at least be present
+        emit9(`${id} declares target "codex" but ships no agentskills.io skills/ tree at ${repo}@${s.sha}`);
+      }
       if (!present["AGENTS.md"])
         emit9(`${id} declares target "codex" but ships no root AGENTS.md (the cross-tool source)`);
     } else {
@@ -230,6 +241,19 @@ async function hasSkillTree(repo, sha) {
 }
 ```
 
+A third helper, used only when `REGISTRY_CODEX_NATIVE` is on, confirms the plugin has an entry in the Codex marketplace manifest that agent-plugins emits (`.agents/plugins/marketplace.json`), mirroring how the existing checks confirm the Claude marketplace listing:
+
+```
+async function codexMarketplaceResolves(pluginId, sha) {
+  // Read the Codex marketplace manifest the agent-plugins repo emits alongside
+  // .claude-plugin/marketplace.json and confirm this plugin has a resolvable entry.
+  // Exact entry schema is confirmed by the Codex path-reconfirm spike (D17) before
+  // this branch is enabled; the helper lands behind REGISTRY_CODEX_NATIVE.
+  const mp = await fetchCodexMarketplace(sha);  // raw read of .agents/plugins/marketplace.json
+  return (mp?.plugins || []).some((e) => e.name === pluginId);
+}
+```
+
 Optimization: fetch the recursive git tree once per entry and pass it to both `pathsPresent` and `hasSkillTree` (the pseudocode shows two reads for clarity; the implementation MUST cache the tree per `repo@sha` to stay inside the API budget). The recursive tree is truncated by the API for very large repos; if `tree.truncated === true`, fall back to direct raw reads for the specific files and warn that the skills-tree probe was best-effort.
 
 ## 5. Advisory-then-blocking rollout
@@ -246,6 +270,7 @@ Default-level mechanics, mirroring check 7:
 
 - Check 8 reads `REGISTRY_CHECK8`. To make the advisory-first stance the default at land, the workflow sets `REGISTRY_CHECK8: advisory` in Phase 2; the flip to blocking is a one-line deletion of that env var in the workflow once `01-current-state.md` confirms all four members pass (a P0 hole still open: `pm-skills` has no `library.json`, so check 8 would `fail` it the moment it is blocking - the toggle is what lets the check land before pm-skills converges in Phase 1).
 - Check 9 is hard-advisory in Phase 2 (`advisory9 = true`) and reads `REGISTRY_CHECK9` only as an escape hatch; the Phase 4 hardening replaces `advisory9 = true` with `advisory9 = process.env.REGISTRY_CHECK9 === "advisory"` and removes the env var from the workflow.
+- The codex-distributed native verification (D17) is gated independently by `REGISTRY_CODEX_NATIVE`, which stays off until the Codex path-reconfirm spike lands. Turning it on is a separate, evidence-gated step (the spike is the prerequisite): until then check 9 verifies only the portability floor for `"codex"` as an interim signal. The native flip and the advisory-to-blocking flip are orthogonal; `REGISTRY_CODEX_NATIVE` can turn on while check 9 is still advisory.
 - The flip to blocking is gated by evidence, not by date: it MUST NOT be flipped while any of the four current members would fail. The flip PR MUST cite the green advisory run that shows all four passing (the evidence-then-law discipline of GOVERNANCE.md Section 7 and CONTRIBUTING.md Section 8).
 
 Sequencing dependency: check 8 blocking depends on Phase 1 (close P0 holes) landing `library.json` in `pm-skills` and on the three other members keeping their pins current (`agent-skills-toolkit` 0.12, `writing-style-catalog` 0.11, `thinking-framework-skills` 0.8 per `01-current-state.md`). Until then check 8 stays advisory.
@@ -301,6 +326,7 @@ To collect these records, check 8 pushes one entry into a module-level `summary`
 
 - Check 8 blocking: delete `REGISTRY_CHECK8: advisory` from the workflow `env:` block. Land only after `01-current-state.md` and an advisory run confirm all four members pass.
 - Check 9 blocking (Phase 4): change `advisory9 = true` to read `REGISTRY_CHECK9`, then ensure the workflow does not set `REGISTRY_CHECK9`. Land with the Phase 4 frontmatter-tier and shared-workflow work.
+- Codex-distributed native verification on (D17, after the path-reconfirm spike): set `REGISTRY_CODEX_NATIVE: on` in the workflow `env:` block. Land only after the Codex path-reconfirm spike confirms the on-disk paths and the `.agents/plugins/marketplace.json` entry schema, and after the plugins declaring `"codex"` actually emit `.codex-plugin/plugin.json` and a resolvable marketplace entry. This rides the Codex distribution workstream (`02-roadmap.md`), parallelizable with Phase 4.
 
 ## 8. Edge cases and non-goals
 
@@ -309,7 +335,7 @@ To collect these records, check 8 pushes one entry into a module-level `summary`
 - Truncated git tree: if `tree.truncated`, fall back to direct raw reads for the named files and warn that the skills-tree probe (check 9) was best-effort.
 - The validator MUST NOT clone repos or run plugin CI itself; it reads published GitHub state (commit status, check-runs, raw content) at the pinned commit. The plugin repo owns and runs its own conformance checks (the Standard's runner); check 8 only confirms that those ran green at the pinned sha, per L3's "Conformance is demonstrated by the Standard's checks passing at the pinned commit ... in the plugin's own CI".
 - Shim-divergence (does a `CLAUDE.md` shim actually point at `AGENTS.md` rather than diverge?) is out of scope for Phase 2; check 9 verifies presence only. A contents/divergence probe is a Phase 4 hardening candidate.
-- Native Codex packaging (`.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json`) is explicitly NOT asserted by check 9 (D10 scope-to-truth). When a real Codex consumer appears, a new evidence row is added to the Section 4.2 table and the `"codex"` branch is upgraded; the upgrade is additive, not a rewrite.
+- Native Codex packaging (`.agents/plugins/marketplace.json`, `.codex-plugin/plugin.json`) IS asserted by check 9 for repos declaring `"codex"`, per D17 (Codex = deliver; supersedes D10 Codex-defer). This verification is gated behind `REGISTRY_CODEX_NATIVE` and turns on only after the Codex path-reconfirm spike lands (the on-disk discovery paths and the marketplace entry schema have version churn); until then check 9 verifies the portability floor for `"codex"` as an interim signal. The advisory-then-blocking rollout (Section 5) applies to the native verification as to the rest of check 9. This branch is additive over the interim floor, not a rewrite of the check.
 
 ## 9. External references
 
@@ -318,4 +344,4 @@ To collect these records, check 8 pushes one entry into a module-level `summary`
 - AGENTS.md (the single canonical cross-tool context source, D10): https://agents.md/
 - SemVer (the `version` / `standard` pin shape): https://semver.org
 - RFC 8174 / BCP 14 (the MUST / SHOULD / MAY keywords used here): https://www.rfc-editor.org/rfc/rfc8174
-- OpenAI Codex plugins (the deferred native packaging path; reconfirm on-disk paths before building any Codex emitter, per STANDARD.md line 495 residual): https://developers.openai.com/codex/plugins and skills https://developers.openai.com/codex/skills
+- OpenAI Codex plugins (the codex-distributed packaging path the family delivers per D17; the path-reconfirm spike confirms on-disk paths before the native verification flips on, per STANDARD.md line 495 residual): https://developers.openai.com/codex/plugins and skills https://developers.openai.com/codex/skills

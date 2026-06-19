@@ -1,6 +1,6 @@
-# The 13 Locked Decisions
+# The 17 Locked Decisions
 
-This file records the thirteen decisions that anchor the standards roadmap as ADR-ready entries, in order D1 (deliverable) through D13 (issue and effort conventions). Each entry is written so it can be lifted directly into a MADR 4.0 record ([https://adr.github.io/madr/](https://adr.github.io/madr/)): a status, the context and drift it resolves, the normative decision in RFC-2119 language where appropriate ([https://www.rfc-editor.org/rfc/rfc8174](https://www.rfc-editor.org/rfc/rfc8174)), the alternatives weighed and rejected, the consequences and any new enforcing check, the external standard it aligns with, and where the record graduates to land per [`standards/GOVERNANCE.md`](../../../standards/GOVERNANCE.md). Family-law decisions graduate to [`agent-plugins/standards/decisions/`](../../../standards/decisions/); plugin-binding conventions graduate to Standard clauses and, where they touch listability, to [`CONTRIBUTING.md`](../../../CONTRIBUTING.md). Companion files: the staged plan is [`02-roadmap.md`](02-roadmap.md); current-state evidence is [`01-current-state.md`](01-current-state.md); the home/lifecycle framing is [`04-standards-definition.md`](04-standards-definition.md).
+This file records the seventeen decisions that anchor the standards roadmap as ADR-ready entries, in order D1 (deliverable) through D17 (Codex deliver). Each entry is written so it can be lifted directly into a MADR 4.0 record ([https://adr.github.io/madr/](https://adr.github.io/madr/)): a status, the context and drift it resolves, the normative decision in RFC-2119 language where appropriate ([https://www.rfc-editor.org/rfc/rfc8174](https://www.rfc-editor.org/rfc/rfc8174)), the alternatives weighed and rejected, the consequences and any new enforcing check, the external standard it aligns with, and where the record graduates to land per [`standards/GOVERNANCE.md`](../../../standards/GOVERNANCE.md). Family-law decisions graduate to [`agent-plugins/standards/decisions/`](../../../standards/decisions/); plugin-binding conventions graduate to Standard clauses and, where they touch listability, to [`CONTRIBUTING.md`](../../../CONTRIBUTING.md). Companion files: the staged plan is [`02-roadmap.md`](02-roadmap.md); current-state evidence is [`01-current-state.md`](01-current-state.md); the home/lifecycle framing is [`04-standards-definition.md`](04-standards-definition.md).
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are as defined in RFC 2119 / BCP 14.
 
@@ -208,7 +208,7 @@ CODEX = SCOPE TO TRUTH: declaring `"codex"` in `agent-targets` claims PORTABILIT
 - *Drop "codex" from agent-targets entirely.* Rejected: the portability claim (agentskills.io skills plus AGENTS.md) is already true and free; dropping it would understate real capability. Scope-to-truth keeps the honest claim while deferring the expensive one.
 - *Per-tool forked skill bodies.* Rejected: forking a skill per tool multiplies maintenance and guarantees divergence; quarantined labeled extensions keep one body that degrades gracefully.
 
-**Consequences.** A new gate check, per-target presence verification (the runner already has `agent-targets.mjs` and `per-target-presence.mjs` to build on), lands advisory in Phase 2 and flips to blocking in Phase 4. The CLAUDE.md shim fix rides the D2 PUSH lane. Before any Codex emitter, the current Codex docs MUST be re-confirmed.
+**Consequences.** A new gate check, per-target presence verification (the runner already has `agent-targets.mjs` and `per-target-presence.mjs` to build on), lands advisory in Phase 2 and flips to blocking in Phase 4. The CLAUDE.md shim fix rides the D2 PUSH lane. Before any Codex emitter, the current Codex docs MUST be re-confirmed. NOTE: the Codex-defer stance stated above (scope `"codex"` to portability only, defer native `.agents/plugins/` packaging) is SUPERSEDED by D17 (Codex = deliver), which reverses the defer; the D10 truth-in-targeting principle itself (declare == emit == verify) stands unchanged.
 
 **Aligns-with.** AGENTS.md [https://agents.md/](https://agents.md/); agentskills.io [https://agentskills.io/specification.md](https://agentskills.io/specification.md); OpenAI Codex plugins [https://developers.openai.com/codex/plugins](https://developers.openai.com/codex/plugins) and skills [https://developers.openai.com/codex/skills](https://developers.openai.com/codex/skills).
 
@@ -275,11 +275,96 @@ CODEX = SCOPE TO TRUTH: declaring `"codex"` in `agent-targets` claims PORTABILIT
 
 ---
 
+## D14 (runner-consumption: reusable workflow)
+
+**Status:** accepted
+
+**Context.** The 30-check conformance runner is being relocated into `standards/` (Phase 0), and OQ-2 (how do consuming repos run the relocated runner) was open. Four plugin repos must run the same gate without each vendoring a copy of the check harness; the live state (four duplicated CI guard copies) is exactly the drift this decision must end. Two things vary independently and must not be conflated: the version of the CI HARNESS a repo runs, and the version of the STANDARD that repo declares in its `library.json` `standard` field. A single coupled pin would force a harness update to also bump a repo's Standard version, re-creating the synchronized-bump problem D2 (Hybrid rollout) was written to avoid.
+
+**Decision.** The relocated runner MUST be consumed via a REUSABLE GitHub Actions workflow that lives in `product-on-purpose/.github`, checks out `standards/` at a pinned ref, and runs the gate against the calling repo. Each plugin repo MUST carry only a THIN caller (~3 lines) in its own `.github/workflows/`. Two pins are REQUIRED, each decouple-and-pin: (a) the WORKFLOW version pin in each caller MUST be an explicit tag or SHA (`uses: ...@<tag-or-sha>`) and MUST NOT be `@main`; workflow updates propagate by RE-PINNING, which rides the Hybrid PUSH lane (one-PR-per-repo campaign, D2). (b) The STANDARD version MUST be a workflow INPUT: each repo passes its `library.json` standard pin, and the workflow checks out `standards/` at that version (pull-based, so the gate matches the repo's own declared pin). The npm package is the NAMED FALLBACK consumption path if the reusable-workflow mechanics prove unworkable. A confirming SPIKE in Phase 0 MUST validate the GitHub Actions two-checkout mechanics (caller repo plus pinned `standards/`) before relocation lands; per OQ-3 the consumption decision is pulled INTO Phase 0 so there is no dark-gate window (atomic relocation).
+
+**Alternatives considered.**
+- *Vendor a copy of the runner into each repo.* Rejected: this is the live four-copies drift; every check fix would need four synchronized edits and the copies would diverge.
+- *Single coupled pin (harness version == Standard version).* Rejected: it forces a harness update to also bump the repo's Standard version, re-introducing the synchronized-bump collision D2 avoids; the two concerns version independently and MUST pin independently.
+- *Caller tracks `@main` of the workflow.* Rejected: an unpinned `@main` makes every consuming repo's CI non-reproducible and lets a workflow change break four repos at once with no per-repo review gate; explicit pins keep propagation on the auditable PUSH lane.
+- *npm package as the primary path.* Held as the named fallback, not primary: the reusable workflow keeps the harness in one place with native Actions caching and avoids a publish step on every check change; npm remains the escape hatch.
+
+**Consequences.** Phase 0 gains a GitHub Actions spike as a prerequisite to relocation. Each repo's CI surface shrinks to a thin caller; the check logic and harness live once in `standards/` and `product-on-purpose/.github`. Workflow re-pins become a recurring PUSH-lane campaign (D2). The two-pin model is the structural foundation the tiered enforcement ramp (D15) builds on. Enforcing check candidate: a caller-shape check (the thin workflow uses a pinned ref, never `@main`, and passes the repo's declared Standard version as input).
+
+**Aligns-with.** GitHub Actions reusable workflows [https://docs.github.com/en/actions/using-workflows/reusing-workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows).
+
+**Graduates-to.** Family-law ADR in [`agent-plugins/standards/decisions/`](../../../standards/decisions/), recorded beside ADR 0001 (it governs how the Standard's gate reaches consumers). The two-checkout mechanics and the spike result are detailed in the Phase 0 relocation packet under [`docs/internal/convergence/`](../../../docs/internal/convergence/).
+
+---
+
+## D15 (enforcement: full, tiered ramp)
+
+**Status:** accepted
+
+**Context.** OQ-1 (how strict is family conformance) was open between advisory-only and full CI-enforced conformance. The family runs four repos at uneven Standard adoption (agent-skills-toolkit at 0.12, writing-style-catalog at 0.11, thinking-framework-skills at 0.8, pm-skills at none). A hard cut to full enforcement on day one would red-build repos that have never asserted the clauses; advisory-only forever would let conformance rot invisibly. The Standard already provides the burndown mechanism (Section 7.7, warn-then-error, the same ramp used for U13 at v0.12) and the tier model (Bronze/Universal floor, Silver, Gold).
+
+**Decision.** The family MUST target FULL CI-enforced conformance across all four repos (the strict option), delivered as a TIERED, WARN-FIRST ramp. The Bronze/Universal floor MUST block FIRST (cheap, every repo passes fast), THEN Silver, THEN Gold. Each new check MUST ship WARN for at least one minor version and THEN flip to ERROR, per Standard Section 7.7. Each repo's migration MUST be governed by that repo's convergence packet in [`docs/internal/convergence/`](../../../docs/internal/convergence/) plus its warn burndown. The CI ARCHITECTURE MUST be three-layered: the check LOGIC lives centrally in `standards/checks/`, the CI HARNESS is the reusable workflow (D14, reusable workflow), and each repo carries only a thin TRIGGER. This scopes Phases 2, 4, and 5 to full enforcement.
+
+**Alternatives considered.**
+- *Advisory-only conformance (warn forever, never block).* Rejected: non-blocking checks let conformance rot invisibly; the family already has drift that advisory reporting did not stop. Enforcement is the point.
+- *Hard cut to full enforcement on day one.* Rejected: it would red-build repos that have never asserted the clauses, with no migration window; the warn-first ramp (Section 7.7) gives each repo a burndown lane before a check blocks.
+- *Per-repo opt-in to enforcement with no fleet target.* Rejected: without a full-conformance target the floor never converges and each repo negotiates its own ceiling indefinitely; the tier ceiling (D12) already gives the legitimate per-repo carve-out without abandoning the fleet goal.
+
+**Consequences.** Phases 2, 4, and 5 are scoped to full enforcement, sequenced Bronze then Silver then Gold. Every new check carries a warn-then-error burndown, so Section 7.7 is load-bearing. Per-repo convergence packets become the migration unit. This decision depends on D14 (the reusable-workflow harness) for the central-logic / thin-trigger split and pairs with D12 (exceptions) so a repo can carve out a single below-ceiling clause without dropping its tier.
+
+**Aligns-with.** The warn-then-error burndown in Standard Section 7.7 (`agent-skills-toolkit/STANDARD.md`); SemVer minor-version cadence [https://semver.org](https://semver.org) (each check warns for at least one minor before it errors).
+
+**Graduates-to.** Standard clause area (the tiered enforcement ramp and the warn-then-error obligation per check, Phases 2/4/5) plus a family-law ADR in [`agent-plugins/standards/decisions/`](../../../standards/decisions/) for the full-conformance target. Per-repo migration detail lives in [`docs/internal/convergence/`](../../../docs/internal/convergence/).
+
+---
+
+## D16 (HISTORY.md: amend and grandfather)
+
+**Status:** accepted
+
+**Context.** OQ-4 asked what to do with Standard Section 7.3, the per-component HISTORY.md requirement (a Silver+ MUST). Today the requirement is stated but unenforced, and existing components were authored without a HISTORY.md. Mass-backfilling HISTORY.md across every existing component would be archaeology of history that was never recorded, producing fabricated or empty entries with no audit value. The value of a HISTORY.md is forward: it records changes from the moment it exists.
+
+**Decision.** Section 7.3 (per-component HISTORY.md) MUST remain a Silver+ MUST. An ENFORCING check MUST be ADDED, shipping warn-then-error per Standard Section 7.7 (consistent with D15). The check MUST require HISTORY.md only on NEW or CHANGED components going forward; existing unchanged components MUST be grandfathered. There MUST be NO mass backfill of HISTORY.md for existing components. Because the value of HISTORY.md is forward, it MUST be enforced forward: a component acquires the obligation when it is created or next changed, not retroactively.
+
+**Alternatives considered.**
+- *Mass-backfill HISTORY.md for every existing component.* Rejected: it manufactures history that was never recorded, producing empty or invented entries with no audit value; the obligation is meaningful only from the point of creation or change forward.
+- *Drop Section 7.3 because it is unenforced.* Rejected: the requirement is sound (per-component change history is a real Silver+ value); the gap is enforcement, not the rule. Adding the check closes the gap without weakening the Standard.
+- *Add the check as immediate error.* Rejected: an immediate hard error would fail every changed component before authors have a burndown window; warn-then-error (Section 7.7, D15) is the family-wide ramp and applies here too.
+
+**Consequences.** Lands in Phase 4 (missing checks). The new HISTORY.md-presence check ships warn for at least one minor then flips to error, scoped to new-or-changed components (a diff-aware check, not a whole-tree scan). No backfill campaign is created. Pairs with D15 (the warn-then-error ramp) and inherits the D14 harness.
+
+**Aligns-with.** Keep a Changelog 1.1.0 [https://keepachangelog.com/en/1.1.0/](https://keepachangelog.com/en/1.1.0/) (forward-recorded change history); the warn-then-error burndown in Standard Section 7.7.
+
+**Graduates-to.** Standard clause (the Section 7.3 HISTORY.md check, new-or-changed scope, warn-then-error, Phase 4) in `agent-skills-toolkit/STANDARD.md`. Detailed in [`drafts/standard-amendments.md`](drafts/standard-amendments.md).
+
+---
+
+## D17 (Codex: deliver; supersedes D10 Codex-defer)
+
+**Status:** accepted
+
+**Context.** OQ-6 reopened the Codex distribution question that D10 (truth-in-targeting) had answered with scope-to-truth (declare `"codex"` for portability only, DEFER native packaging). Since that defer, the case for native Codex distribution has firmed: OpenAI Codex CLI is now ~v0.135, it supports plugins, a marketplace, agentskills.io-compatible skills, and native AGENTS.md, and the family tooling (`askit-init-marketplace`, `askit-init-plugin`) already scaffolds the Codex formats. The remaining uncertainty is path churn (the `.agents/skills` vs `.codex/skills` discovery, the `.agents/plugins/marketplace.json` location and schema, how a loaded plugin surfaces skills), which is the build-time residual still noted in `agent-skills-toolkit/STANDARD.md` near line 495.
+
+**Decision.** The family MUST DELIVER codex-distributed: native OpenAI Codex CLI plugin packaging plus a Codex marketplace, reversing the earlier scope-to-truth DEFER. The D10 truth-in-targeting PRINCIPLE (declare == emit == verify) stands unchanged; what changes is that a `"codex"` claim now resolves to codex-distributed (native install), NOT merely codex-portable. The work MUST follow this SEQUENCE: (0) a path-reconfirmation SPIKE first, resolving the `.agents/skills` vs `.codex/skills` discovery, the `.agents/plugins/marketplace.json` location and schema, and how a loaded plugin surfaces skills (Codex CLI ~v0.135); (1) each plugin MUST emit `.codex-plugin/plugin.json` (generated from `library.json`) and place bundled skills for Codex discovery; (2) the marketplace (agent-plugins) MUST emit `.agents/plugins/marketplace.json` alongside the Claude `.claude-plugin/marketplace.json`; (3) a round-trip test MUST pass (`codex plugin marketplace add` then `codex plugin add`); (4) the truth-in-targeting gate MUST verify the codex-distributed artifacts. SCOPE: Codex receives skills plus MCP ONLY. It MUST NOT receive subagents (Codex `[agents.*]` is user/project `config.toml`, not plugin-shipped), and MUST NOT receive output styles or statusline (Claude-only). This is a dedicated cross-cutting WORKSTREAM after the spike, parallelizable with Phase 4. This concerns OpenAI Codex CLI, NEVER the `codex` Claude Code plugin.
+
+**Alternatives considered.**
+- *Keep the D10 scope-to-truth DEFER (codex = portability only).* Rejected and now reversed: the defer was justified when Codex paths churned and no real consumer existed, but Codex CLI has matured (~v0.135, plugins + marketplace + agentskills.io skills + native AGENTS.md) and the tooling already scaffolds the formats, so native distribution is no longer speculative; deferring now understates deliverable capability. Deliver was chosen because the upgrade path D10 itself flagged as trivial is now actionable, and a `"codex"` claim that resolves only to portability is weaker than the family can honestly assert.
+- *Deliver everything Claude ships (subagents, output styles, statusline) to Codex too.* Rejected: Codex subagents are user/project `config.toml`, not plugin-shipped, and output styles / statusline are Claude-only surfaces; claiming to deliver them would violate truth-in-targeting (D10). Scope is skills plus MCP, which Codex genuinely consumes.
+- *Skip the path-reconfirmation spike and emit against current assumptions.* Rejected: the `.agents/skills` vs `.codex/skills` discovery and the marketplace path/schema still carry churn (the STANDARD.md ~line 495 residual); emitting against unconfirmed paths is exactly the speculative work D10 avoided. The spike de-risks before any emitter is built.
+
+**Consequences.** The truth-in-targeting gate's `"codex"` verification (D10's per-target presence check) tightens from portability-present to codex-distributed-artifacts-present; the gate flip is gated on the Phase 0-style spike completing. A dedicated Codex workstream is added, parallelizable with Phase 4. Plugins gain a `.codex-plugin/plugin.json` emitter; agent-plugins gains a `.agents/plugins/marketplace.json` emitter alongside the Claude marketplace. A round-trip `codex plugin` test becomes a CI artifact.
+
+**Aligns-with.** OpenAI Codex plugins [https://developers.openai.com/codex/plugins](https://developers.openai.com/codex/plugins) and skills [https://developers.openai.com/codex/skills](https://developers.openai.com/codex/skills); agentskills.io [https://agentskills.io/specification.md](https://agentskills.io/specification.md); AGENTS.md [https://agents.md/](https://agents.md/).
+
+**Graduates-to.** Standard clause (the codex-distributed resolution of a `"codex"` target and its gate verification) plus a family-law ADR in [`agent-plugins/standards/decisions/`](../../../standards/decisions/). This record SUPERSEDES the Codex-defer portion of D10 (truth-in-targeting); the D10 truth-in-targeting principle itself stands. Detailed in [`drafts/cross-tool-targeting.md`](drafts/cross-tool-targeting.md).
+
+---
+
 ## Cross-reference summary
 
 | Decision | Type | Graduates to | Phase | Enforcing check status |
 |---|---|---|---|---|
-| D1 (deliverable) | process | stays in `_local/` | n/a | none (process artifact) |
+| D1 (deliverable) | process | committed in `docs/internal/` | n/a | none (process artifact) |
 | D2 (Hybrid rollout) | family law | `standards/decisions/` | all | none (operating model) |
 | D3 (docs/internal kept) | constraint | context in Phase 3 amendment | Phase 3 | none (prevents churn) |
 | D4 (decision homes) | binding | Standard clause + GOVERNANCE Section 2 | Phase 3 | candidate: decisions-presence |
@@ -292,5 +377,9 @@ CODEX = SCOPE TO TRUTH: declaring `"codex"` in `agent-targets` claims PORTABILIT
 | D11 (frontmatter) | binding | Standard clause | Phase 3 | frontmatter-valid per type |
 | D12 (exceptions) | binding | Standard clause | Phase 5 | candidate: suppression-integrity |
 | D13 (issue/effort conventions) | family law | `standards/decisions/` (+ possible clause) | Phase 5 | likely aspirational label |
+| D14 (runner-consumption: reusable workflow) | family law | `standards/decisions/` (ADR beside 0001) | Phase 0 | shared-gate-green per repo (after spike) |
+| D15 (enforcement: full, tiered ramp) | program scope | family-law ADR + roadmap | Phases 2/4/5 | the gate itself (warn-then-error per tier) |
+| D16 (HISTORY.md: amend + grandfather) | binding | Standard clause (7.3) | Phase 4 | history-presence (warn-then-error, new/changed) |
+| D17 (Codex: deliver) | binding | Standard clause; supersedes D10 defer | workstream + Phase 4 | codex-distributed presence (after path spike) |
 
 Sequencing invariants (carried from [`02-roadmap.md`](02-roadmap.md) and [`standards/GOVERNANCE.md`](../../../standards/GOVERNANCE.md) Section 6): no clause is ratified without a named enforcing check OR an explicit aspirational label; no clause is ratified from a non-conforming exemplar; the Standard version, ADR number, and section number are allocated only at LAND on the protected branch.

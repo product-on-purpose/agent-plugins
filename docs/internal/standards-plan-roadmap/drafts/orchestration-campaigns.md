@@ -159,7 +159,7 @@ Add a thin root `CLAUDE.md` to every repo that declares `claude` as an agent-tar
 
 - Before adding the shim, confirm the repo's `library.json` actually lists `claude` in `agent-targets`. D10's truth-in-targeting rule says a declared target MUST get its shim AND its native distribution; if a repo does NOT declare `claude`, do not add a CLAUDE.md (and separately flag that as a targeting question, not a C3 action).
 - Copy the SHAPE of the existing shims (pm-skills / writing-style-catalog), not their content - the shim must point at THIS repo's AGENTS.md. STOP if the existing shims themselves contain divergent (non-pointer) content, because then the "reference shape" is itself drift to resolve first.
-- Do NOT add a GEMINI.md (no repo declares gemini) and do NOT create a `.agents/` directory (reserved by Codex; native Codex distribution is deferred per D10 until a real Codex consumer exists).
+- Do NOT add a GEMINI.md (no repo declares gemini) and do NOT create a `.agents/` directory as part of this shim campaign (the `.agents/` namespace is reserved by Codex; native Codex distribution is delivered separately under D17 (Codex deliver) as its own cross-cutting workstream, not via this mechanical shim push).
 
 ### Verification (per repo)
 

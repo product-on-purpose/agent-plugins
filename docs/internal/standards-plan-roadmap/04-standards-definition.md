@@ -1,6 +1,6 @@
 # 04 - The standards definition (readable form)
 
-> The intended rule-set, in readable pre-clause form, so a human can review the whole thing in one place before any of it becomes ratified clause text. This file says WHAT the Standard and the listing contract WILL require after the roadmap lands; it summarizes and cross-references rather than restating exact clause wording. The land-ready clause text lives in the `drafts/` files referenced throughout. Authoring law is the [Advanced Skill Library Standard](https://github.com/product-on-purpose/agent-skills-toolkit/blob/main/STANDARD.md) (header version 0.12, amended 2026-06-13); the listing contract is [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) (clauses L1-L6). Both use RFC 2119 keywords as defined in [BCP 14 / RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
+> The intended rule-set, in readable pre-clause form, so a human can review the whole thing in one place before any of it becomes ratified clause text. This file says WHAT the Standard and the listing contract WILL require after the roadmap lands; it summarizes and cross-references rather than restating exact clause wording. The land-ready clause text lives in the `drafts/` files referenced throughout. Authoring law is the Advanced Skill Library Standard (`agent-skills-toolkit/STANDARD.md`, header version 0.12, amended 2026-06-13; relocates to `standards/STANDARD.md` in Phase 0); the listing contract is [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) (clauses L1-L6). Both use RFC 2119 keywords as defined in [BCP 14 / RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are used as defined in RFC 2119 / BCP 14.
 
@@ -180,7 +180,7 @@ Adding a new tool's hooks is an adapter operation, consistent with truth-in-targ
 
 ---
 
-## H. Cross-tool / truth-in-targeting, and Codex scope-to-truth (D10)
+## H. Cross-tool / truth-in-targeting, and Codex delivery (D10, D17)
 
 Overview here; the full truth-in-targeting clause, the per-target delivery matrix, and the Codex scope rule are in [`drafts/cross-tool-targeting.md`](drafts/cross-tool-targeting.md).
 
@@ -194,14 +194,14 @@ Overview here; the full truth-in-targeting clause, the per-target delivery matri
 
 This lands advisory in Phase 2 (CI keystone) and flips to blocking in Phase 4 (consolidate CI and graduate domains).
 
-### Codex scope-to-truth
+### Codex: deliver codex-distributed (D17)
 
-`"codex"` in `agent-targets` claims PORTABILITY, not native marketplace distribution:
+Per D17 (Codex deliver), which supersedes the earlier scope-to-truth defer, the family WILL deliver native Codex distribution. `"codex"` in `agent-targets` resolves to codex-distributed (native install), not merely portability:
 
-- What `codex` legitimately claims today: agentskills.io-compatible skills plus root `AGENTS.md`. Both are already true and essentially free, because [Codex](https://developers.openai.com/codex/skills) reads agentskills.io skills and AGENTS.md natively.
-- What it does NOT claim yet: native [Codex marketplace](https://developers.openai.com/codex/plugins) packaging (`.agents/plugins/` and `.codex-plugin/plugin.json` distribution). Defer building the native Codex emitter until a real Codex consumer exists.
-- The upgrade path is trivial: `askit-init-marketplace` already scaffolds the Codex format, so promoting `codex` from portable to native is an adapter addition, not a rewrite.
-- Build-time confirm before any Codex emitter ships: the exact on-disk Codex paths (`.agents/skills` vs `.codex/skills`; the precise marketplace manifest location) have version churn and MUST be reconfirmed against current Codex docs (this matches the residual at Standard Section 12 / Appendix A).
+- The portable floor is already free and remains the baseline: agentskills.io-compatible skills plus root `AGENTS.md` run on [Codex](https://developers.openai.com/codex/skills) natively.
+- What D17 delivers: native [Codex marketplace](https://developers.openai.com/codex/plugins) packaging - per-plugin `.codex-plugin/plugin.json` and the marketplace `.agents/plugins/marketplace.json` - so plugins install via `codex plugin marketplace add` plus `codex plugin add`. Codex receives skills + MCP only, NOT subagents, output styles, or statusline.
+- Prerequisite spike: the exact on-disk Codex paths (`.agents/skills` vs `.codex/skills`; the marketplace manifest location) have version churn and MUST be reconfirmed against current Codex docs before the emitter is built (the residual at Standard Section 12 / Appendix A).
+- Tooling already scaffolds the formats (`askit-init-marketplace`, `askit-init-plugin`), so this is generation plus wiring after the spike. Sequenced as a dedicated cross-cutting workstream, parallelizable with Phase 4.
 
 ### The embedded-marketplace truth (Standard Section 12)
 

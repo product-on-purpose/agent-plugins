@@ -30,29 +30,35 @@ Codex is the case that makes truth-in-targeting matter, because "I support Codex
 | State | What it claims | Artifacts the plugin MUST ship | Shipped today? |
 | --- | --- | --- | --- |
 | **codex-portable** | The plugin's skills run on Codex unchanged, and Codex reads the same `AGENTS.md`. Portability only, no native marketplace install. | agentskills.io-compliant skills (Universal tier, `SKILL.md`) + root `AGENTS.md`. Nothing Codex-specific to author. | **Yes.** True for any conformant plugin today, essentially free. |
-| **codex-distributed** | The plugin is installable as a native Codex plugin from a Codex marketplace. | A native Codex plugin (`.codex-plugin/plugin.json`) whose bundled skills surface to Codex skill discovery, listed in a Codex marketplace (`.agents/plugins/marketplace.json`), installable via `codex plugin marketplace add` + `codex plugin add`. | **No.** Not built; deferred until a real Codex consumer exists. |
+| **codex-distributed** | The plugin is installable as a native Codex plugin from a Codex marketplace. | A native Codex plugin (`.codex-plugin/plugin.json`) whose bundled skills surface to Codex skill discovery, listed in a Codex marketplace (`.agents/plugins/marketplace.json`), installable via `codex plugin marketplace add` + `codex plugin add`. | **Not yet, but being built.** Per D17 the family delivers this (Section 3); the emitter and marketplace land in the Codex distribution workstream after the path-reconfirm spike. |
 
 Why codex-portable is real and free today: STANDARD.md Section 3.1 records that Codex consumes agentskills.io-compatible skills from `.agents/skills/` in-repo and `$HOME/.agents/skills` globally, so the same `SKILL.md` runs on Claude Code and Codex unchanged; and Section 3.10 records that both agents read the root `AGENTS.md`. A plugin that ships conformant Universal skills and an `AGENTS.md` has already met codex-portable without authoring a single Codex-specific file.
 
-## 3. Codex SCOPE-TO-TRUTH: what `"codex"` means now
+## 3. Codex DELIVERY: the family ships codex-distributed (D17)
 
-**The family adopts this definition now.** `"codex"` in `agent-targets` claims **codex-portable** (agentskills.io skills + `AGENTS.md`), NOT **codex-distributed** (native Codex marketplace install). Scoping the claim to what is actually delivered keeps `agent-targets` honest under Section 1 from day one, without forcing anyone to build a Codex emitter before there is a consumer for it.
+**The family WILL deliver codex-distributed.** Per D17 (Codex = deliver; supersedes D10 Codex-defer), a `"codex"` claim in `agent-targets` resolves to **codex-distributed** (native Codex plugin packaging plus a Codex marketplace install), not merely **codex-portable**. The truth-in-targeting PRINCIPLE of Section 1 is unchanged - declare == emit == verify still binds - but the target of a `"codex"` claim is now the native install, and the gate verifies the native artifacts.
 
-What this scoping deliberately excludes today:
-- No native Codex plugin packaging (`.codex-plugin/plugin.json`) is required to claim `"codex"`.
-- No Codex marketplace manifest (`.agents/plugins/marketplace.json`) is required.
+> **Prior interim position, now superseded.** Earlier the family adopted Codex scope-to-truth: `"codex"` claimed only codex-portable (agentskills.io skills + `AGENTS.md`), and native packaging was deferred until a real Codex consumer existed. That interim scoping kept `agent-targets` honest under Section 1 without forcing an emitter before there was a consumer. D17 reverses the DEFER: the family now builds the emitter and the marketplace. The D10 truth-in-targeting principle that the interim position rested on carries forward intact; only the resolution of a `"codex"` claim changes (codex-portable, then codex-distributed).
+
+What codex-distributed delivery includes:
+- Native Codex plugin packaging: each plugin emits `.codex-plugin/plugin.json` (generated from `library.json`).
+- A Codex marketplace manifest: the marketplace emits `.agents/plugins/marketplace.json` alongside the Claude `.claude-plugin/marketplace.json`.
+- Bundled skills placed where Codex plugin discovery surfaces them, plus MCP.
+
+What codex-distributed delivery deliberately still EXCLUDES (scope per D17):
 - Plugin-shipped **Codex subagents are out of scope entirely**: STANDARD.md Section 3.3 records that, as of Codex CLI v0.135, `[agents.*]` lives in user/project `config.toml`, the Codex `plugin.json` has no `agents` field, and there is no plugin-to-config merge path. A distributed plugin therefore cannot ship Codex-ingested subagents; subagents distributed in a plugin target Claude only (`agent-targets: [claude]` at the component level per STANDARD.md Section 3.7).
+- **Output styles and statusline are out of scope**: these are Claude-only and have no Codex distribution surface. Codex receives skills plus MCP only.
 
-### Upgrade path to codex-distributed (trivial by design)
+### Delivery plan: building codex-distributed
 
-Moving a plugin from codex-portable to codex-distributed is an additive, mechanical step, not a redesign:
+The move to codex-distributed is an additive, mechanical step, not a redesign of the skill corpus. It runs as a dedicated cross-cutting workstream (see `02-roadmap.md`, the Codex distribution workstream), sequenced AFTER the path-reconfirmation spike (Section 4) and parallelizable with Phase 4 (consolidate CI and graduate domains):
 
-1. Emit the native Codex plugin manifest (`.codex-plugin/plugin.json`) and place bundled skills where Codex plugin discovery surfaces them.
-2. Add or update a Codex marketplace entry (`.agents/plugins/marketplace.json`).
+1. Emit the native Codex plugin manifest (`.codex-plugin/plugin.json`, generated from `library.json`) and place bundled skills where Codex plugin discovery surfaces them.
+2. Emit the Codex marketplace manifest (`.agents/plugins/marketplace.json`) in agent-plugins.
 3. Round-trip locally: `codex plugin marketplace add <name> <local-path|git-url>` then `codex plugin add <plugin>@<marketplace>` (STANDARD.md Section 12).
-4. The `"codex"` claim now resolves to codex-distributed; the gate verifies the native artifacts.
+4. The `"codex"` claim now resolves to codex-distributed; the gate verifies the native artifacts (advisory-then-blocking rollout still applies, the reconfirm spike a prerequisite before the native verification flips on).
 
-This is cheap because `askit-init-marketplace` already scaffolds the Codex marketplace format and `askit-init-plugin` scaffolds plugin internals (per D7, no new init/listing skill is needed in agent-plugins). The Standard's Codex emission contract is already fixed: skills, `config.toml [agents.*]` (user/project, not plugin), and a native `plugin.json` (STANDARD.md Appendix A, the RESOLVED 2026-05-27 spike against Codex CLI v0.133).
+This is cheap because `askit-init-marketplace` already scaffolds the Codex marketplace format and `askit-init-plugin` scaffolds plugin internals (per D7, no new init/listing skill is needed in agent-plugins). The Standard's Codex emission contract is already fixed: skills, `config.toml [agents.*]` (user/project, not plugin), and a native `plugin.json` (STANDARD.md Appendix A, the RESOLVED 2026-05-27 spike against Codex CLI v0.133). The one remaining build-time residual is the on-disk path churn that the spike in Section 4 resolves before the emitter lands.
 
 ## 4. Codex path churn: MUST-reconfirm before any emitter
 
@@ -63,7 +69,7 @@ The exact on-disk layout a distributed Codex plugin uses to surface its bundled 
 - the Codex marketplace manifest location (`.agents/plugins/marketplace.json`) and entry schema;
 - how a loaded plugin's bundled skills surface to discovery, and subagent/MCP `config.toml` augmentation semantics when a plugin is loaded.
 
-This matches the residual recorded at STANDARD.md line 495 ("the exact on-disk layout a *distributed Codex plugin* uses to surface its bundled skills to `.agents/skills` discovery should be verified against current Codex plugin-packaging docs when the emitter is built") and the related note at line 505. It does not block any current work: codex-portable (Section 2) needs none of these paths, and Section 3 defers codex-distributed until a real consumer exists. Confirm against the OpenAI Codex docs: plugins (https://developers.openai.com/codex/plugins) and skills (https://developers.openai.com/codex/skills), per the agentskills.io specification (https://agentskills.io/specification.md).
+This matches the residual recorded at STANDARD.md line 495 ("the exact on-disk layout a *distributed Codex plugin* uses to surface its bundled skills to `.agents/skills` discovery should be verified against current Codex plugin-packaging docs when the emitter is built") and the related note at line 505. Under D17 the family delivers codex-distributed (Section 3), so this spike is now a PREREQUISITE of that delivery, not a deferred nicety: it runs first in the Codex distribution workstream and MUST resolve these paths before the emitter lands and before the gate's native verification flips on. codex-portable (Section 2) needs none of these paths, so nothing else is blocked while the spike runs. Confirm against the OpenAI Codex docs: plugins (https://developers.openai.com/codex/plugins) and skills (https://developers.openai.com/codex/skills), per the agentskills.io specification (https://agentskills.io/specification.md).
 
 ## 5. Naming hazard: OpenAI Codex CLI is NOT a "codex" Claude Code plugin
 
@@ -119,4 +125,4 @@ The `CLAUDE.md` shim is mechanical and judgment-free, so it ships as a PUSH camp
 - `drafts/standard-amendments.md` - the Standard clause text that makes `agent-targets` load-bearing.
 - `drafts/ci-repin-check.md` - the CI gate that verifies declare == emit == verify.
 - `drafts/orchestration-campaigns.md` - the one-PR-per-repo push that fixes the `CLAUDE.md` shim drift (Section 8).
-- `03-decisions.md` - D10 (cross-tool / truth-in-targeting), D11 (frontmatter), D12 (exceptions), D5/D6 (layout and casing), D7 (no new init skill).
+- `03-decisions.md` - D10 (cross-tool / truth-in-targeting), D17 (Codex = deliver; supersedes D10 Codex-defer), D11 (frontmatter), D12 (exceptions), D5/D6 (layout and casing), D7 (no new init skill).
