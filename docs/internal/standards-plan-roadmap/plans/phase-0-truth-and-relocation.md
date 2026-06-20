@@ -26,6 +26,47 @@ The runner is location-portable: it grades whatever root is passed as its first 
 
 ---
 
+## How to review this plan
+
+This is the **execution** plan ("is it safe and correct to run?"). Its companion, [`phase-0-change-manifest.md`](phase-0-change-manifest.md), answers "is this the right set of changes?" - review the manifest first, then this.
+
+Read in this order and check the gates:
+
+1. **The version ruling** (DECISION REQUIRED, above) - confirm structural / no bump, or rule for a bump. This is settled as no-bump unless you say otherwise.
+2. **The no-dark-window invariant** (its own section below) - confirm the ordering: COPY the runner into agent-plugins, repoint askit and verify green, DELETE askit's copy LAST. If you trust-check only one thing, check this - it is what keeps askit's gate from going dark.
+3. **The verify step inside each task** - every relocation task ends with a "run X, expect Y" gate before any irreversible step (B-1 Step 4-5 prove the relocated runner's tests + foreign-root grading are green before anything depends on it; C-1 Step 3 proves askit is green on the relocated runner BEFORE its copy is deleted). Confirm these gates actually prove safety before the step they guard.
+4. **The three sign-off points** (see Recommendations): the version ruling, the npm-`check` resolution mechanism (Task C-1 Step 2), and whether to run all three PRs or PR-A first.
+5. **The Risks section** (bottom) - confirm each mitigation is sufficient.
+
+You do NOT need to read the exact git/grep commands line-by-line; they are mechanical and the verify gates catch errors.
+
+## Recommendations
+
+| # | Recommendation | Why |
+|---|---|---|
+| R1 | **Version: structural, no bump.** | Zero clause changes; `0.13` is reserved for the U13 burndown. |
+| R2 | **Execute strictly PR-A -> PR-B -> PR-C; delete askit's copy LAST.** | The only ordering that guarantees no dark window. |
+| R3 | **Start with PR-A** (ship + tag the reusable workflow), and run it once against a throwaway caller before PR-B/PR-C. | Closes the spike's one open gap (a live GitHub Actions run) cheaply, before the relocation touches askit. |
+| R4 | **npm-`check` resolution: a pinned `agent-plugins` checkout at a gitignored `.standards-runner/`**, over an npx-from-git wrapper. | Deterministic, offline-capable, and the same path CI uses; easiest to reason about. Confirm green in Task C-1 Step 3. |
+| R5 | **Keep the residual askit-isms (FIXED_ROOTS, `askit-build-docs` strings, the gen-index doc-link skeleton) as a fast-follow; do NOT block Phase 0.** | Output-only / `isDir`-guarded; not a correctness break. |
+
+## Confidence
+
+**Overall: high confidence the approach is correct and safe.** The residual uncertainty is concentrated in mechanical details that the verify gates will catch, not in the design. The one thing I would NOT claim high confidence on without a live run is the end-to-end GitHub Actions behavior of the reusable workflow (R3 closes it).
+
+| Aspect | Confidence | Basis |
+|---|---|---|
+| Runner relocates + grades from the new home | **High** | The D14 spike ran it against a foreign root (exit 0, honoring that repo's pin); Task B-1 re-verifies before anything depends on it. |
+| askit keeps Gold (G2) after the move | **High** | Grounded in the actual G2 / Section 4.1 / 4.4 wording (RUN not OWN) + `self-hosting.mjs` matching `npm run check`. |
+| No dark window | **High** | Copy-first / delete-last is mechanically guaranteed; askit keeps a working copy until its caller is green. |
+| Sweep sites (0.8 refs, name drift) | **High** | Grep-confirmed with exact file:line references. |
+| npm-`check` resolution mechanism | **Medium** | Two viable options; not yet tested in askit's exact setup - Task C-1 Step 3 gates on green before proceeding. |
+| Test relocation (68 import sites) | **Medium** | Mechanical but fiddly; Task B-1 Step 4 gates on `node --test` green. |
+| Changelog-history migration | **Medium** | A judgment call on what is "the Standard's" history vs askit's; reversible, low blast radius. |
+| Live GitHub Actions run of the reusable workflow | **Medium (needs one live run)** | Proven at the `node check.mjs` layer; the Actions wiring (sparse second checkout, caller context) needs one real run - R3 closes this. |
+
+---
+
 ## Repos and paths (constants used throughout)
 
 - `AP` = `E:/Projects/product-on-purpose/agent-plugins` (the destination + the LAND repo; main is PR-protected: branch, PR, squash-merge, `validate` CI gates).
@@ -464,13 +505,15 @@ Then watch CI, merge squash, delete branch.
 
 ## Risks and mitigations (carried from the grounding)
 
-- **Half-moved dark window** - delete askit's copies LAST (Task C-2), only after its caller is green (Task C-1 Step 3).
-- **G2 regression** - keep an npm script named `check` resolving to the relocated runner; do not touch the `self-hosting.mjs` GATE_PATH regex in Phase 0.
-- **Version-bump ambiguity** - get the maintainer ruling before PR-B merges; default to structural ADR-only no-bump.
-- **Test coupling** - move the runner's tests with the runner as the FIRST step (Task B-1 Step 3-4) and keep `node --test` green throughout.
-- **Allocation-at-LAND collisions** - take the ADR number (and any version) against the protected head at merge; never pre-bake `0002`/`0.13` in the branch.
-- **Org-repo tag drift** - tag `v1.0.0` immutably; callers pin `@v1.0.0`; a moved tag silently breaks every caller.
-- **Residual askit-isms in the relocated runner** (FIXED_ROOTS naming askit dirs, `askit-build-docs` strings, the `gen-index.mjs` doc-link skeleton) - not a hard break (`isDir`-guarded, output-only); note as a fast-follow parametrization, do NOT block Phase 0.
+Severity is the impact IF the mitigation were skipped; every risk below has a mitigation that reduces it to low residual.
+
+- **[HIGH] Half-moved dark window** - if askit's copies are deleted before the relocated runner + askit caller are green, askit's gate goes dark. *Mitigation:* delete askit's copies LAST (Task C-2), only after its caller is green (Task C-1 Step 3). This is the single most important sequencing rule in the plan.
+- **[MEDIUM] G2 regression** - if the npm `check` script is dropped or repointed to a path the GATE_PATH regex no longer matches, `self-hosting.mjs` fails askit's own Gold grade. *Mitigation:* keep an npm script named `check` (or `test`) resolving to the relocated runner; do not touch the regex in Phase 0; Task C-1 Step 3 verifies green.
+- **[RESOLVED] Version-bump ambiguity** - decided: structural ADR-only, NO bump (header stays 0.12). Re-pin step in Task C-2 is a no-op. (If the maintainer later overrides, bump 0.12 -> 0.13 marked structural-only and re-enable the C-2 re-pin.)
+- **[MEDIUM] Test coupling** - 68 files import `scripts/`; moving the runner without moving/repointing the tests fails `node --test`. *Mitigation:* move the runner's tests with the runner as the FIRST code step (Task B-1 Step 3-4) and keep `node --test` green throughout.
+- **[LOW] Allocation-at-LAND collisions** - pre-baking `ADR 0002` or a version in the draft branch breaks under branch protection if another PR lands first. *Mitigation:* take the ADR number (and any version) against the protected head at merge; never pre-bake (GOVERNANCE Section 6).
+- **[LOW-MEDIUM] Org-repo tag drift** - callers pin `@v1.0.0`; a moved or deleted tag silently breaks every caller's gate. *Mitigation:* tag `v1.0.0` immutably and document the pin-bump cadence; the validate-registry cron can later surface drift.
+- **[LOW] Residual askit-isms in the relocated runner** (FIXED_ROOTS naming askit dirs, `askit-build-docs` strings, the `gen-index.mjs` doc-link skeleton) - not a hard break (`isDir`-guarded, output-only); leaves the runner subtly askit-flavored. *Mitigation:* note as a fast-follow parametrization; do NOT block Phase 0.
 
 ## What Phase 0 does NOT include (deferred)
 
