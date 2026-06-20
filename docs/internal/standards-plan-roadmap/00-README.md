@@ -66,6 +66,7 @@ Full detail is in `02-roadmap.md`; reference phases by number plus handle.
 
 ## How to use this package
 
+- **Start here for what to do next.** [`REVIEW-AND-NEXT-STEPS.md`](REVIEW-AND-NEXT-STEPS.md) is the maintainer control panel: what is awaiting your review and decision, in priority order, with what each needs from you and the process to drive it to done. If you read one file, read that one.
 - **The path to done.** [`05-open-questions.md`](05-open-questions.md) is the live decision register: every outstanding question, where it lives, the recommendation, what closes it, and what it gates, plus the ordered next actions. Start there to see what is still open and to instruct the plan forward.
 - **The tier spine and per-repo standing.** [`06-tier-requirements.md`](06-tier-requirements.md) carries the complete Bronze/Silver/Gold tier requirements, the 30-check spine, and the current per-repo standing. Read it to see what each tier demands and where each of the four repos stands against the checks today.
 - **Where it lives.** This package is a committed, tracked planning and lock-in record under `docs/internal/standards-plan-roadmap/`. It is a durable planning artifact, not the source of truth: decisions become normative only when they LAND through the GOVERNANCE.md lifecycle, and the staged drafts here carry no allocated numbers until then.
