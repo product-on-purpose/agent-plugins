@@ -23,6 +23,9 @@ Suggested reading order is top to bottom: orient, ground yourself in current sta
 | 13 | `drafts/orchestration-campaigns.md` | One-PR-per-repo fleet campaign mechanics for the mechanical pushes, per D2 (rollout: Hybrid). |
 | 14 | `drafts/runner-consumption.md` | How the four repos run the relocated conformance runner (the Phase 0 consumption sub-decision). |
 | 15 | `06-tier-requirements.md` | Complete Bronze/Silver/Gold tier requirements, the 30-check spine, and current per-repo standing. |
+| 16 | `OVERVIEW.md` | Human-consumption narrative: what the standards are and the reasoning behind every part. Start here for the why. |
+| 17 | `spikes/runner-consumption-spike.md` | Spike (D14): the gate grades an arbitrary checkout (confirmed) + ready-to-use reusable-workflow and caller YAML. |
+| 18 | `spikes/codex-paths-spike.md` | Spike (D17): reconfirmed Codex on-disk paths and schemas, with the install-verb caveat. |
 
 ## The 17 decisions (one line each)
 

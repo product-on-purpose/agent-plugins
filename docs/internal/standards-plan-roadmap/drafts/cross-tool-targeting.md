@@ -55,14 +55,14 @@ The move to codex-distributed is an additive, mechanical step, not a redesign of
 
 1. Emit the native Codex plugin manifest (`.codex-plugin/plugin.json`, generated from `library.json`) and place bundled skills where Codex plugin discovery surfaces them.
 2. Emit the Codex marketplace manifest (`.agents/plugins/marketplace.json`) in agent-plugins.
-3. Round-trip locally: `codex plugin marketplace add <name> <local-path|git-url>` then `codex plugin add <plugin>@<marketplace>` (STANDARD.md Section 12).
+3. Round-trip locally: `codex plugin marketplace add <name> <local-path|git-url>`, then enable the plugin via the Codex app/TUI (`/plugins`). Per the reconfirm spike there is no documented `codex plugin add` CLI verb (only the `codex plugin marketplace ...` subcommands); install is app-driven (STANDARD.md Section 12).
 4. The `"codex"` claim now resolves to codex-distributed; the gate verifies the native artifacts (advisory-then-blocking rollout still applies, the reconfirm spike a prerequisite before the native verification flips on).
 
 This is cheap because `askit-init-marketplace` already scaffolds the Codex marketplace format and `askit-init-plugin` scaffolds plugin internals (per D7, no new init/listing skill is needed in agent-plugins). The Standard's Codex emission contract is already fixed: skills, `config.toml [agents.*]` (user/project, not plugin), and a native `plugin.json` (STANDARD.md Appendix A, the RESOLVED 2026-05-27 spike against Codex CLI v0.133). The one remaining build-time residual is the on-disk path churn that the spike in Section 4 resolves before the emitter lands.
 
 ## 4. Codex path churn: MUST-reconfirm before any emitter
 
-The exact on-disk layout a distributed Codex plugin uses to surface its bundled skills to discovery has version churn and is the one open build-time residual.
+The exact on-disk layout a distributed Codex plugin uses to surface its bundled skills to discovery had version churn. It is now RECONFIRMED in [`../spikes/codex-paths-spike.md`](../spikes/codex-paths-spike.md): discovery is `.agents/skills/` (there is no `.codex/skills/` variant), the native manifest is `.codex-plugin/plugin.json`, and the marketplace is `.agents/plugins/marketplace.json`. The one delta is that plugin install is app/TUI-driven (no documented `codex plugin add` CLI verb), which affects only the local test harness, not any emitted file. The original reconfirm rule is kept below for the record.
 
 **Rule.** Before any codex-distributed emitter is built, its target paths MUST be reconfirmed against current Codex docs. Specifically:
 - skill discovery roots: `.agents/skills/` vs any `.codex/skills/` variant;

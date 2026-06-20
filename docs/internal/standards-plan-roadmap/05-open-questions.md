@@ -13,9 +13,9 @@ Answer any question by its id and a one-phrase decision, for example "OQ-1: full
 | OQ-1 | enforcement appetite | RESOLVED -> D15 | Phases 2, 4, 5 scope | full enforcement, tiered warn-first ramp |
 | OQ-3 | Phase 0 sequencing | RESOLVED -> Phase 0 pulls consumption in (atomic) | Phase 0 definition of done | pull consumption into Phase 0 (atomic) |
 | OQ-4 | HISTORY.md amend-vs-conform | RESOLVED -> D16 | Phase 4 missing-checks (history check) | warn-then-error check + grandfather existing |
-| OQ-2 | runner-consumption model | RESOLVED -> D14 (spike pending) | Phase 0 exit, GP-15, re-pin check 8 | reusable GitHub Actions workflow |
+| OQ-2 | runner-consumption model | RESOLVED -> D14 (spike CONFIRMED) | Phase 0 exit, GP-15, re-pin check 8 | reusable GitHub Actions workflow |
 | OQ-5 | release executor | C - direction set, per-repo in Phase 5 | Phase 5 EXECUTE layer | hybrid: release-please tags, askit-release prepares |
-| OQ-6 | Codex on-disk paths reconfirm | RESOLVED -> D17 deliver (spike pending) | Codex workstream (parallel to Phase 4) | deliver codex-distributed; reconfirm paths in spike |
+| OQ-6 | Codex on-disk paths reconfirm | RESOLVED -> D17 deliver (paths reconfirmed) | Codex workstream (parallel to Phase 4) | deliver codex-distributed; paths reconfirmed in spike |
 | OQ-8 | hook exit-code contract re-confirm | DEMOTED - Phase 5 checklist item | Phase 5 hooks clause (Amendment C) | re-read at LAND |
 | OQ-7 | program-roadmap reconciliation | D - housekeeping | nothing (single-source-of-truth hygiene) | thin pointer to this package |
 
@@ -301,6 +301,6 @@ The seventeen locked decisions D1-D17 live in [03-decisions.md](03-decisions.md)
 - **D7 (no new init skill)** - do not add a new init skill.
 - **D10 (Codex truth-in-targeting principle)** - declare == emit == verify; the principle stands, but the `codex` claim now resolves to codex-distributed per D17 (this session), superseding the earlier scope-to-`codex-portable` defer.
 
-The four decisions locked this session are likewise settled: **D14 (runner-consumption = reusable workflow)** resolving OQ-2, **D15 (enforcement = full, tiered ramp)** resolving OQ-1, **D16 (HISTORY.md = amend + grandfather)** resolving OQ-4, and **D17 (Codex = deliver)** resolving OQ-6 and superseding the D10 defer. D14 and D17 each still carry a confirming spike (the two-checkout mechanics and the Codex path reconfirm) before they fully land, but the decisions themselves are closed.
+The four decisions locked this session are likewise settled: **D14 (runner-consumption = reusable workflow)** resolving OQ-2, **D15 (enforcement = full, tiered ramp)** resolving OQ-1, **D16 (HISTORY.md = amend + grandfather)** resolving OQ-4, and **D17 (Codex = deliver)** resolving OQ-6 and superseding the D10 defer. Both confirming spikes are now done (see `spikes/`): D14's two-checkout mechanics are CONFIRMED (the gate graded an external repo against its own pin), and D17's Codex paths are reconfirmed (`.agents/skills`, `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`; the only delta is an app/TUI-driven install, not a CLI verb). The decisions are closed.
 
 The remaining locked decisions (D1, D8, D9, D11, D12, D13) are likewise settled in [03-decisions.md](03-decisions.md); several of them (D8 release subsystem, D9 hooks) carry the deferred residuals tracked above as OQ-5 and OQ-8, but the decisions themselves are closed.
