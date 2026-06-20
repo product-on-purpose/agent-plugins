@@ -28,6 +28,33 @@
 
 ---
 
+## How to review this manifest
+
+This is the **change-set** ("is this the right set of changes, and is each justified?"). Its companion, [`phase-0-truth-and-relocation.md`](phase-0-truth-and-relocation.md), answers "is it safe to execute?"
+
+Suggested review path:
+
+1. **Start with "What Phase 0 deliberately does NOT touch"** (below the tables) - confirm the blast radius is acceptable (marketplace registry, the other three plugins' callers, and all of askit's own components are untouched). If the scope is wrong, stop here.
+2. **Confirm the locked premises** (above) - especially the no-bump ruling and the "askit keeps Gold" claim.
+3. **Go repo by repo, row by row.** For each row ask four questions: is the CURRENT state accurate? is the NEW state what you want? does the REASONING hold? is the Standard REFERENCE right? Spot-check one or two references against the actual Standard (e.g. open `agent-skills-toolkit/STANDARD.md` Section 4.1 and confirm it says scripts run from any CI).
+4. **Focus on the high-stakes rows:** A1 / A2 (deleting askit's Standard + runner), A8 (the npm-`check` / G2 preservation), A9 + B3 (the changelog-history migration), B6 / B7 (the sweeps).
+5. **Note the sign-off items:** the version ruling, the assess-at-execution rows (A3 `evaluate.mjs`, A4 `agentskills.mjs`), and the npm-`check` mechanism.
+
+## Recommendations, risks, and confidence
+
+The full recommendations and the severity-tagged risk list live in the implementation plan ([`phase-0-truth-and-relocation.md`](phase-0-truth-and-relocation.md), its "Recommendations" and "Risks and mitigations" sections). The load-bearing ones for THIS manifest:
+
+- Version: structural, no bump (rows A10, B4).
+- askit keeps Gold via the npm `check` script (row A8) - the highest-leverage correctness claim; verify it against G2 wording.
+- Tests move with the runner (row A5).
+- Canonical name `writing-style-catalog` (rows B7, B8).
+
+**Manifest-specific risk - completeness.** This manifest is only as safe as it is COMPLETE; the real risk is a change that is needed but not listed (another file importing the moved scripts, or another stale `0.8` ref). *Mitigation:* the plan's verify gates (`node --test`, the grep sweeps, the green-gate before deletion) surface an omission as a FAILING gate, not a silent break - so an incomplete manifest fails loudly rather than shipping a regression.
+
+**Confidence in this manifest.** **High** that the listed changes are accurate (current states are grep- and line-verified; references are grounded in the Standard text). **Medium-high** that they are COMPLETE - the runner's 68 test-import sites and the sweep greps were enumerated, but a cross-repo move can always surface one more import or reference; the plan's verify gates are the backstop. The per-aspect confidence breakdown is in the plan's Confidence table.
+
+---
+
 ## Repo 1: agent-skills-toolkit (the SOURCE - the most change)
 
 Current pin: `library.json` `standard = 0.12`, tier `advanced` (Gold). Gate runs at three sites: `ci.yml:39`, `release.yml:39`, `package.json:10` - all `node scripts/check.mjs`.
