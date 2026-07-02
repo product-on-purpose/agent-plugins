@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.33.0] - 2026-07-02
+
+### Changed
+
+- Re-pinned `writing-style-catalog` to its `v0.5.1` release tag (commit `2869c37`), from `v0.2.0` (`3685d65`); entry `version` 0.2.0 -> 0.5.1. Registry `metadata.version` 1.32.0 -> 1.33.0. This catches up four releases at once (v0.3.0 through v0.5.1) - the listing had never been re-pinned since its initial v0.2.0 launch. v0.5.1 ships 97 curated entries (up from 60: a gated Stream-B breadth program promoted 37 new format entries across two waves), 1193 worked examples across twelve anchor topics (up from 195 across three), a `style-profile` skill, conflict-aware composition, and an agentic generation factory for scaling the catalog. Also corrected the listing `description`, which still named the pre-rename `compose-instruction` skill and v0.2.0-era counts.
+
 ## [1.25.0] - 2026-06-16
 
 ### Changed
