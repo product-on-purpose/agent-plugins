@@ -66,6 +66,7 @@ flowchart TD
     B3 --> B5
     B2 --> B7
     B4 -.Section 14 and frontmatter-tier depend on Phase 3.-> B5
+    B7 -.check-9 flip, codex-declaring repos only.-> B5
     B5 --> B6
     FLIP --> B6
 ```
@@ -81,7 +82,7 @@ flowchart TD
 | B2 (PR-C: askit re-adopt) | B | agent-skills-toolkit | PR-B merge | Phase 3 exemplar chain, B7 gate-verify | per-package go |
 | B3 (Phase 1: pm-skills) | B | pm-skills | PR-B merge (final home to pin) | check-8 flip, Phase 3 conforming exemplar | per-package go |
 | B4 (FC-0001 and Phase 3) | B | all four plus agent-plugins | B2, B3 | Phase 4 content | per-package go |
-| B5 (Phase 4: CI and Section 14) | B | product-on-purpose/.github, all four, agent-plugins | B1 (org gate); B2 to start; B3 (Phase 1 pm-skills, so leaf repos can re-adopt Section 14 and surface the site-conformance signal); B4 for Section 14 and frontmatter-tier | B6 | per-package go |
+| B5 (Phase 4: CI and Section 14) | B | product-on-purpose/.github, all four, agent-plugins | B1 (org gate); B2 to start; B3 (Phase 1 pm-skills, so leaf repos can re-adopt Section 14 and surface the site-conformance signal); B4 for Section 14 and frontmatter-tier; B7 for the check-9 blocking flip in codex-declaring repos (or those repos drop/defer their codex declaration per D10) | B6 | per-package go |
 | B7 (Codex, D17) | B | all four plus agent-plugins | B2 (three repos); pm-skills leg additionally waits on B3 | program done | per-package go |
 | B6 (Phase 5: process and hooks) | B | agent-plugins plus per-repo | B5 | program done | per-package go |
 
@@ -154,3 +155,4 @@ Autonomous execution halts and raises a flag to the lead the moment any of these
 | 2026-07-03 | Created. |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
 | 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |
+| 2026-07-03 | Codex external-review fixes applied (lead-ruled) |

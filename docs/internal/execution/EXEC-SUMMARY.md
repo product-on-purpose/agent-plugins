@@ -32,7 +32,7 @@ In order, per [`04-lane-a-plan.md`](04-lane-a-plan.md), every PR gated by the va
 |---|---|---|
 | [B1 (org gate)](05-lane-b/B1-pr-a-org-gate.md) | Ship + tag `standards-gate.yml` in `product-on-purpose/.github`; throwaway-caller live test against the PR-B branch head | **Approve first.** Net-new, touches no plugin, closes the only unproven assumption |
 | [B2 (askit re-adopt)](05-lane-b/B2-pr-c-askit-readopt.md) | Repoint askit CI to the gate; delete moved copies last | Approve after B1 + PR-B are green |
-| [B3 (pm-skills Phase 1)](05-lane-b/B3-phase-1-pm-skills.md) | `library.json`, generated manifest (~85 components), drop embedded marketplace | Approve after Phase 0; rule DR-10 (tier: recommend universal-now) with it |
+| [B3 (pm-skills Phase 1)](05-lane-b/B3-phase-1-pm-skills.md) | `library.json`, generated manifest (~85 components), drop embedded marketplace | Approve after Phase 0; rule DR-10 (pm-skills tier) with it - universal-now recommended, framed per the Codex review as a formal exit-criteria amendment with roadmap write-back plus a Silver-burndown commitment (BL-28) |
 | [B4 (FC-0001 + Phase 3)](05-lane-b/B4-fc-0001-and-phase-3.md) | Casing pilot campaign, then the scaffolding amendment + campaigns | Pilot first; Stage 2 gated on its retrospective |
 | [B5 (Phase 4)](05-lane-b/B5-phase-4-ci-and-section-14.md) | Shared astro CI, preset, land Section 14 (astro site standard) | The highest-leverage LAND; after B3/B4 |
 | [B6 (Phase 5)](05-lane-b/B6-phase-5-process-hooks.md) | Release executor (OQ-5), commitlint hook, exceptions, conventions | Last by design |
@@ -42,7 +42,7 @@ In order, per [`04-lane-a-plan.md`](04-lane-a-plan.md), every PR gated by the va
 
 ## How it was built and checked
 
-Fable (this session) did all top-level planning, briefs, rulings, and merges; **Opus 4.8** subagents authored the judgment-heavy documents and ran the adversarial passes; **Sonnet 5** subagents did the mechanical fan-out - 35+ subagent runs, ~4.8M subagent tokens. Quality trail: 9-agent audit -> 17-author workflow -> two Opus verification passes (18 findings, all lead-ruled and applied) -> deterministic mechanical sweep (writing rules, links, frontmatter) -> internal 3-skeptic adversarial panel (5 findings: 2 HIGH, all dispositioned) -> external Codex adversarial review deferred by an OpenAI usage limit (auto re-fires at reset; ledgered as BL-26 and gated before the first post-go merge).
+Fable (this session) did all top-level planning, briefs, rulings, and merges; **Opus 4.8** subagents authored the judgment-heavy documents and ran the adversarial passes; **Sonnet 5** subagents did the mechanical fan-out - 35+ subagent runs, ~4.8M subagent tokens. Quality trail: 9-agent audit -> 17-author workflow -> two Opus verification passes (18 findings, all lead-ruled and applied) -> deterministic mechanical sweep (writing rules, links, frontmatter) -> internal 3-skeptic adversarial panel (5 findings: 2 HIGH, all dispositioned) -> external Codex adversarial review (verdict needs-attention; 3 HIGH findings - the B5/B7 Codex-targeting dependency hole, B5's gitignored `_LOCAL` dependency, and the pm-skills tier-vs-roadmap contradiction - all accepted and fixed, ledgered as BL-29). The per-PR Codex gate stays in force for every post-go merge.
 
 ## The honest risk picture
 

@@ -27,9 +27,11 @@ Program Phase 4 = astro ROADMAP Phases 1 + 2 + 3, plus the two new spine checks 
 
 Section 14 landing normative is the "highest-leverage gap" flagged in the 2026-06-02 session log and repeated in every continuation prompt since. It is still open: the clauses live only in [`standards/domains/astro-sites/SITE-STANDARD.md`](../../../../standards/domains/astro-sites/SITE-STANDARD.md), not in normative `STANDARD.md`. But the sequencing invariant (no clause from a non-conforming exemplar, no clause without a named check) forbids landing Section 14 from four drifting local copies. So the leverage is unlocked in one ordered move: consolidate the four guard copies into one shared enforcement, PROVE convergence, THEN formalize the clause. B5 does exactly that and closes the two remaining spine gaps (HISTORY.md, frontmatter-tier) that Program Phase 4 owns.
 
-## Absorb the unrun plan; do not re-derive it
+## Sources: committed specs are primary; the _LOCAL plan is an optional accelerant
 
-A ready-to-execute, task-level plan for astro Phase 1 already exists, unrun, at `_LOCAL/planning/2026-06-03_astro-shared-infra-phase1-and-campaign_from-pm-skills-session.md` (gitignored, local-only). It carries the repo-boundary map, the 1.1-1.4 task decomposition, the carry-forward gotchas, and a campaign-record skeleton. B5 ADOPTS that task structure rather than re-deriving it; the executor reads that artifact plus the authoritative design in [`ci-standard.md`](../../../../standards/domains/astro-sites/ci-standard.md) (Section 2 = the complete workflow YAML, Section 4 = the four validators + hardening, Section 6 = rollout) and [`shared-preset-spec.md`](../../../../standards/domains/astro-sites/shared-preset-spec.md). The design is copy-ready; the value-add is the preset/validator extraction and the governance landing, not new authoring.
+B5's authoritative sources are committed and present in a fresh clone: [`ci-standard.md`](../../../../standards/domains/astro-sites/ci-standard.md) (Section 2 = the complete workflow YAML, Section 4 = the four validators + hardening, Section 6 = rollout), [`shared-preset-spec.md`](../../../../standards/domains/astro-sites/shared-preset-spec.md), and the astro [`ROADMAP.md`](../../../../standards/domains/astro-sites/ROADMAP.md). The design is copy-ready; the value-add is the preset/validator extraction and the governance landing, not new authoring. B5 is self-contained on these committed specs alone.
+
+A ready-to-execute, task-level plan for astro Phase 1 also exists, unrun, at `_LOCAL/planning/2026-06-03_astro-shared-infra-phase1-and-campaign_from-pm-skills-session.md` - but it is gitignored, local-only, and NOT present in a fresh clone, so it is an OPTIONAL ACCELERANT, never a dependency. If it is present at kickoff and its task breakdown (the repo-boundary map, the 1.1-1.4 decomposition, the carry-forward gotchas, the campaign-record skeleton) is still valid, that breakdown is promoted into the committed campaign record as the first execution step. If it is absent or stale, the task breakdown is re-derived from the committed specs above. Either way B5 proceeds without it.
 
 ## Preconditions (what must land before B5 starts)
 
@@ -60,7 +62,7 @@ One atomic amendment on the protected branch per the LAND invariant: the Section
 
 - **S3.1** Add the D16 (HISTORY.md forward-only presence) check to `standards/checks/`: required only on NEW or CHANGED components, existing unchanged components grandfathered, NO mass backfill. Ships warn-then-error per Standard Section 7.7.
 - **S3.2** Add the frontmatter-tier check to `standards/checks/`: validates a component's declared frontmatter `tier` agrees with the tier its plugin actually satisfies. Ships warn-then-error. Depends on Program Phase 3's D11 schema.
-- **S3.3** Flip truth-in-targeting (check 9, D10) in `scripts/validate-registry.mjs` from advisory (landed in Program Phase 2) to blocking, once every declared `agent-targets` entry provably ships its native distribution plus context shim.
+- **S3.3** Flip truth-in-targeting (check 9, D10) in `scripts/validate-registry.mjs` from advisory (landed in Program Phase 2) to blocking, once every declared `agent-targets` entry provably ships its native distribution plus context shim. **Precondition on the flip (Codex split, D17 (deliver Codex)):** for every repo declaring a `codex` agent-target, the blocking flip requires EITHER [B7 (Codex workstream)](B7-codex-workstream.md) complete for that repo (so the codex-distributed artifacts a `codex` declaration resolves to under D17 (deliver Codex) actually exist) OR that repo dropping or deferring its `codex` declaration per D10 (truth-in-targeting: declare means emit, else drop). Non-`codex` target enforcement may flip independently and need not wait on B7. Without this split the flip would either block on codex artifacts that only B7 emits, or silently disable Codex-native verification while claiming the Phase 4 exit.
 
 ## Change manifest per repo
 
@@ -135,7 +137,7 @@ Approve B5 to run as the final program package, AFTER B1 and Program Phases 0, 1
 - [ ] Confirm the pilot-then-fan-out order (tfs -> askit -> wsl -> pm-skills) and the no-flag-day discipline.
 - [ ] Confirm the warn-one-minor-then-error ramp (Standard 7.7) for history-presence and frontmatter-tier before either flips to `error`.
 - [ ] Confirm Section 14 lands as one atomic amendment with numbers allocated at LAND (version, ADR, section).
-- [ ] Confirm the truth-in-targeting flip (check 9) waits until every declared target is honest.
+- [ ] Confirm the truth-in-targeting flip (check 9) waits until every declared target is honest, with the Codex split explicit: non-Codex truth-in-targeting can block independently, while any repo declaring a `codex` target flips only after [B7 (Codex workstream)](B7-codex-workstream.md) completes for it (D17 (deliver Codex) codex-distributed artifacts exist) or that repo drops/defers its `codex` declaration per D10 (truth-in-targeting).
 - [ ] Confirm the shared-workflow campaign takes the next free `FC-NNNN` at open; FC-0001 (first fleet campaign) is the casing pilot owned by [B4 (FC-0001 and Phase 3)](B4-fc-0001-and-phase-3.md), not this rollout.
 
 ## See also
@@ -152,3 +154,4 @@ Approve B5 to run as the final program package, AFTER B1 and Program Phases 0, 1
 |---|---|
 | 2026-07-03 | created |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | Codex external-review fixes applied (lead-ruled) |

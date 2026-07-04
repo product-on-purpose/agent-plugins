@@ -62,7 +62,7 @@ Rollout (mirrors the existing `REGISTRY_CHECK7=advisory` precedent - a per-check
 |---|---|---|---|
 | Lane A land (`LA-4`) | advisory (`REGISTRY_CHECK8=advisory`) | advisory (hard-coded) | in-repo, autonomous |
 | Check 8 blocking flip | blocking (delete the env var) | still advisory | gated on [`B3 (pm-skills library.json)`](05-lane-b/B3-phase-1-pm-skills.md) landing **plus** an advisory run showing all four members green |
-| Check 9 blocking flip | blocking | blocking (Phase 4) | [`B5 (Phase 4 CI + Section 14)`](05-lane-b/B5-phase-4-ci-and-section-14.md) |
+| Check 9 blocking flip | blocking | blocking (Phase 4) | [`B5 (Phase 4 CI + Section 14)`](05-lane-b/B5-phase-4-ci-and-section-14.md), with the Codex split: for every repo declaring a `codex` target, [`B7 (Codex workstream)`](05-lane-b/B7-codex-workstream.md) complete for that repo (D17 codex-distributed artifacts exist) or that repo drops/defers its `codex` declaration per D10; non-`codex` target enforcement flips independently |
 
 Two invariants carried from the spec:
 
@@ -154,3 +154,4 @@ CI evolves from one registry validator plus four divergent member gates into a s
 | 2026-07-03 | Created. |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
 | 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |
+| 2026-07-03 | Codex external-review fixes applied (lead-ruled) |
