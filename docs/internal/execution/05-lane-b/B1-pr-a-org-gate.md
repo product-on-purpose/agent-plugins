@@ -21,13 +21,14 @@ Implement D14 (runner consumption = reusable workflow): the relocated conformanc
 
 | Precondition | Required state | Verified state (2026-07-03) |
 |---|---|---|
+| Workflow OAuth scope (hard blocker) | The authoring identity's `gh` token MUST hold the `workflow` scope; verify with `gh auth status` | **NOT satisfied** (verified live 2026-07-03; current token scopes are `gist`, `read:org`, `repo` - no `workflow`). Remediation: `gh auth refresh -h github.com -s workflow` (one-time maintainer action), or route workflow-file writes through an identity that already has Actions/workflows write access. |
 | Org repo exists | `product-on-purpose/.github` present | Present (`gh repo view`) |
 | Default branch | `main` | `main` |
 | Visibility | public (so callers can `uses:` it) | `PUBLIC` |
 | Not empty | has at least a base commit to branch from | `isEmpty: false` |
 | No prior workflow | no `.github/workflows/` yet, so the file is net-new | `.github/workflows` returns HTTP 404 |
 
-One precondition is NOT satisfied yet and is intentionally deferred: `agent-plugins/standards/checks/check.mjs` does not exist on `agent-plugins` `main` (the relocation is PR-B, atomic agent-plugins LAND). This is the coupling described under the live-Actions test below; it does not block shipping or tagging the workflow, only the green live run.
+Two preconditions are NOT satisfied yet. The workflow-scope row above is a hard blocker: GitHub refuses any push that creates or updates a file under `.github/workflows/` without the `workflow` OAuth scope, which gates this package's core action (creating `standards-gate.yml`), the throwaway-caller test workflow, and every later workflow-file write across the program - it MUST be remediated before step 2 below. The second, `agent-plugins/standards/checks/check.mjs` does not exist on `agent-plugins` `main` (the relocation is PR-B, atomic agent-plugins LAND), is intentionally deferred - it is the coupling described under the live-Actions test below and does not block shipping or tagging the workflow, only the green live run.
 
 ## Change manifest
 
@@ -107,7 +108,7 @@ Sequencing note (a real coupling, flagged rather than hidden): the shipped `stan
 
 ## Step-by-step execution (with verification at each step)
 
-1. **Re-verify preconditions.** `gh repo view product-on-purpose/.github --json defaultBranchRef,visibility,isEmpty` and `gh api repos/product-on-purpose/.github/contents/.github/workflows`. Verify: default `main`, `PUBLIC`, and the contents call still 404s (no workflow yet). Stop and re-plan if a workflows dir has appeared.
+1. **Re-verify preconditions.** `gh repo view product-on-purpose/.github --json defaultBranchRef,visibility,isEmpty` and `gh api repos/product-on-purpose/.github/contents/.github/workflows`. Verify: default `main`, `PUBLIC`, and the contents call still 404s (no workflow yet). Stop and re-plan if a workflows dir has appeared. Also run `gh auth status` and confirm `workflow` is among the token scopes before proceeding to step 2's push; if it is absent, run `gh auth refresh -h github.com -s workflow` first (see the workflow-scope precondition above).
 2. **Branch and add the file.** Create `chore/standards-gate-workflow` off `main`; add `.github/workflows/standards-gate.yml` with the C1 body above. Verify: the YAML parses (`python -c "import yaml,sys; yaml.safe_load(open('.github/workflows/standards-gate.yml')); print('yaml ok')"` prints `yaml ok`), and, if available, `actionlint` reports no error.
 3. **Open and merge PR-A.** `gh pr create` against `main`; confirm the `.github` repo's own branch protection is satisfiable (see risk R-A3) and merge. Verify: the PR is merged and the file is present on `main` (`gh api repos/product-on-purpose/.github/contents/.github/workflows/standards-gate.yml` returns 200).
 4. **Tag `v1.0.0`.** Tag the merge commit and push the tag. Verify: `gh api repos/product-on-purpose/.github/git/refs/tags/v1.0.0` resolves to the merge commit sha.
@@ -132,6 +133,7 @@ Nothing else references either. There is no data migration, no plugin change, an
 | R-A3 (.github merge path) | The `.github` repo's own branch protection or required reviews may block or delay the PR-A merge. | Low | Confirm `.github` protection before opening PR-A; `enforce_admins` on the org repo is out of scope for ruling R6, which governs `agent-plugins` only. |
 | R-A4 (live-Actions mechanics) | The two-checkout, sparse-cone, caller-context wiring has never run; a latent Actions-specific defect could surface only at runtime. | Medium (the item this package exists to retire) | The throwaway-caller test IS the mitigation; PR-B merge and PR-C are held until the live run is green. |
 | R-A5 (runner environment) | `sparse-checkout-cone-mode` or Node `22.12` unavailable on `ubuntu-latest`. | Low | Standard `actions/checkout@v4` and `actions/setup-node@v4` behavior; the live test surfaces any gap before anything depends on it. |
+| R-A6 (workflow OAuth scope) | The authoring identity's live `gh` token holds `gist`, `read:org`, `repo` but not `workflow`; GitHub refuses any push that creates or updates a file under `.github/workflows/`, blocking C1, the throwaway-caller test workflow, and every later workflow-file write in the program. | High (until remediated) | Verify `gh auth status` shows `workflow` before step 2's push (see the precondition table above); remediate with `gh auth refresh -h github.com -s workflow` (one-time maintainer action), or route workflow-file writes through an identity that already has Actions/workflows write access. |
 
 ## Recommendation
 
@@ -160,3 +162,4 @@ A red live-Actions test halts the sequence and is reported; it does not trigger 
 | Date | Change |
 |---|---|
 | 2026-07-03 | Created. Preconditions re-verified live against `product-on-purpose/.github`. |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

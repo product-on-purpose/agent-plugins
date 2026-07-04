@@ -84,6 +84,8 @@ Per [`D14 (runner-consumption: reusable workflow)`](../standards-plan-roadmap/03
 
 **Prerequisite - the org repo exists; wire the workflow into it.** Both the standards gate (`standards-gate.yml`) and the Astro consolidation (`astro-site.yml`) assume a `product-on-purpose/.github` org-level repo to host the reusable workflows. This repo was confirmed live on 2026-07-03: it is public, its default branch is `main`, and it is empty of workflows (no `.github/workflows/` tree yet). B1's first task is therefore to create `.github/workflows/standards-gate.yml` in it, not to confirm the repo exists. This is tracked in [`09-risk-register.md`](09-risk-register.md).
 
+**Prerequisite - the `workflow` OAuth scope.** Every repo whose plan writes or updates a file under `.github/workflows/` needs an authoring identity holding GitHub's `workflow` scope first, verified with `gh auth status`, or the push is refused outright - this covers the org `.github` repo ([`B1`](05-lane-b/B1-pr-a-org-gate.md)), askit's re-adoption ([`B2`](05-lane-b/B2-pr-c-askit-readopt.md)), and the four repos touched in Phase 4 ([`B5`](05-lane-b/B5-phase-4-ci-and-section-14.md)).
+
 **Reusable-workflow gotchas to carry into implementation** (both gates, from the spikes and the Astro CI design):
 
 - A caller's workflow-level `env` does **not** propagate into a `workflow_call` callee. Pass values as typed inputs or set them at step level, never as a caller-scoped `env` the callee reads.
@@ -151,3 +153,4 @@ CI evolves from one registry validator plus four divergent member gates into a s
 |---|---|
 | 2026-07-03 | Created. |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

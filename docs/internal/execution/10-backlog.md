@@ -52,6 +52,7 @@ Per-repo items the PRD routes here rather than into a program package: each need
 | BL-22 | Smaller pm-skills housekeeping: the M-34 router-eval baseline (deferred non-blocking at v2.29.0) and confirming whether `gen-resource-index.mjs --check` was actually added to the pre-tag bundles as recommended after the PR #212 CI-superset catch. | claude transcripts findings, loose ends 9 and 12 |
 | BL-23 | pm-skills' `_agent-context/claude/TODO.md` is frozen since 2026-05-03, still describing an abandoned "v2.13.0 cycle" and a Material-for-MkDocs-to-Zensical migration the repo never took (it moved to Astro instead, 17 releases later) - a dead artifact the repo should retire or refresh on its own schedule. | family-repo findings (pm-skills) |
 | BL-24 | agent-skills-toolkit's own `MEMORY.md` index line for the competitive-comparison-initiative is stale relative to its detail file (still reads "next = writing-plans," while the work shipped in PR #122); plus 4 untracked report-template exploration files with no session-log trail. Both are repo-local memory/housekeeping fixes. | claude transcripts findings, loose end 13; family-repo findings (agent-skills-toolkit) |
+| BL-25 | **Repo hygiene: no `.gitattributes`.** Neither `agent-plugins` nor the wider family carries a `.gitattributes` file; line-ending determinism currently rests on each contributor's own `core.autocrlf` setting. Recommend a one-line `.gitattributes` (`* text=auto` plus `*.yml text eol=lf`) pushed alongside the Phase 3 campaigns ([B4 (FC-0001 and Phase 3)](05-lane-b/B4-fc-0001-and-phase-3.md)). | internal adversarial panel, Lens 3, 2026-07-03 |
 
 Two program-level orchestration epics also stay out of program for now rather than being force-fit into a package: `orchestration/backlog.md`'s E4 (consistent page formatting) and E5 (consistent processes) are sequenced LATER behind E1-E3 with no independent justification beyond dependency ordering, and neither has content specific enough yet to route. Revisit once BL-3 (FC-0001) and the Phase 3 campaigns land.
 
@@ -61,7 +62,8 @@ Seeded empty. Populated during Lane A execution per R5 (Lane A merges autonomous
 
 | ID | Finding | Package under review | Disposition |
 |---|---|---|---|
-| - | none yet | - | - |
+| BL-26 | External Codex adversarial review attempted pre-exec-summary; blocked by an OpenAI usage limit (resets 23:17 local). Codex session id `019f2b76-cf00-7e31-aa19-9e68e833d981` recorded for resume. | Program-wide (pre-exec-summary review) | Deferred - re-fires automatically at reset and MUST complete and be triaged before the first post-go Lane A merge, per the gate in [11-agent-operations.md](11-agent-operations.md). |
+| BL-27 | Internal adversarial panel (3 Opus skeptics: sequencing/deadlock, fact verification, silent assumptions) run as the interim gate while BL-26 was blocked; 5 findings surfaced. | [B1 (ship the org gate)](05-lane-b/B1-pr-a-org-gate.md), [B3 (Phase 1, pm-skills)](05-lane-b/B3-phase-1-pm-skills.md), [06-ci-plan.md](06-ci-plan.md), this backlog | Dispositions: P1 (merge-mechanism gap) fixed; P2 (`strict:true` overclaim) fixed; P3 (pm-skills component count) fixed; P4 (workflow-scope blocker) fixed as a hard precondition plus a new risk row; P5 (gitattributes hygiene) backlogged as BL-25. |
 
 Per R5 ([03-execution-plan.md](03-execution-plan.md)), Lane A PRs merge autonomously only after the validate gate is green and a Codex adversarial review has run and been answered. Any finding the maintainer or Codex surfaces that is not resolved inline in the PR under review gets appended here rather than silently dropped, so the backlog stays the single place anyone can check for open work across the whole program.
 
@@ -71,3 +73,4 @@ Per R5 ([03-execution-plan.md](03-execution-plan.md)), Lane A PRs merge autonomo
 |---|---|
 | 2026-07-03 | Created. |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

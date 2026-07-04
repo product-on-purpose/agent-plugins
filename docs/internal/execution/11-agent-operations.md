@@ -34,7 +34,7 @@ Disambiguation, load-bearing because the name collides: "Codex" in this contract
 
 The verification chain runs upward: a Sonnet fan-out's output is checked against its brief before it is trusted (by an Opus verifier for anything load-bearing, else by Fable); an Opus authoring or synthesis pass is verified by Fable; and the whole PR is put in front of Codex before it merges (section 6). No actor is the sole judge of its own output. The read-only Astro audit is the proven shape - four audit agents plus four independent verifiers, each trying to disprove the other's load-bearing claims ([01-audit-2026-07-03.md](01-audit-2026-07-03.md)).
 
-Fable is the only actor that merges. Under R5 (Lane A autonomous merges), after the maintainer's overall go, Fable merges a Lane A PR autonomously once the `validate` gate is green and a Codex adversarial review has been run and answered. Under R2 (cross-repo gate), no Lane B package fires without the maintainer's per-package go, so no subagent and not Fable itself lands a cross-repo change on its own initiative.
+Fable is the only actor that merges. Under R5 (Lane A autonomous merges), after the maintainer's overall go, Fable merges a Lane A PR autonomously once the `validate` gate is green and a Codex adversarial review has been run and answered, via `gh pr merge --squash --admin` under the maintainer's admin identity (an admin override of the 1-approving-review rule, viable because `enforce_admins` is `false`). Under R2 (cross-repo gate), no Lane B package fires without the maintainer's per-package go, so no subagent and not Fable itself lands a cross-repo change on its own initiative.
 
 ## 2. Model-selection rationale (cost matched to judgment)
 
@@ -149,3 +149,4 @@ The maintainer *can* read any execution brief, and an agent *does* read the huma
 | Date | Change |
 |---|---|
 | 2026-07-03 | created |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

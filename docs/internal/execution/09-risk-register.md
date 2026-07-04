@@ -33,6 +33,7 @@ Scope split per the maintainer's rulings from the 2026-07-03 session: R1 (scope:
 | RK-9 | thinking-framework-skills' Gold claim unverified at a stale ref | High | Medium | Maintainer, CI |
 | RK-10 | Allocation-at-land collisions on ADR/version/section numbers | Low | Medium | CI, Orchestrator |
 | RK-11 | Hook-denial retry loop for agents writing docs | Medium-High | Low | Orchestrator |
+| RK-12 | Workflow OAuth-scope gap blocks `.github/workflows/` writes | High | Medium | Maintainer |
 
 ## Risk detail
 
@@ -57,7 +58,7 @@ The staged clause drafts carry internal drift that would land incorrect normativ
 `GOVERNANCE.md` Section 6 claims branch protection's up-to-date-before-merge requirement mechanically enforces serialization of protected-branch amendments, but live protection was `strict:false`, so two concurrent amendments could collide on the next allocated version, ADR, or section number with no forced rebase. `enforce_admins:false` compounds it: the solo maintainer can bypass every gate, including this one.
 
 - **Evidence**: 01-audit-2026-07-03.md; live branch protection settings on `agent-plugins` `main`.
-- **Mitigation**: R6 (branch protection: flip `strict:true` on `agent-plugins` `main`) makes serialization mechanical going forward; `enforce_admins` stays `false` per R6 and is carried here as a documented residual risk rather than silently accepted. Numbers are always re-fetched against the protected head at merge time, never pre-baked.
+- **Mitigation**: R6 (branch protection: flip `strict:true` on `agent-plugins` `main`) makes serialization mechanical for non-admin merges. But Lane A's autonomous merges run through `gh pr merge --squash --admin` (RK-6), so admin override - which bypasses `strict:true` along with every other required check - is the DEFAULT Lane A merge path, not an occasional human bypass. `enforce_admins` stays `false` per R6 and is carried here as a documented residual risk rather than silently accepted. Serialization during Lane A therefore rests on two orchestrator disciplines: at most one protected-branch PR in flight at a time, and any allocated ADR, version, or section number re-verified against `origin/main` immediately before merge (numbers are always re-fetched against the protected head, never pre-baked).
 - **Reopen trigger**: a protected-branch PR merges while another is mid-flight and both allocate a number; or the maintainer bypasses protection as an admin during a live amendment.
 
 ### RK-4: Never-run live-Actions two-checkout wiring
@@ -78,11 +79,11 @@ The dual-documentation, one-PR-per-repo fleet-campaign mechanism that Phase 3's 
 
 ### RK-6: Autonomous-merge risk in Lane A
 
-R5 (Lane A merges) authorizes the orchestrator to merge Lane A PRs autonomously, without a human approving each one, once the maintainer's overall go is given. Removing a human from the per-PR merge decision creates exposure to a defective merge landing on protected `main` unattended.
+R5 (Lane A merges) authorizes the orchestrator to merge Lane A PRs autonomously, without a human approving each one, once the maintainer's overall go is given. Because live branch protection on `main` requires 1 approving review and the sole admin has no second account to supply it, the merge is performed via `gh pr merge --squash --admin` under the maintainer's admin identity - the `--admin` flag is an override of the required-approving-review rule, viable because `enforce_admins` is `false`. Removing a human from the per-PR merge decision creates exposure to a defective merge landing on protected `main` unattended, and the admin override itself bypasses ALL required checks, not only the review requirement.
 
-- **Evidence**: maintainer ruling R5 (2026-07-03 session); [03-execution-plan.md](03-execution-plan.md) gate sequencing.
-- **Mitigation**: two independent gates precede every autonomous merge under R5: the `validate` CI check must be green, and a Codex adversarial review must run and be answered. Squash-merge keeps every Lane A change revertable in one commit if a defect surfaces post-merge; the allocation-at-land re-fetch (RK-3) still applies per PR. Contract detail lives in [11-agent-operations.md](11-agent-operations.md).
-- **Reopen trigger**: a Codex review flags an unresolved finding and the merge proceeds anyway; or the `validate` gate is green but a post-merge defect surfaces, calling the gate's coverage into question.
+- **Evidence**: maintainer ruling R5 (2026-07-03 session); [03-execution-plan.md](03-execution-plan.md) gate sequencing; PRs #46 / #47 / #48 (the recent registry re-pin PRs) merged with zero reviews via admin override, confirming the mechanism is the live merge path.
+- **Mitigation**: the residual - that admin override bypasses every required check, not just the review - is contained by protocol ordering. The merge fires only after `validate` is green and a Codex adversarial review has been run and answered, both verified immediately before the `gh pr merge --squash --admin` command. Squash-merge keeps every Lane A change revertable in one commit if a defect surfaces post-merge; the allocation-at-land re-fetch (RK-3) still applies per PR. Contract detail lives in [11-agent-operations.md](11-agent-operations.md).
+- **Reopen trigger**: a Codex review flags an unresolved finding and the merge proceeds anyway; or the `validate` gate is green but a post-merge defect surfaces, calling the gate's coverage into question; or the merge command runs before `validate` and Codex are both confirmed green.
 
 ### RK-7: writing-style-catalog drift and an undocumented shipped skill
 
@@ -113,7 +114,7 @@ The most active family repo (v2.27.0 to v2.29.1 in about five weeks) carries two
 GOVERNANCE.md requires ADR numbers, version bumps, and section numbers to be fetched against the protected `main` head at merge time and never pre-baked in a draft branch. Phase 0's own plan flags this live: the ADR number "currently 0002" must be re-verified at execution time, not assumed, and the same discipline recurs across every phase that lands a Standard amendment.
 
 - **Evidence**: phase0-plans.md section 3, risk table row "Allocation-at-LAND collisions"; 01-audit-2026-07-03.md section 5.
-- **Mitigation**: `strict:true` (R6, the same branch-protection flip as RK-3) forces a rebase before merge, so a stale allocation fails loudly at merge time instead of landing silently; every PR re-fetches its number against `origin/main` immediately before opening.
+- **Mitigation**: `strict:true` (R6, the same branch-protection flip as RK-3) forces a rebase before merge for non-admin merges, so a stale allocation would fail loudly at merge time instead of landing silently. But Lane A merges run as admin (`gh pr merge --squash --admin`, RK-6), which bypasses `strict:true`, so the forced rebase does not fire on the default Lane A path; the guard there is orchestrator discipline instead - at most one protected-branch PR in flight at a time, and every PR re-fetches its ADR, version, or section number against `origin/main` immediately before merge, never pre-baking it. On any future non-admin merge path the `strict:true` rebase becomes the mechanical backstop.
 - **Reopen trigger**: two protected-branch PRs are open concurrently and both touch `standards/decisions/` or a version field.
 
 ### RK-11: Hook-denial retry loop for agents writing docs
@@ -124,9 +125,18 @@ Every Write or Edit in this environment is checked by a PreToolUse hook that den
 - **Mitigation**: every authoring agent restructures with a comma, colon, or sentence break, or uses " - " (space hyphen space), and treats the rule as retroactive on any file it touches; the hook is the enforcement backstop regardless of whether instructions are followed. Documented in [11-agent-operations.md](11-agent-operations.md).
 - **Reopen trigger**: an agent hits three or more consecutive denials on the same file, indicating the constraint needs a prompt-level fix rather than a per-turn retry.
 
+### RK-12: Workflow OAuth-scope gap blocks `.github/workflows/` writes
+
+The `gh` authoring token carries scopes `gist`, `read:org`, and `repo` but lacks the `workflow` OAuth scope. GitHub refuses any push that creates or updates a file under `.github/workflows/` until that scope is present. Lane A hits this directly: LA-4 (Phase 2 keystone) Step 6 edits `.github/workflows/validate-registry.yml`, and B1 (PR-A: ship the org gate) authors a new workflow file in `product-on-purpose/.github`. A refusal is a hard stop on the write, not a soft warning.
+
+- **Evidence**: the authoring token's live scope set (`gist`, `read:org`, `repo`; no `workflow`); GitHub's refusal of workflow-file pushes made without the `workflow` scope.
+- **Mitigation**: run `gh auth refresh -h github.com -s workflow` to add the scope (or route workflow-file writes through an identity that already holds it), verified as a hard precondition in B1 (org gate) before any workflow-file write; the same precondition applies to LA-4's in-repo workflow edit. Owner: maintainer, because granting an OAuth scope is a human-authenticated action.
+- **Reopen trigger**: any new identity or token rotation (a fresh token may again lack `workflow`); or a workflow-file push is refused mid-flight.
+
 ## Change log
 
 | Date | Change |
 |---|---|
 | 2026-07-03 | Created. |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

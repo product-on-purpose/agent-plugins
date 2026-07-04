@@ -16,7 +16,7 @@ For where this sits in the whole program, see [03-execution-plan.md](../03-execu
 pm-skills is the only family member sitting below Bronze - it carries no root `library.json` and ships an embedded self-listing marketplace. Both are P0 holes flagged in the 2026-06-10 conformance snapshot and still open across three releases since (v2.28.0, v2.29.0, v2.29.1). This package gives pm-skills three things in one deliberate in-repo session:
 
 1. A root `library.json` pinning the Standard (version `"0.12"`) with a declared tier - closes L3 (binds the Standard by version pin).
-2. Repo-local generated-manifest tooling so pm-skills' roughly 95 components (about 68 skills plus 6 subagents, 10 workflow commands, and the chain contract) are generated into the manifest, never hand-enumerated into drift.
+2. Repo-local generated-manifest tooling so pm-skills' roughly 85 (about 87 counting the two registered hooks) components (about 68 skills plus 6 subagents, 10 workflow commands, and the chain contract) are generated into the manifest, never hand-enumerated into drift.
 3. Removal of the embedded self-listing `.claude-plugin/marketplace.json` (the Standard's Section 12 anti-pattern) - closes L2 (independently valid, one-way pointing, no embedded self-listing).
 
 The listing-contract clauses this closes are L2 and L3 in [CONTRIBUTING.md](../../../../CONTRIBUTING.md) Section 8, both tracked "Advisory" against pm-skills since 2026-06-10. The convergence detail lives in the [pm-skills convergence packet](../../convergence/pm-skills-conformance.md); this package is the approval wrapper and the execution runbook, not a restatement of that packet.
@@ -25,7 +25,7 @@ Why this matters beyond pm-skills: Phase 2 (the CI re-pin keystone) cannot flip 
 
 ## 2. Why in-repo, per D7 (no new init/listing skill)
 
-D7 (no new init/listing skill) forbids `agent-plugins` from growing a scaffolding or init skill; scaffolding stays in the toolkit (`askit-init-plugin`, `askit-init-marketplace`, `askit-migrate`), and `agent-plugins` owns only the listing contract plus the CI gate. Phase 1 is deliberately a pm-skills-internal session, not a drive-by PR from `agent-plugins`. The generated-manifest tooling is repo-local to pm-skills for two concrete reasons: pm-skills operates at roughly 95 components and already runs a large proprietary validator suite, so the generator must fit that repo's own conventions rather than import a foreign toolchain. See D7 in [03-decisions.md](../../standards-plan-roadmap/03-decisions.md).
+D7 (no new init/listing skill) forbids `agent-plugins` from growing a scaffolding or init skill; scaffolding stays in the toolkit (`askit-init-plugin`, `askit-init-marketplace`, `askit-migrate`), and `agent-plugins` owns only the listing contract plus the CI gate. Phase 1 is deliberately a pm-skills-internal session, not a drive-by PR from `agent-plugins`. The generated-manifest tooling is repo-local to pm-skills for two concrete reasons: pm-skills operates at roughly 85 components and already runs a large proprietary validator suite, so the generator must fit that repo's own conventions rather than import a foreign toolchain. See D7 in [03-decisions.md](../../standards-plan-roadmap/03-decisions.md).
 
 ## 3. Dependencies and sequencing
 
@@ -48,7 +48,7 @@ There is one genuine open decision, and it is a real conflict between the roadma
 | Change | Path | Notes |
 |---|---|---|
 | ADD root `library.json` | `pm-skills/library.json` | `standard: "0.12"`, `tier` per Section 4, `version` matching the current pm-skills release line, a generated `components` index, and `agent-targets`. Authored source-of-truth per the Standard. |
-| ADD generated-manifest tooling | `pm-skills/scripts/` (repo-local) | A generator that emits the `components` index (and regenerates `.claude-plugin/plugin.json`) from on-disk components, plus a `--check` drift mode for CI. Roughly 95 components enumerated by generation, never by hand. |
+| ADD generated-manifest tooling | `pm-skills/scripts/` (repo-local) | A generator that emits the `components` index (and regenerates `.claude-plugin/plugin.json`) from on-disk components, plus a `--check` drift mode for CI. Roughly 85 components enumerated by generation, never by hand. |
 | REMOVE embedded self-listing | `pm-skills/.claude-plugin/marketplace.json` | Deletes the Section 12 anti-pattern. Association becomes one-way (marketplace points to plugin; plugin does not point back). Closes L2. |
 | REGEN native manifest | `pm-skills/.claude-plugin/plugin.json` | Regenerated from `library.json` so version and component set agree everywhere. |
 | RECORD decision | `pm-skills/docs/internal/decisions/` | A MADR ADR in pm-skills' own decision home for the marketplace removal and `library.json` adoption, replacing the deliberate back-compat retention scoped in the pm-skills convergence packet. Number allocated by pm-skills at land, not here. |
@@ -97,7 +97,7 @@ The design intent is additive: pm-skills gains a manifest that satisfies the fam
 | Risk | Severity | Mitigation |
 |---|---|---|
 | pm-skills is the most active repo (roughly weekly releases) and has live concurrent agent activity - the convergence branch can race a release and go stale. | High | Coordinate an explicit merge window; rebase immediately before merge; prefer folding the convergence into the next release cut rather than an out-of-band tag. |
-| Hand-drift between the roughly 95 components and the manifest. | Medium | The generator plus `--check` drift job makes hand-enumeration impossible to land silently. |
+| Hand-drift between the roughly 85 components and the manifest. | Medium | The generator plus `--check` drift job makes hand-enumeration impossible to land silently. |
 | Option B chosen without scope widening - declaring Silver while S1-S8 are unmet reds the gate. | Medium | Resolve Section 4 before build; if Option B, widen scope to include S1-S8 remediation and verification. |
 | The new drift job conflicts with an existing proprietary check on the same manifest. | Low | Scope the drift job narrowly to the generated index; treat the proprietary suite as authoritative on everything it already owns. |
 
@@ -121,3 +121,4 @@ Approve this package with tier Option A (declare `tier: universal`, pursue Silve
 |---|---|
 | 2026-07-03 | created |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |

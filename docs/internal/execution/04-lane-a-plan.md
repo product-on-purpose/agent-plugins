@@ -38,13 +38,13 @@ Agent-updated working state. Eight ordered tasks, LA-1 (land the package) throug
 
 ## The per-PR protocol (R5)
 
-Every Lane A PR follows the same gate, and no step is skipped:
+Every Lane A PR follows the same gate, and no step is skipped. **Protocol precondition:** the orchestrator operates under the maintainer's admin identity. Live branch protection on `main` requires 1 approving review; the sole admin has no second account to supply it, so the only working autonomous-merge path is admin override, viable because `enforce_admins` is `false` (this is how PRs #46 / #47 / #48 (the recent registry re-pin PRs) actually merged with zero reviews). If the identity is ever non-admin, autonomous merge is impossible and the protocol falls back to a maintainer click (see step 5).
 
 1. **Branch** off current `main` (rebase to current head; after LA-6 flips `strict:true`, up-to-date-before-merge is mechanically enforced).
 2. **Open the PR** with a body that states the D-numbers it operationalizes and the Verification evidence it will produce.
 3. **Validate green** - the `validate` required check must pass (or, for a docs-only PR, pass vacuously; the workflow is path-filtered).
 4. **Codex adversarial review** - dispatch the diff to the Codex reviewer, read the findings, and answer every one (fix, or record why not) before merge. Findings that survive as follow-ups seed [10-backlog.md](10-backlog.md) (LA-8).
-5. **Squash-merge** autonomously (Fable) once 3 and 4 are green, then `git checkout main && git pull`.
+5. **Squash-merge** autonomously (Fable) once 3 and 4 are green, performed via `gh pr merge --squash --admin` under the maintainer's admin identity - the `--admin` flag bypasses the required-approving-review rule because `enforce_admins` is `false` - then `git checkout main && git pull`. **Fallback:** if the orchestrator identity is ever non-admin, autonomous merge is impossible and the merge falls back to a maintainer click on the PR.
 
 LA-6 (branch protection) is not a PR - it is a `gh api` config action, still gated behind the maintainer go, with its own verify-back and rollback below.
 
@@ -241,7 +241,7 @@ Recommended order once the go lands:
 
 ## LA-6: Flip branch protection `strict:true` on `main`
 
-**Goal:** Make the up-to-date-before-merge serialization that GOVERNANCE.md Section 6 already assumes mechanically real, per R6 (branch protection). `enforce_admins` STAYS false and is recorded as a documented residual risk in [09-risk-register.md](09-risk-register.md). Addresses the PRD "governance serialization is enforced, not just documented" acceptance.
+**Goal:** Make the up-to-date-before-merge serialization that GOVERNANCE.md Section 6 already assumes mechanically real, per R6 (branch protection). The flip is mechanically real only for non-admin merges; because Lane A merges run as admin (the `gh pr merge --squash --admin` override in the per-PR protocol, which bypasses required-status-check gating including `strict:true`), serialization during Lane A relies on the stated orchestrator discipline: at most one protected-branch PR in flight at a time, and any allocated ADR, version, or section number re-verified against `origin/main` immediately before merge. The flip is still worth making for every future non-admin merge path and so the governance claim stops being false. `enforce_admins` STAYS false and is recorded as a documented residual risk in [09-risk-register.md](09-risk-register.md), alongside this admin-override serialization residual. Addresses the PRD "governance serialization is enforced, not just documented" acceptance (now scoped to non-admin merges).
 
 **Executor tier:** Fable (a `gh api` config action, not a PR).
 
@@ -334,3 +334,4 @@ Four PRs plus one config action, with LA-7 deferred and LA-8 riding as continuou
 |---|---|
 | 2026-07-03 | created |
 | 2026-07-03 | verifier fixes applied (lead-ruled) |
+| 2026-07-03 | adversarial-panel fixes applied (lead-ruled) |
