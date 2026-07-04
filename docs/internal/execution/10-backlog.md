@@ -1,0 +1,73 @@
+---
+title: "Program backlog"
+description: "Unfinished threads and deferred repo-health items, routed to the package that consumes them or flagged out of program per the PRD"
+status: "draft"
+last-updated: "2026-07-03"
+---
+
+# Program backlog
+
+This backlog inventories the loose ends the 2026-07-03 audit surfaced (see [01-audit-2026-07-03.md](01-audit-2026-07-03.md)) and routes each one somewhere: into an existing package in this execution suite, or explicitly out of program per the PRD ([02-prd.md](02-prd.md)). It does not restate decision rationale or clause text from the locked planning package at [standards-plan-roadmap](../standards-plan-roadmap/00-README.md); it links there.
+
+Each item carries an id (`BL-N`), a short handle, its source, and where it goes next. Section 1 items are things this program's packages will pick up and finish; Section 2 items are per-repo matters the PRD deliberately keeps out of this program's scope, because they need a repo-local maintainer decision, not fleet coordination; Section 3 is seeded empty and fills in during execution, per the Codex adversarial-review protocol in [11-agent-operations.md](11-agent-operations.md).
+
+As of creation (2026-07-03): 13 in-program items (BL-1 through BL-13), 11 out-of-program items (BL-14 through BL-24), 0 Codex-review findings. This backlog is a living document; expect the counts to change as packages land and Codex review runs surface new items.
+
+## 1. In-program backlog
+
+Items the program consumes. "Package" points at the plan that owns execution; where no package has claimed an item yet, this backlog names a recommendation for the lead to confirm, not a decision.
+
+| ID | Item | Source | Package |
+|---|---|---|---|
+| BL-1 | **Section 14 landing.** Land the astro-sites domain standard (currently "PROPOSED" at `standards/domains/astro-sites/SITE-STANDARD.md`) into normative `STANDARD.md` text. Flagged the highest-leverage gap since the 2026-06-02 session log; still open. | 2026-07-03 audit, unfinished threads | [B5 (phase 4, CI and Section 14)](05-lane-b/B5-phase-4-ci-and-section-14.md) |
+| BL-2 | **Astro shared infra Phase 1.** Build the reusable `astro-site.yml` workflow (in `product-on-purpose/.github`) and extract the `@product-on-purpose/astro-docs-preset` package. A ready-to-execute task plan already sits unrun at `_LOCAL/planning/2026-06-03_astro-shared-infra-phase1-and-campaign_from-pm-skills-session.md` (gitignored, not yet promoted). | 2026-07-03 audit, unfinished threads | B5 |
+| BL-3 | **FC-0001 pilot.** Run the first fleet-orchestration pilot to prove the orchestration capability and the dual-documentation model before the larger Phase 3 push campaigns fan out. The pilot candidate has drifted across three documents (favicon/dash-check, then CI-pin, then the C1-C5 campaign slate) with no reconciliation; the pilot choice itself needs a decision, not just execution. | 2026-07-03 audit, unfinished threads and gaps | [B4 (FC-0001 and Phase 3)](05-lane-b/B4-fc-0001-and-phase-3.md) |
+| BL-4 | **Registry standard/tier surfacing + CI keystone.** Surface each pinned plugin's `standard`/`tier` in registry output, and land the re-pin check and the truth-in-targeting check (D10, cross-tool `agent-targets`, see [D10 in 03-decisions.md](../standards-plan-roadmap/03-decisions.md)) in `scripts/validate-registry.mjs`. This is Phase 2 (CI keystone) and is entirely in-repo. | 2026-07-03 audit; program-docs deferred item 2 | LA-4 ([04-lane-a-plan.md](04-lane-a-plan.md)) |
+| BL-5 | **Pin-currency policy (GP-6).** Ratify a SHOULD-level Standard clause on how stale a pin may go before it is flagged, tying to BL-4's surfacing work. Acceptance criterion: a pin-currency policy exists as a landed clause or documented policy with a named advisory check. | 2026-07-03 audit; program-docs deferred item 4 | Recommended owner: [B6 (Phase 5, process and hooks)](05-lane-b/B6-phase-5-process-hooks.md) - a SHOULD clause is process-shaped work, same lane as the exceptions rule and commit-message hook. Needs the lead's confirmation; not yet claimed. |
+| BL-6 | **Re-pin automation.** Design and build a tool that reads each family repo's tags via the GitHub API and opens the re-pin PR here, closing the loop BL-5's policy depends on. Explicitly "a feature needing design," not a drive-by build; needs a new package specced after Phase 2 lands. Acceptance criterion: a specced re-pin automation package exists as its own approval-gated Lane B addition before program close. | 2026-07-03 audit; program-docs deferred item 3 | Unassigned. No B1-B7 package owns this today because it needs a spec first and, once built, writes to this repo only (reading other repos is read-only API access, not a cross-repo land) - recommend the lead register it as a new Lane B package once specced, and flag its existence in [03-execution-plan.md](03-execution-plan.md) and [09-risk-register.md](09-risk-register.md) now. Per the allocation-at-land invariant, no package id is assigned here. |
+| BL-7 | **pm-skills Phase 1 closure.** Build repo-local generated-manifest tooling (~95 components, not hand-enumerated), add a root `library.json` pinning Standard 0.12 at a tier per the open DR-10 (pm-skills tier) ruling in [08-decision-register.md](08-decision-register.md) (recommended universal-now, not a flat convergent assertion), and remove the embedded self-listing `.claude-plugin/marketplace.json`. Two P0s (fails L3, the library.json clause, and L2) have persisted across three releases since the 2026-06-10 audit flagged them. | 2026-07-03 audit; family-repo findings (pm-skills) | [B3 (Phase 1, pm-skills)](05-lane-b/B3-phase-1-pm-skills.md) |
+| BL-8 | **D16 HISTORY.md check + disposition reconciliation.** Land the D16 (see [03-decisions.md](../standards-plan-roadmap/03-decisions.md)) HISTORY.md-presence check (warn-then-error, new/changed components only), and reconcile the disposition inconsistency the three 2026-06-10 audits never settled: agent-skills-toolkit and thinking-framework-skills chose "surface first," pm-skills chose "backfill now." | 2026-07-03 audit; program-docs deferred item (convergence packets) | B5 |
+| BL-9 | **Reconcile `program-roadmap.md`.** Fold it into this package or mark it superseded, per the newer package's own instruction ([00-README.md line 73](../standards-plan-roadmap/00-README.md)); its unique sites/orchestration framing needs an explicit in-scope or out-of-scope call, not a silent drop. | 2026-07-03 audit, unfinished threads and gaps | Owner: Lane A, consumed by LA-2 (truth sweep) in [04-lane-a-plan.md](04-lane-a-plan.md), so no duplicate work. |
+| BL-10 | **Close the Standard-home loose end.** The pre-lock decision-support doc recommended Option B (a dedicated standard repo); what shipped was Option C (co-located at `agent-plugins/standards/`). No document explicitly closes Option B out. Recommend closing via a one-line note in the relocation ADR at LAND, recording that Option C (co-locate in agent-plugins) was chosen over Option B (dedicated repo). | 2026-07-03 audit, unfinished threads | 04-lane-a-plan.md or [08-decision-register.md](08-decision-register.md), lead's call which carries the closure note |
+| BL-11 | **Dissolve `_agent-context/` (D5).** Move this repo's own committed session logs to gitignored `_local/session-logs/` per D5 (see [03-decisions.md](../standards-plan-roadmap/03-decisions.md)). Entirely in-repo. | 2026-07-03 audit; program-docs deferred item 1 | 04-lane-a-plan.md |
+| BL-12 | **`_local` casing convergence, fleet-wide (D6).** Push the `_LOCAL` -> `_local` rename to all four repos as campaign C1. Best applied fleet-wide, not ahead of the others in one repo. | 2026-07-03 audit; program-docs deferred item 5 | B4 (Phase 3 push campaigns) |
+| BL-13 | **Draft-drift resolution pass.** Before the staged clause drafts become specs, fix: the D8 PLAN-layer phase conflict (`release-subsystem.md` places it in Phase 5; both authoritative sources place it in Phase 3), the D16 amendment text missing from `standard-amendments.md`, and the stale pre-D17 Codex clause in `contributing-edits.md` L7 (E-D). | 2026-07-03 audit, risks and gaps | B4 (Phase 3 owns authoring `standard-amendments.md` and its siblings) |
+
+A few sequencing notes worth flagging to the lead rather than baking into the table above: BL-3 (the FC-0001 pilot) should resolve before BL-12 (the C1 casing campaign) fans out, since Phase 3's push campaigns assume a proven orchestration capability the pilot exists to prove. BL-9 (reconciling `program-roadmap.md`) is cheap and unblocked, so it can move early regardless of where the rest of the program is gated. BL-7 (pm-skills Phase 1) and BL-4 (the CI keystone) are independent of each other but both must land before any repo can be validated at a declared tier with a live `library.json` and a trustworthy re-pin.
+
+## 2. Out-of-program backlog
+
+Per-repo items the PRD routes here rather than into a program package: each needs a repo-local maintainer decision or a repo-local session, not fleet coordination. Listed for visibility; no package in this suite closes these.
+
+| ID | Item | Source |
+|---|---|---|
+| BL-14 | pm-skills issue #136 (M-21 release-please spike, low priority; largely moot since the scripted release path already shipped). | family-repo findings (pm-skills); 2026-07-03 audit |
+| BL-15 | pm-skills issue #148 (`awesome-codex-plugins` listing), gated on accepting a third-party HOL plugin-scanner CI dependency - pending maintainer decision since 2026-06-22. | family-repo findings (pm-skills); 2026-07-03 audit |
+| BL-16 | writing-style-catalog's `entry-recommender` go/no-go (the spec's `draft` -> `committed` frontmatter flip is a manual, maintainer-only gate) and its missing `[0.6.0]` CHANGELOG entry - the working tree already ships and registers the skill, undocumented in a fresh clone's changelog. | family-repo findings (writing-style-catalog); 2026-07-03 audit |
+| BL-17 | `pm-skills-mcp` scoping - open since the 2026-05-20 session log, four sessions and six weeks with no resolution anywhere. | 2026-07-03 audit, unfinished threads |
+| BL-18 | thinking-framework-skills' Standard pin burndown - pinned at 0.8 against current 0.12 (four minors behind, not the three still recorded in memory), ~81 warns queued; the re-pin cadence itself is that repo's own D2-pull decision. | family-repo findings (thinking-framework-skills); 2026-07-03 audit |
+| BL-19 | Stale origin branch `chore/repin-writing-style-catalog-v0.5.2` cleanup - its content landed via a differently-hashed squash commit, so the branch is not an ancestor of `main` and can be deleted. | claude transcripts findings, loose end 10 |
+| BL-20 | pm-skills' own memory (`reference_astro-site-family-standard.md`) still points at the swept `_LOCAL/astro-site-standards.md` path instead of the promoted `standards/domains/astro-sites/` - a pm-skills-local correction, not a repo-file fix. | claude transcripts findings, loose end 11 |
+| BL-21 | The 2026-06-10 `jp-strategy-brief` "contract-then-audit ratchet" diagnostic was never formally closed (no `--close` archive) and sits in a gitignored output folder; a future session risks re-deriving the same framing a third time. | this-repo-sessions findings, `_output-jp-library/` section |
+| BL-22 | Smaller pm-skills housekeeping: the M-34 router-eval baseline (deferred non-blocking at v2.29.0) and confirming whether `gen-resource-index.mjs --check` was actually added to the pre-tag bundles as recommended after the PR #212 CI-superset catch. | claude transcripts findings, loose ends 9 and 12 |
+| BL-23 | pm-skills' `_agent-context/claude/TODO.md` is frozen since 2026-05-03, still describing an abandoned "v2.13.0 cycle" and a Material-for-MkDocs-to-Zensical migration the repo never took (it moved to Astro instead, 17 releases later) - a dead artifact the repo should retire or refresh on its own schedule. | family-repo findings (pm-skills) |
+| BL-24 | agent-skills-toolkit's own `MEMORY.md` index line for the competitive-comparison-initiative is stale relative to its detail file (still reads "next = writing-plans," while the work shipped in PR #122); plus 4 untracked report-template exploration files with no session-log trail. Both are repo-local memory/housekeeping fixes. | claude transcripts findings, loose end 13; family-repo findings (agent-skills-toolkit) |
+
+Two program-level orchestration epics also stay out of program for now rather than being force-fit into a package: `orchestration/backlog.md`'s E4 (consistent page formatting) and E5 (consistent processes) are sequenced LATER behind E1-E3 with no independent justification beyond dependency ordering, and neither has content specific enough yet to route. Revisit once BL-3 (FC-0001) and the Phase 3 campaigns land.
+
+## 3. Codex-review findings
+
+Seeded empty. Populated during Lane A execution per R5 (Lane A merges autonomously once validate is green and a Codex adversarial review has been run and answered) and the protocol in [11-agent-operations.md](11-agent-operations.md). Each finding gets its own `BL-N` continuing the sequence above, with the reviewing package and disposition (accepted / deferred / rejected with reason).
+
+| ID | Finding | Package under review | Disposition |
+|---|---|---|---|
+| - | none yet | - | - |
+
+Per R5 ([03-execution-plan.md](03-execution-plan.md)), Lane A PRs merge autonomously only after the validate gate is green and a Codex adversarial review has run and been answered. Any finding the maintainer or Codex surfaces that is not resolved inline in the PR under review gets appended here rather than silently dropped, so the backlog stays the single place anyone can check for open work across the whole program.
+
+## Change log
+
+| Date | Change |
+|---|---|
+| 2026-07-03 | Created. |
+| 2026-07-03 | verifier fixes applied (lead-ruled) |
