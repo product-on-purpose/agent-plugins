@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.36.0"
+    "version": "1.37.0"
   },
   "plugins": [
     {
@@ -15,10 +15,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/pm-skills.git",
-        "sha": "87e423c563b3cb9315134cc91e8c202cf117716b"
+        "sha": "fa0111e834161b8a439d1444dd0ba2e6ffdf8fca"
       },
       "description": "Product management skills, sub-agents, and sprint tools across the full product lifecycle. Follows the agentskills.io specification.",
-      "version": "2.30.0",
+      "version": "2.31.0",
       "strict": true
     },
     {
