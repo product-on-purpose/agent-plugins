@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Re-pinned pm-skills from v2.31.0 (a0111e8) to v2.31.1 (e28377); listed version 2.31.0 to 2.31.1. v2.31.1 is a maintenance patch in the plugin repo: the merge-pipeline required-check fix, a dependency security drain (ten open alerts to zero), two documentation-site build repairs, and a validator race fix. No pm-skills catalog change (68 skills / 6 sub-agents).
+- Re-pinned pm-skills from v2.31.0 (`a0111e8`) to v2.31.1 (`32e2837`); listed version 2.31.0 to 2.31.1. v2.31.1 is a maintenance patch in the plugin repo: the merge-pipeline required-check fix, a dependency security drain (ten open alerts to zero), two documentation-site build repairs, and a validator race fix. No pm-skills catalog change (68 skills / 6 sub-agents).
 
 ## [1.41.0] - 2026-07-27
 
