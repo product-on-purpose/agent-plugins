@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.49.0"
+    "version": "1.50.0"
   },
   "plugins": [
     {
@@ -37,10 +37,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/writing-style-catalog.git",
-        "sha": "4fcd0eeda847f1b415d0b82712d527ea4f515079"
+        "sha": "00e4884d06e29e44c31d6f7e3995067171c07e21"
       },
-      "description": "Composable writing instructions on four orthogonal axes (Voice, Tone, Style, Format): pick one entry per axis and the builder assembles a ready-to-paste prompt prefix that steers any LLM toward a precise register, reasoning pattern, and layout. Ships 97 curated entries, 1164 worked examples, 134 diff-pairs, and 14 recipes, plus a style-profile skill that captures your personal default style and an entry-recommender skill that finds the right combination for a described situation. Use when you need a precise, composable writing instruction for an LLM.",
-      "version": "0.12.0",
+      "description": "Composable writing instructions on four orthogonal axes (Voice, Tone, Style, Format): pick one entry per axis and the builder assembles a ready-to-paste prompt prefix that steers any LLM toward a precise register, reasoning pattern, and layout. Ships 97 curated entries, 1193 worked examples, 158 diff-pairs, and 14 recipes, plus a style-profile skill that captures your personal default style and an entry-recommender skill that finds the right combination for a described situation. Use when you need a precise, composable writing instruction for an LLM.",
+      "version": "0.13.0",
       "strict": true
     },
     {
