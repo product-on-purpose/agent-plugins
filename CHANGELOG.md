@@ -11,6 +11,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.54.0] - 2026-08-08
+
+### Added
+
+- **Listed `product-lifecycle-templates` v0.2.1** (pinned `d0ac358`), the registry's sixth plugin and its
+  first document-template library rather than a skill collection. 26 researched document bundles covering
+  the complete Tier-1 floor of a 205-type product-artifact catalog.
+
+  **L1-L4 verified before listing, not asserted.** L1: a valid native plugin at the repo root
+  (`.claude-plugin/plugin.json`). L2: independently valid, no embedded self-listing marketplace. L3: root
+  `library.json` pinning Standard `0.12` at tier **universal**, and the tier was **measured** by running
+  the Standard's own gate against the repository (exit 0) rather than self-declared. L4: the pinned sha
+  sits on release tag `v0.2.1`, and the registry entry version, the tag, `library.json` and
+  `.claude-plugin/plugin.json` all read `0.2.1`.
+
+  **L3 was the reason the listing did not happen at v0.2.0.** That tag was cut before the listing contract
+  was read and its tree carries no `library.json`, which makes a repository "loose components" under the
+  Standard and ineligible. The member re-cut as `v0.2.1` rather than moving a published tag.
+
+  **Recorded convergence backlog:** the Standard's gate reports findings at the *convergent* tier, above
+  the member's declared universal ceiling, so none gates. The largest is 25 decision records carrying no
+  `## TL;DR` block. Noted here so the audit program has it rather than discovering it later.
+
 ## [1.53.0] - 2026-08-08
 
 ### Changed
