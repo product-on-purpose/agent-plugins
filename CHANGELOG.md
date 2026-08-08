@@ -11,6 +11,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.55.0] - 2026-08-08
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from `v0.2.1` (`d0ac358`) to **`v0.3.0`** (`2264820`). The pinned tree reaches **Gold (advanced)** on the Advanced Skill Library Standard, measured by the Standard's own gate running in that repository's CI rather than declared, which strengthens its L3 position from tier universal at the previous pin. L4 version agreement verified before tagging: the tag, `library.json`, the skill component entry and `.claude-plugin/plugin.json` all read `0.3.0`.
+- The re-pin matters beyond the version. At the previous pin, `npx skills add` against that repository installed **two** skills, the second being a maintainer-internal build harness. That is fixed at this pin and gated by a check on the published skill surface, so the listing no longer points at a tree that ships a component its own manifest does not declare.
+
+### Fixed
+
+- The `product-lifecycle-templates` row in `README.md` was missing its **Repo** and **Status** columns, which had been the case since the entry was first listed in #69.
+
 ## [1.54.0] - 2026-08-08
 
 ### Added
