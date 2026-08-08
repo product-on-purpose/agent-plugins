@@ -28,6 +28,7 @@ You **add** the marketplace by its repo path (`product-on-purpose/agent-plugins`
 | `writing-style-catalog` | Composable writing instructions on four orthogonal axes (Voice, Tone, Style, Format) with a compose-instruction skill | `product-on-purpose/writing-style-catalog` | listed |
 | `agent-skills-toolkit` | Toolkit and Standard for authoring, validating, governing, and scaling cross-agent skill libraries to a tiered Bronze/Silver/Gold quality bar | `product-on-purpose/agent-skills-toolkit` | listed |
 | `critique-skills` | Rubric-cited critique skills that emit machine-parseable, criterion-cited findings and publish their own measured performance against a seeded-defect corpus | `product-on-purpose/critique-skills` | listed |
+| `product-lifecycle-templates` | 26 researched document templates across the product lifecycle, each with a lean and full variant, a worked example, and the research log every claim traces to |
 
 Each plugin lives in its **own repo** with its own version, changelog, and release cadence. This repo holds only the registry (`.claude-plugin/marketplace.json`); it contains no plugin code.
 
