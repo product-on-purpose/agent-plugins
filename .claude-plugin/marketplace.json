@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.53.0"
+    "version": "1.54.0"
   },
   "plugins": [
     {
@@ -63,6 +63,17 @@
       },
       "description": "Rubric-cited, machine-parseable critique skills that produce measured, evidence-graded findings (usability, accessibility, clarity) instead of freeform opinion. Use when you need a structured review of an interface, document, or piece of writing with defects cited against a rubric and reported in a machine-parseable output.",
       "version": "0.1.3",
+      "strict": true
+    },
+    {
+      "name": "product-lifecycle-templates",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/product-on-purpose/product-lifecycle-templates.git",
+        "sha": "d0ac358e81f17a75a10ed7b7b4ba619071e317ea"
+      },
+      "description": "26 researched product-lifecycle document templates covering the complete Tier-1 floor of a 205-type artifact catalog: PRD, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes and status report. Each ships a lean and a full template, a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
+      "version": "0.2.1",
       "strict": true
     }
   ]
