@@ -11,6 +11,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.56.0] - 2026-08-08
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.3.0`** (`2264820`) to **`v0.3.1`** (`ad42e75`). A documentation patch in that repository, cut because the `v0.3.0` tag shipped four documents telling readers "there are no efficacy evaluations" inside a tree containing two of them: the doc-honesty sweep landed one commit after the tag, and a published tag is not moved. The previous pin therefore handed every user of this registry a tree that disagreed with itself about that repository's central quality claim.
+- **L4 version agreement verified before tagging**, across all six places the version is written in that repository: the tag, `library.json` (library and component), `.claude-plugin/plugin.json`, the skill's `metadata.version`, `INDEX.md` and the `README` badge. The skill's `metadata.version` is load-bearing rather than cosmetic, because the installed skill fetches its templates from the release tag matching it.
+- **L3 is unchanged at Gold (advanced)**, re-verified against the new pin by running the Standard's own conformance gate: tier advanced, 0 errors, 0 warnings. No bundle content, template, schema or gate check changed in the pinned repository, so this re-pin carries no behavioural change for anyone who installed the previous pin.
+
 ## [1.55.0] - 2026-08-08
 
 ### Changed
