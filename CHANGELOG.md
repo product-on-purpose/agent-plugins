@@ -11,6 +11,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.60.0] - 2026-08-11
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.10.1`** (`ad507e2`) to **`v1.11.0`** (`246fd14`), a MINOR that makes the gate consumable outside its own repository. The spine stays at 30 checks, the Standard pin stays at v0.12, and **no plugin's tier or exit code moves** as a result of installing it.
+- **What an installer gets that they did not have:** the gate is now runnable without a permanent install (`npx agent-skills-toolkit <path>`, once published); it emits **SARIF 2.1.0** so findings land in the GitHub Security tab, and GitHub Actions annotations so they appear inline on a pull request diff; there is a published **Action** that takes a path and hands back the earned tier and counts; and the tier badge is now generated in CI carrying the tier, the graded sha, the Standard pin and the date, rather than being typed by a human.
+- **Provenance is now visible in every output.** Each finding states whether the rule behind it is an objective fact, something a vendor documents, or that Standard's own opinion. The distinction was computed internally for a long time and never shown, and it is the one that tells a reader what "30 checks passed" actually means.
+- **L4 version agreement verified before the re-pin**, across all five places the version is written in that repository: the tag, `library.json`, `package.json`, `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`. All read `1.11.0`, and `ad507e2` was confirmed to be exactly the `v1.10.1` tag commit before it was replaced.
+- **L3 unchanged at Gold (advanced)**, re-verified at the new pin by running that repository's own conformance gate: Advanced, 0 errors, 0 warnings, 939 tests, 0 failures.
+- **Cut behind five adversarial review rounds producing fourteen findings, three of them critical**, two of which were in its publishing surface: a script injection that ran upstream of the workflow's own dry-run guard, and an ancestry gate that validated a candidate commit using verifier scripts checked out from that same candidate. Both are closed, and neither was ever exploitable, since that repository holds no publishing credential of any kind.
+
 ## [1.59.0] - 2026-08-11
 
 ### Changed
