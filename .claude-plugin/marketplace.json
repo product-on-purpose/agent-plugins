@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.58.0"
+    "version": "1.59.0"
   },
   "plugins": [
     {
@@ -48,10 +48,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/agent-skills-toolkit.git",
-        "sha": "4f3168c60f4199f1e8e2848b2974ba2b06c0458a"
+        "sha": "ad507e235edc2f45dd212d33816ef1ea6a1a76ba"
       },
       "description": "Toolkit and Standard for authoring, validating, governing, and scaling cross-agent skill libraries (Claude Code and Codex) to a tiered Bronze/Silver/Gold quality bar. Follows the agentskills.io specification.",
-      "version": "1.10.0",
+      "version": "1.10.1",
       "strict": true
     },
     {
