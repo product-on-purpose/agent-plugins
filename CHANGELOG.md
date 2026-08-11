@@ -11,6 +11,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.59.0] - 2026-08-11
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.10.0`** (`4f3168c`) to **`v1.10.1`** (`ad507e2`), a trust patch. No new capability, no new check, and no Standard movement: the spine stays at 30 checks, the Standard pin stays at v0.12, and **no plugin's tier or exit code moves** as a result of installing it. The release's subject is the toolkit correcting claims it was making about itself and then arranging for a machine to check them.
+- **The headline fix repairs a defect the previous pin shipped.** `v1.10.0` had moved the delegation-chain declaration under the `metadata` namespace to satisfy the agentskills.io frontmatter vocabulary. That cleared a hard rejection and introduced a silent one: the specification defines `metadata` values as strings, and its reference implementation enforces that by **coercion rather than rejection**, so the YAML list survived as a string containing a printed list while `agentskills validate` reported "Valid skill" for all 24 skills throughout. The declaration is now a delimited string that round-trips unchanged, and the reading check accepts the older shapes so nothing anyone has written stops working.
+- **L4 version agreement verified before the re-pin**, across all five places the version is written in that repository: the tag, `library.json`, `package.json`, `.claude-plugin/plugin.json`, and `.codex-plugin/plugin.json`. All read `1.10.1`, and `4f3168c` was confirmed to be exactly the `v1.10.0` tag commit before it was replaced.
+- **L3 is unchanged at Gold (advanced)**, re-verified at the new pin by running that repository's own conformance gate: tier Advanced, 0 errors, 0 warnings, 743 tests, 0 failures.
+- The one behavioural change in a check is deliberately scheduled rather than immediate. A delegation chain written as a single string was previously read as no declaration at all; it is now read, which means the chain-contract check can newly fire on a plugin it was blind to. Because a patch is the wrong place to tighten anything, findings from that shape are **warnings** until the Standard reaches 0.13, and they cannot be escalated by a consumer's per-rule configuration.
+
+## [1.58.0] - 2026-08-10
+
+### Changed
+
+- Re-pinned `critique-skills` from **`v0.1.4`** (`afcebaa`) to **`v0.1.5`** (`272496a`). *(Backfilled 2026-08-11: this entry was missing. The registry's `metadata.version` had been bumped to 1.58.0 in the serving commit without a corresponding changelog section, so the registry's own version line and its written history disagreed.)*
+
+## [1.57.0] - 2026-08-10
+
+### Changed
+
+- Re-pinned `critique-skills` from **`v0.1.3`** (`3f5b623`) to **`v0.1.4`** (`afcebaa`). *(Backfilled 2026-08-11, same omission as 1.58.0 above.)*
+
 ## [1.56.0] - 2026-08-08
 
 ### Changed
