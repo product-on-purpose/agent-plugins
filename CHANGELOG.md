@@ -11,6 +11,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.61.0] - 2026-08-12
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.11.0`** (`246fd14`) to **`v1.11.1`** (`f57aa3f`), a test-harness portability patch. No source file outside `tests/` changed: the spine stays at 30 checks, the Standard pin stays at v0.12, and **no plugin's tier or exit code moves**.
+- **Why it exists, because the finding is more useful than the fix.** v1.11.0 shipped a test that resolved `bash` through `PATH`. On Windows that resolution depends on the invoking shell: from Git Bash it finds a bash sharing the Windows filesystem, and from PowerShell it finds the Windows Subsystem for Linux launcher, which does not inherit Windows environment variables. A variable the test had just set vanished crossing that boundary, the script wrote to a path that resolved to a Linux root, and it died before producing output. Since the publish step runs the test suite first, **the project could not be published from the default Windows shell at all**.
+- **No amount of CI would have caught it.** Every Linux build machine has a real `bash`, so the test passes there forever. It surfaced only because a maintainer ran the published instructions in their own terminal.
+- The fix asks each candidate shell to prove itself rather than judging it by its path: it must exit 0 after echoing back a randomly-named environment variable and writing a randomly-named token where the calling process can read it. Cut behind four review rounds and seven findings, four of them in the fix for the fix.
+- **L4 version agreement verified before the re-pin** across all five places the version is written: the tag, `library.json`, `package.json`, `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`, all `1.11.1`. `246fd14` was confirmed to be exactly the `v1.11.0` tag commit before it was replaced.
+- **L3 unchanged at Gold (advanced)**, re-verified at the new pin: Advanced, 0 errors, 0 warnings, 948 tests, 0 failures.
+- **Also now on npm.** `agent-skills-toolkit@1.11.1` is published to the public registry, verified from a consumer position by installing from the registry into a clean directory outside the repository and grading a plugin with `npx agent-skills-toolkit <path>`. This registry entry and the npm package are independent distribution channels for the same pinned commit; nothing here depends on the npm publication.
+
 ## [1.60.0] - 2026-08-11
 
 ### Changed
