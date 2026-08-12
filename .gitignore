@@ -8,9 +8,18 @@ _output-jp-library/
 .memsearch/
 .claude/
 
-# Agent working context: local scratch is ignored, but the session-log timeline is committed
-_agent-context/*
-!_agent-context/session-logs/
+# Agent working context: local-only, never committed.
+#
+# This previously read `_agent-context/*` followed by `!_agent-context/session-logs/`, which
+# deliberately UN-ignored session logs and committed them to this repository. That contradicts the
+# standing rule that session logs are local-only working notes: they carry machine paths, candid work
+# narrative, and per-session detail that should not ship in a repository. The negation is removed
+# (2026-08-12), so not-shipping-them is the default rather than something to remember per commit.
+#
+# It also had a concrete cost. Because the negation made those paths stageable, a `git add -A` in this
+# repository swept a session log into a re-pin commit; it was caught before the PR existed, but the
+# trap stayed armed. Staging re-pin files BY NAME is still the right habit, and now a slip is harmless.
+_agent-context/
 
 # OS / editor cruft
 .DS_Store
