@@ -11,6 +11,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.63.0] - 2026-08-12
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.12.0`** (`69810cc`) to **`v1.12.1`** (`13f96bd`), a patch resolving a second adversarial review round. **No plugin's tier or exit code moves:** no check was added, removed or tightened, the spine stays at 30, and the Standard pin stays at v0.12.
+- **Why the patch exists, because the process point is the useful part.** v1.12.0 shipped after one review round. A second was run afterwards on the observation that the code written *in response to* round 1 had never itself been reviewed - four fixes, one of them to the validator-parity harness that had just started gating every pull request. Round 2 returned four findings, three of them high, every one in code round 1 had caused to exist.
+- **What that second round caught.** The parity harness's exception fingerprint was tested against a validator's entire output, so a second unrelated defect in the starter template would have been waved through on a gating check. The marketplace member-identity check could be fooled by a lookalike remote URL, and a folder with no git metadata could beat the correct checkout. The plugin-versus-catalogue test was missing four component surfaces, so a plugin shipping only hooks or MCP servers could have been graded as a catalogue and skipped its own checks.
+- **Collection state after this re-pin:** unchanged and still **RED**, for the two member reasons published with v1.12.0 (`thinking-framework-skills` declares Gold and earns Silver over a `G4` this toolkit caused; `pm-skills` declares no tier). Zero collection-level errors once the entry version agrees with the member's manifest again, which is what this re-pin restores.
+
 ## [1.62.0] - 2026-08-12
 
 ### Changed
