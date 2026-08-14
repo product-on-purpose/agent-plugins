@@ -48,10 +48,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/agent-skills-toolkit.git",
-        "sha": "13f96bd54b95ac9867e224edc05efecedb5a45ae"
+        "sha": "b95fe7a6c42a23d48df85381f371fc403e8a0776"
       },
       "description": "Toolkit and Standard for authoring, validating, governing, and scaling cross-agent skill libraries (Claude Code and Codex) to a tiered Bronze/Silver/Gold quality bar. Follows the agentskills.io specification.",
-      "version": "1.12.1",
+      "version": "1.13.0",
       "strict": true
     },
     {
