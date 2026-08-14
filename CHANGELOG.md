@@ -11,6 +11,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.64.0] - 2026-08-14
+
+### Changed
+
+- Re-pinned `pm-skills` from **`v2.31.1`** (`32e2837`) to **`v2.32.0`** (`e8a641c`), an additive minor. `strict: true` preserved; no other member entry moves.
+- **What the minor adds:** opt-in project memory. A gitignored `.claude/pm-skills.local.md` records a Triple Diamond phase and current initiative once, its SessionStart phase router reads the declared phase instead of guessing from branch names, and eight skills read the file as context so a second skill in a session can use what the first produced. With no file present, every skill and both hooks behave exactly as at v2.31.1, and writes are proposed for confirmation rather than applied. Alongside it, trigger-eval coverage closes as an accounting: 53 skills carry a fixture pack, 15 are excluded by design, 68 accounted for.
+- **Catalog is unchanged at 68 skills and 6 sub-agents**, so nothing this registry advertises about the member's size moves.
+- **The tracked conformance gaps are unchanged by this re-pin**, stated rather than quietly carried: `pm-skills` still ships no `library.json` (the L3 advisory gap) and still retains its embedded self-listing marketplace (the L2 gap, a recorded deliberate back-compat retention, decision D6 in its convergence packet). v2.32.0 did not scope either; both remain where the audit put them.
+- **Collection state after this re-pin:** unchanged for the same member reasons published with 1.63.0. `pm-skills` declares no tier, and nothing in v2.32.0 declares one.
+- **Provenance note worth keeping.** The pinned sha `e8a641c` is the third SHA considered for this tag. Two earlier candidates were verified green and then superseded, because successive adversarial review rounds on the member's own release found defects worth fixing before tagging (a published config example that did not parse, a coverage claim its test suite did not actually assert, and a bypass in the validator added to fix the second). The pinned sha is the one that survived all three rounds.
+
 ## [1.63.0] - 2026-08-12
 
 ### Changed
