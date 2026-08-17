@@ -11,6 +11,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.66.0] - 2026-08-17
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.13.0`** (`b95fe7a`) to **`v1.14.0`** (`90ceea8`), an additive minor.
+  `strict: true` preserved; no other member entry moves.
+- **What the minor is.** Standard 0.13 to 0.14, spine 31 to 34 checks. Seven decisions ratified as a pack, each
+  measured against the whole reference family before ratification - **three of the seven were overturned by their
+  own measurement.** Four false-report bugs closed, and three checks added for files the runtime loads and the
+  gate never read.
+- **The false reports are the substance.** The gate was telling authors a workflow did not exist when it did, that
+  an honestly-declared agent file was not on disk when it was, and that a description failed to say when to use it
+  when it said exactly that in French. **A grading tool's worst failure is not missing a defect; it is reporting
+  one that is not there**, because the author who trusts it changes correct code and the author who does not stops
+  reading it.
+- **Nothing moves red-ward without a pin change.** Every new check carries `since: "0.14"`, so a plugin pinned at
+  or below 0.13 sees no new gate failure. `U17` carries `since` **and** a finding-level `until: "0.15"`, the first
+  check in that spine to hold both. The four bug fixes move green-ward only: each removes a finding that was never
+  true. Measured per member before and after every change - **no family verdict moved at any step.**
+- **What the member added that is not a check.** A vendor-claim watch. Its Standard and four of its checks cite
+  Claude Code behaviour as fact, and every citation was a page somebody read once and a date they wrote down; one
+  day before the release that cost a ratified decision whose premise the vendor's own docs contradict. Those
+  sentences are now pinned and re-checked against the live pages on a schedule and at every release, by a watcher
+  that is write-incapable by construction.
+- **What the member states as found late, carried here rather than quietly dropped.** Two defects surfaced by
+  pre-tag verification rather than by its two adversarial review waves: its published tarball shipped 16.5 kB of
+  library code nothing in the package could reach, and its own release gate would have jammed on 2026-09-14 on a
+  freshness rule whose only remedy was the thing its documentation forbids. Both are fixed **in** 1.14.0 rather
+  than deferred to a patch, and both are now guarded on the class rather than the instance.
+- **Collection state after this re-pin.** Verified at the pinned sha and from the published npm package installed
+  into a clean directory outside the repository: `agent-skills-toolkit` declares `tier: advanced` and its gate
+  reports **0 errors and 0 warnings**, with all 34 checks present including the three new ones. The tracked
+  advisory gaps for other members are untouched by this re-pin.
+
 ## [1.65.0] - 2026-08-16
 
 ### Changed
