@@ -11,6 +11,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.67.0] - 2026-08-21
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.14.0`** (`90ceea8`) to **`v1.15.0`** (`9133014`), an additive minor.
+  `strict: true` preserved; no other member entry moves.
+- **What the minor is.** Standard 0.14 to 0.15, spine unchanged at 34 checks. Two windowed requirements graduate
+  from `warn` to gate-failing `error` - the workflow half of the components mirror (`S3`) and `U17`
+  catalogue-manifest-shape - plus a fifth release gate, `action-pin-watch`, and a three-skill capability family.
+  **No family verdict moves and no member sees a new gate failure without re-pinning**, measured per member
+  before and after rather than argued.
+- **The graduations needed no code change**, which was the point of windowing them: `until: "0.15"` was already
+  committed in both check modules and the Standard ceiling resolves it against each consumer's own pin.
+- **A migration window was observed working end to end for the first time.** `thinking-framework-skills` declared
+  its nine previously-undeclared workflows one day after the ADR that windowed the requirement was ratified,
+  inside the window that ADR created. A warning raised, understood and discharged before its deadline.
+- **Reviewed seven times before the tag.** Adversarial wave 1 returned 10 findings (5 HIGH); five
+  repository-reading rounds over the FIX CODE returned 38 more; adversarial wave 2 returned 5 (1 HIGH).
+  **Fifty-three findings, all closed**, each with a dated closure note. Every round found defects in the previous
+  round's fix code - including a release gate that could not see a stated count wrapped in markdown bold, in the
+  guard whose whole justification is that same drift recurring.
 ## [1.66.0] - 2026-08-17
 
 ### Changed
