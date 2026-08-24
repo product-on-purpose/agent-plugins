@@ -11,6 +11,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.68.0] - 2026-08-24
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.15.0`** (`9133014`) to **`v1.16.0`** (`87108ba`), an additive minor.
+  `strict: true` preserved; no other member entry moves.
+- **What the minor is.** The Standard stays at **0.15** and the spine stays at **34 checks**: none added, none
+  removed. The release gives the evidence the Standard rests on an address, a repo-root `foundation/` tree in
+  three layers (verified first-party sources, machine-checkable claims, and the conclusions drawn from them),
+  plus `tier-basis.md`, which records per tier boundary which vendor fact it depends on and whether that fact
+  is pinned anywhere. All six reference-family plugins were graded before and after and came back
+  **byte-identical**, so no listed member's grade can move as a result of this re-pin.
+- **What the release found and did not fix.** Every pinned claim in that repository sources from a Claude Code
+  page: none pins a Codex fact or a Cowork fact, so the Convergent tier, defined as what both agents support,
+  has pinned evidence for one of them. Each gap is filed rather than closed, because moving a tier is its own
+  decision with its own migration window.
+- **A documentation correction worth knowing about.** That repository's README described the Universal tier as
+  12 checks ending at `U13`; it ships **16**, `U1-U9` and `U11-U17`. Four checks had no description in the
+  README at all. Corrected before the tag, and a guard now compares every check range in its public docs
+  against the live registry.
+- **Verified from published state**, per the re-pin checklist: the pinned sha is the `v1.16.0` tag, CI at that
+  sha is green, and `library.json`, `package.json` and both native manifests all read `1.16.0` there.
 ## [1.67.0] - 2026-08-21
 
 ### Changed
