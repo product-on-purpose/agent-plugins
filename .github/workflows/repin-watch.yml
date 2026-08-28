@@ -1,7 +1,7 @@
 name: repin-watch
 
-# Notices when a listed member has published a release this registry is not pinned to, and opens the
-# re-pin pull request for it.
+# Notices when a listed member has published a release this registry is not pinned to, prepares the
+# re-pin on a branch, and opens an issue asking for the call.
 #
 # THE PROBLEM THIS EXISTS FOR. `agent-skills-toolkit` tagged and GitHub-released v1.16.2 and v1.16.3
 # on 2026-08-25. Three days later this registry was still pinned to v1.16.1, and npm still served
@@ -10,21 +10,29 @@ name: repin-watch
 # have caught it and should not have: it asks whether a pin is VALID, and a pin to an older release is
 # perfectly valid. "Valid" and "current" are different questions. This asks the second one.
 #
-# WHAT IT DOES NOT DO. It never merges. The re-pin arrives as a pull request carrying the
-# CONTRIBUTING.md Section 7 checklist, and a maintainer completes and merges it. Deciding that a new
+# WHY AN ISSUE RATHER THAN A PULL REQUEST, and this is a refusal rather than a workaround. The first
+# real run of this workflow pushed its branch cleanly and then failed with:
+#
+#   pull request create failed: GraphQL: GitHub Actions is not permitted to create or approve
+#   pull requests (createPullRequest)
+#
+# That is the repository setting `can_approve_pull_request_reviews`, and GitHub bundles CREATE and
+# APPROVE into that one toggle. Enabling it would let any workflow in this repository approve a pull
+# request. `main` currently requires no reviews, so the approve half is inert TODAY, and that is
+# exactly what makes enabling it the wrong trade: it would become a self-approval hole on the day
+# someone adds a review requirement, silently, with nothing connecting the two changes. A latent hole
+# is worse than a visible extra click. So the branch is pushed, which needs only `contents: write`,
+# and the decision arrives as an issue carrying the checklist and a one-click compare link. That is
+# the same shape the family already uses for `vendor-watch`, which opens an issue and never edits
+# anything.
+#
+# WHAT IT DOES NOT DO. It never merges, and it never opens the pull request. Deciding that a new
 # release SHOULD be carried is a judgement, because a member can ship a release this registry
 # deliberately skips. Only the noticing is mechanical, and only the noticing is automated here.
 #
-# ONE MEMBER PER PULL REQUEST, deliberately. Every historical re-pin in CHANGELOG.md moves exactly one
-# entry and says "no other member entry moves", which keeps a bisect and a revert meaningful. If two
-# members are behind, this opens a PR for the first and the next scheduled run picks up the second.
-#
-# A KNOWN LIMITATION, stated here rather than discovered later: a pull request created with the
-# built-in GITHUB_TOKEN does NOT trigger this repository's own workflows. That is GitHub's recursion
-# guard, not a misconfiguration, and it means `validate-registry` will NOT run automatically on the PR
-# this job opens. So this job runs `scripts/validate-registry.mjs` itself, against the edited tree,
-# BEFORE opening anything, and records the result in the PR body. If it fails, no PR is opened. The
-# maintainer can also push an empty commit to the branch to make CI run under their own identity.
+# ONE MEMBER PER RUN, deliberately. Every historical re-pin in CHANGELOG.md moves exactly one entry
+# and says "no other member entry moves", which keeps a bisect and a revert meaningful. If two members
+# are behind, the next run picks up the second.
 #
 # Per the repo convention, this workflow holds no logic of its own: every decision lives in
 # scripts/check-registry-pins.mjs, which is the same command a maintainer runs locally.
@@ -49,7 +57,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
-      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
 
@@ -93,19 +101,19 @@ jobs:
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
           echo "branch=repin/$NAME" >> "$GITHUB_OUTPUT"
 
-      # An open PR for this member already carries the decision to the maintainer. Opening a second
+      # An open issue for this member already carries the decision to the maintainer. Opening a second
       # one every morning would be noise, and noise is how a real signal gets ignored.
-      - name: Skip if a re-pin PR for this member is already open
+      - name: Skip if a re-pin issue for this member is already open
         id: existing
         if: ${{ steps.pick.outputs.name != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.pick.outputs.branch }}
         run: |
-          COUNT="$(gh pr list --head "$BRANCH" --state open --json number --jq 'length')"
+          COUNT="$(gh issue list --state open --search "$BRANCH in:body" --json number --jq 'length')"
           echo "open=$COUNT" >> "$GITHUB_OUTPUT"
           if [ "$COUNT" != "0" ]; then
-            echo "A re-pin PR for $BRANCH is already open; nothing to do." >> "$GITHUB_STEP_SUMMARY"
+            echo "A re-pin issue for $BRANCH is already open; nothing to do." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Apply the re-pin
@@ -124,15 +132,15 @@ jobs:
             echo "to_registry=$(node -p 'require("./applied.json").toRegistry')"
           } >> "$GITHUB_OUTPUT"
 
-      # The load-bearing step, because the PR this job opens will NOT trigger CI. If the edited
-      # registry does not validate, nothing is opened and the job fails visibly.
-      - name: Validate the edited registry (this PR will not trigger CI, so validate here)
+      # The load-bearing step. Nothing is pushed and no issue is raised unless the edited registry
+      # validates, so a maintainer is never asked to review a change that was never checked.
+      - name: Validate the edited registry before anything leaves this job
         if: ${{ steps.apply.outcome == 'success' }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/validate-registry.mjs
 
-      - name: Open the re-pin pull request
+      - name: Push the branch and open an issue carrying the checklist
         if: ${{ steps.apply.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -147,38 +155,27 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
           git add .claude-plugin/marketplace.json CHANGELOG.md
-          git commit -m "registry(${TO_REG}): re-pin ${NAME} to v${TO_V}
-
-          Noticed by repin-watch: ${NAME} published v${TO_V} while this registry was still
-          pinned to v${FROM_V}. strict: true preserved; no other member entry moves.
-
-          validate-registry.mjs was run against this tree before the PR was opened, because a
-          PR created with GITHUB_TOKEN does not trigger this repository's own workflows."
-          git push -u origin "$BRANCH"
+          git commit -m "registry(${TO_REG}): re-pin ${NAME} to v${TO_V}" \
+            -m "Noticed by repin-watch: ${NAME} published v${TO_V} while this registry was still pinned to v${FROM_V}. strict: true preserved; no other member entry moves." \
+            -m "validate-registry.mjs ran green against this exact tree inside the job, before the branch was pushed."
+          git push -u origin "$BRANCH" --force-with-lease
+          COMPARE="https://github.com/${GITHUB_REPOSITORY}/compare/main...${BRANCH}?expand=1"
           {
-            echo "\`${NAME}\` published **v${TO_V}** while this registry was pinned to **v${FROM_V}**."
-            echo ""
-            echo "Registry \`metadata.version\` bumped to **${TO_REG}**. \`strict: true\` preserved; no other member entry moves."
-            echo ""
-            echo "**\`validate-registry.mjs\` passed against this tree before the PR was opened.** It will not run"
-            echo "automatically here: a PR created with the built-in \`GITHUB_TOKEN\` does not trigger this"
-            echo "repository's workflows, which is GitHub's recursion guard rather than a misconfiguration. Push an"
-            echo "empty commit to this branch if you want a CI run under your own identity."
-            echo ""
-            echo "Opened by \`repin-watch\`. **This automation does the noticing, not the deciding** - a member can"
-            echo "ship a release this registry deliberately skips, so the checklist below is yours to complete."
-            echo ""
-            echo "## Re-pin checklist (CONTRIBUTING.md Section 7)"
-            echo ""
-            echo "- [ ] The pinned \`sha\` sits on release tag v${TO_V}, and CI at that sha is green"
-            echo "- [ ] Versions agree: registry entry == release tag == library.json == plugin.json"
-            echo "- [ ] The plugin repo's CHANGELOG.md has the v${TO_V} entry"
-            echo "- [ ] Registry \`metadata.version\` bumped; entry added to this repo's CHANGELOG.md"
-            echo "- [ ] \`strict: true\` preserved; registry \`validate\` check green"
-          } > pr-body.md
-          gh pr create --base main --head "$BRANCH" \
+            printf '`%s` published **v%s** while this registry is pinned to **v%s**.\n\n' "$NAME" "$TO_V" "$FROM_V"
+            printf 'The re-pin is prepared and pushed on branch `%s`, with registry `metadata.version` bumped to **%s**. `strict: true` preserved; no other member entry moves.\n\n' "$BRANCH" "$TO_REG"
+            printf '**Open the pull request:** %s\n\n' "$COMPARE"
+            printf '`validate-registry.mjs` passed against that exact tree inside the job. This workflow opens an issue rather than a pull request on purpose: creating one from Actions needs a repository setting that also lets any workflow APPROVE pull requests, and that would become a self-approval hole the day `main` gains a review requirement. Pushing a branch and asking for one click leaves review intact.\n\n'
+            printf 'This automation does the noticing, not the deciding. A member can ship a release this registry deliberately skips.\n\n'
+            printf '## Re-pin checklist (CONTRIBUTING.md Section 7)\n\n'
+            printf -- '- [ ] The pinned `sha` sits on release tag v%s, and CI at that sha is green\n' "$TO_V"
+            printf -- '- [ ] Versions agree: registry entry == release tag == library.json == plugin.json\n'
+            printf -- '- [ ] The plugin repository CHANGELOG.md has the v%s entry\n' "$TO_V"
+            printf -- '- [ ] Registry `metadata.version` bumped; entry added to this repository CHANGELOG.md\n'
+            printf -- '- [ ] `strict: true` preserved; registry `validate` check green\n'
+          } > issue-body.md
+          gh issue create \
             --title "registry(${TO_REG}): re-pin ${NAME} to v${TO_V} (${TO_SHA:0:7})" \
-            --body-file pr-body.md
+            --body-file issue-body.md
 
       - name: Report
         if: ${{ always() }}
