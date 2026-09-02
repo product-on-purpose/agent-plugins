@@ -27,6 +27,14 @@ This repo has its own version line in `metadata.version` (independent of any plu
 3. Run `node scripts/validate-registry.mjs` locally (set `GITHUB_TOKEN` to avoid the unauthenticated rate limit; `gh auth token` works).
 4. Open a PR. CI must pass before merge.
 
+**You should rarely do this by hand.** `repin-watch` (daily, plus `workflow_dispatch`) surveys every pinned member against its latest GitHub release, prepares the edit on a `repin/<member>` branch, and opens an issue carrying the Section 7 checklist. Run it on demand with:
+
+```bash
+gh workflow run repin-watch.yml --repo product-on-purpose/agent-plugins
+```
+
+**A known gap, and the proposal to close it:** the survey is a daily poll, and its scheduled runs have been observed starting five to seven hours after the nominal `0 6 * * *`, because GitHub defers scheduled events under load. A member release can therefore sit undelivered for a day plus drift. On 2026-09-01 pm-skills tagged and published v2.33.0 while this registry served v2.32.0, and no automation had yet noticed. See [`orchestration/specs/auto-repin.md`](orchestration/specs/auto-repin.md) for the design that inverts the default so delivery is automatic and skipping is the deliberate act, along with the evidence that the current human gate has permitted four delivery failures while exercising judgement exactly once.
+
 ## CI contract (`scripts/validate-registry.mjs`, wired in `.github/workflows/validate-registry.yml`)
 
 Runs on push/PR to `main` and on demand. Enforcing: CI fails and blocks merge on any of these.
