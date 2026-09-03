@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.74.0"
+    "version": "1.75.0"
   },
   "plugins": [
     {
@@ -70,10 +70,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/product-lifecycle-templates.git",
-        "sha": "e501e046c40db01a3f5aea62a0c9ca0f6e9a48d6"
+        "sha": "aaa1bc22ac5a51dd4dfa67f49972d8af5412ac8d"
       },
-      "description": "26 researched product-lifecycle document templates covering the complete Tier-1 floor of a 205-type artifact catalog: PRD, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes and status report. Each ships a lean and a full template, a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
-      "version": "0.4.0",
+      "description": "27 researched product-lifecycle document templates covering the complete Tier-1 floor of a 205-type artifact catalog: PRD, epic, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes and status report. Each ships a lean and a full template, a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
+      "version": "0.5.0",
       "strict": true
     }
   ]
