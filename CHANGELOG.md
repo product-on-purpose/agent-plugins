@@ -13,6 +13,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.75.0] - 2026-09-03
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.4.0`** (`e501e04`) to **`v0.5.0`** (`aaa1bc2`).
+  No other member entry moves.
+- **This re-pin skips no release, but the previous one did.** The member released `v0.4.0` on 2026-08-21
+  and it was pinned; `repin-watch` had earlier caught the same repository sitting at `v0.3.1` against a
+  released `v0.4.0`, which is recorded under Unreleased above. This entry moves it current again, by hand
+  rather than by the watcher, because the release and the re-pin were done in one sitting.
+- The member's `description` moves from 26 to 27 templates and names `epic` in the type list, and the
+  README row follows. `v0.5.0` adds the `epic` bundle, the first template the member built under its own
+  maintainer-preference build order rather than from a plan.
+- Contract check before pinning: clauses **L1 through L4 are MUST and the pinned tree satisfies all four**
+  (native plugin at the root, root `library.json` binding the Standard at Advanced, versions agreeing
+  across the tag, `library.json` and every native manifest, and a `CHANGELOG.md` entry for the release).
+  The pinned `sha` is the **commit** the tag points at, not the annotated tag object.
+- **L5 is not satisfied by this member and is not being treated as if it were.** It has no documentation
+  site at all. L5 is a SHOULD on a stated path to MUST, so this does not block the listing, but the
+  clause's own prose still says "all four current members conform today" while this registry now lists
+  **six**. That sentence is this repository's to correct, and is left alone here rather than edited
+  inside a re-pin.
+
 ## [1.74.0] - 2026-09-02
 
 ### Changed
