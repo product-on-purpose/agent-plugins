@@ -13,6 +13,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.77.0] - 2026-09-11
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.5.0`** (`aaa1bc2`) to **`v0.6.0`** (`ca174fc`).
+  No other member entry moves.
+- **The listing served `v0.5.0` for five days after `v0.6.0` released.** The member tagged `v0.6.0` on
+  2026-09-06 and this registry was never moved, so anyone installing in that window received a tree
+  without the release's entire headline feature. `repin-watch` did not open this one; it was done by
+  hand, at the member maintainer's direction.
+- The member's `description` gains its MCP server, which is what `v0.6.0` is for: five tools that let an
+  agent search the catalog, fetch any of the 58 template variants, fetch a grading pack, and validate or
+  stamp a filled document. The old description sold the 27-bundle floor alone and would have gone on
+  describing a release behind the pinned one.
+- Contract check before pinning: clauses **L1 through L4 are MUST and the pinned tree satisfies all four**,
+  verified at the tag rather than at the member's `main`: native plugin at the root
+  (`.claude-plugin/plugin.json` at `0.6.0`), root `library.json` binding the Standard at `advanced`
+  (`standard: 0.12`), versions agreeing across the tag, `library.json` and the native manifest, and a
+  `CHANGELOG.md` entry for the release. **The pinned `sha` is the commit the tag points at (`ca174fc`),
+  not the annotated tag object (`bf2ef73`)**, which for this member are two different objects.
+- **L5 is still not satisfied and is still not being treated as if it were.** The member has no
+  documentation site. What changed on 2026-09-11 is that it now has a ratified plan for one and a
+  decision record adopting it, which is a stated path and not a site; L5 is a SHOULD on a stated path to
+  MUST, so this does not block the listing and does not discharge the clause either.
+- **Housekeeping this entry does not do.** `metadata.version` was bumped to `1.76.0` by the
+  `thinking-framework-skills` re-pin and **no `[1.76.0]` section was ever written here**, so this file
+  jumps `1.75.0` to `1.77.0`. That gap is left for whoever made it rather than reconstructed from a
+  commit title inside an unrelated re-pin.
+
 ## [1.75.0] - 2026-09-03
 
 ### Changed
