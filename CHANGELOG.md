@@ -13,6 +13,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.79.0] - 2026-09-12
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.6.0`** (`ca174fc`) to **`v0.7.0`** (`b5c2a43`).
+  No other member entry moves.
+- **This re-pin carries a fix that had reached no user.** The member's `v0.6.0` shipped install
+  instructions for its MCP server that could not work - `pip install mcp` resolves to an SDK major the
+  server cannot import - and this registry was pinned to exactly that tree, including through yesterday's
+  re-pin, which moved the listing from `v0.5.0` to `v0.6.0` and so moved it onto the broken advice. The
+  member merged the fix on 2026-09-11 and released it today; **a merge is not a release, and a release is
+  not a re-pin.** Anyone who installed from this listing between 2026-09-06 and today was told to run a
+  command that leaves the server unable to start; the fix for them is `python3 -m pip install "mcp<2"`.
+- Contract check before pinning: clauses **L1 through L4 are MUST and the pinned tree satisfies all four**,
+  verified at the tag rather than at the member's `main`. **The pinned `sha` is the commit the tag points
+  at (`b5c2a43`), not the annotated tag object (`e692c8b`).** The member's own release process now states
+  that distinction in writing, after it was nearly got wrong here yesterday.
+- **L5 is still not satisfied and is still not treated as if it were.** The member has no documentation
+  site; it has a ratified plan and an adopting decision record, which is a stated path and not a site.
+- **Housekeeping this entry again does not do, and it has now recurred.** `metadata.version` reached
+  `1.76.0` and `1.78.0` through two `thinking-framework-skills` re-pins and **neither wrote a section
+  here**, so this file jumps 1.75.0, 1.77.0, 1.79.0 with two holes. Yesterday's entry flagged the first.
+  A gap that recurs after being reported is a process defect rather than an oversight, and the honest fix
+  is a check that fails when `metadata.version` moves without a matching section - not a third apology.
+
 ## [1.77.0] - 2026-09-11
 
 ### Changed
