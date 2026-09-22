@@ -13,6 +13,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.84.0] - 2026-09-22
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.10.0`** (`948ac4b`) to **`v0.11.0`** (`d60096f`).
+
+  ```
+  sha              948ac4b -> d60096f
+  entry version    0.10.0  -> 0.11.0
+  metadata.version 1.83.0  -> 1.84.0
+  ```
+
+  **A routine re-pin.** The member's `v0.11.0` replaced two estimated per-bundle build costs with a
+  measured one, and both estimates were wrong by between 20 and 30 times. Nothing in it changes the
+  member's install surface, its five MCP tools, or the shape of anything a consumer calls, so unlike
+  `1.83.0` this carries no correctness urgency.
+
+  **The pinned sha is the release commit, not the member's current `main`.** Clause L4 requires the
+  pinned sha to sit on a release tag, and the member has since merged two documentation-only PRs that
+  are not yet tagged. They arrive with its next release.
+
 ## [1.83.0] - 2026-09-21
 
 ### Changed
