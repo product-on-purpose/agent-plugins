@@ -140,6 +140,47 @@ async function main() {
     warn("meta", "`metadata.version` should be a SemVer string");
   }
 
+  // --- Check 8: the current metadata.version has a CHANGELOG section ---
+  //
+  // WHY THIS IS A CHECK AND NOT A REMINDER. CONTRIBUTING.md L4 says this registry "holds itself to
+  // the same bar" it holds members to: every re-pin bumps `metadata.version` AND adds a CHANGELOG
+  // entry. The second half kept being skipped. Versions 1.76.0, 1.78.0 and 1.81.0 each moved the
+  // registry forward and wrote no section, so the changelog reads 1.75.0, 1.77.0, 1.79.0, 1.80.0
+  // around the holes and the record of why those bumps happened is simply gone.
+  //
+  // The re-pin that added 1.80.0 said it outright: "A gap reported twice and recurring a third time
+  // is a process defect, not an oversight, and the honest fix is a check that fails when
+  // metadata.version moves without a matching section - not a fourth apology in a fourth re-pin."
+  // This is that check. It is enforcing, because an advisory version of it is the reminder that
+  // already failed three times.
+  //
+  // Scope, deliberately narrow: it asserts a section exists for the CURRENT version only. It does
+  // not backfill history and does not fail on the three existing holes, because failing CI on a
+  // past omission would block every unrelated pull request until someone invented a changelog entry
+  // for a bump they did not make.
+  const changelogPath = join(ROOT, "CHANGELOG.md");
+  const currentVersion = reg?.metadata?.version;
+  if (typeof currentVersion === "string") {
+    let changelog = null;
+    try {
+      changelog = readFileSync(changelogPath, "utf8");
+    } catch {
+      fail(8, "CHANGELOG.md is missing; every registry version needs a recorded reason");
+    }
+    if (changelog !== null) {
+      // "## [1.82.0] - 2026-09-21", tolerating any date suffix or none.
+      const heading = new RegExp(`^##\\s*\\[${currentVersion.replace(/\./g, "\\.")}\\]`, "m");
+      if (!heading.test(changelog)) {
+        fail(
+          8,
+          `metadata.version is ${currentVersion} but CHANGELOG.md has no "## [${currentVersion}]" section. ` +
+            "Every bump records why it happened (CONTRIBUTING.md L4). Add the section in the same commit " +
+            "that moves the version."
+        );
+      }
+    }
+  }
+
   const plugins = Array.isArray(reg.plugins) ? reg.plugins : [];
 
   for (const [i, p] of plugins.entries()) {

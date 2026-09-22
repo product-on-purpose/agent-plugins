@@ -13,6 +13,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.82.0] - 2026-09-21
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.8.0`** (`f0feef9`) to **`v0.9.0`** (`b1b36bd`).
+
+  ```
+  sha              f0feef9 -> b1b36bd
+  entry version    0.8.0   -> 0.9.0
+  metadata.version 1.81.0  -> 1.82.0
+  ```
+
+  **The member now has a documentation site, so L5 changes status.** The 1.80.0 re-pin recorded L5
+  as "still not satisfied and not treated as if it were: no documentation site, a ratified plan and
+  an adopting ADR, which is a stated path and not a site." That path has been walked:
+  <https://product-on-purpose.github.io/product-lifecycle-templates/> serves all 30 bundles,
+  generated from the member's own tree, and it ships the clause-14.11 guards rather than only
+  claiming them. Its four link, route, edit-link and favicon guards run **between `astro build` and
+  `upload-pages-artifact`**, so the artifact that is checked is the artifact that deploys - which is
+  the one thing the family's reference implementation does not do.
+
+  **Two facts in the listing description were true at `v0.8.0` and false at `v0.9.0`**, and both are
+  corrected here rather than left to rot: the member ships **five** Tier-2 types, not three, and the
+  MCP server addresses **63** template variants, not 58. The description also now names the site.
+
+  L1-L4 verified AT THE TAG. The pinned sha is the COMMIT the tag points at (`b1b36bd`), not the
+  annotated tag object (`cf91624`), which for this member are again two different objects. CI at
+  that sha is green on all three checks: `gate`, `build` and `deploy`.
+
+### Added
+
+- **`validate-registry.mjs` check 8: `metadata.version` must have a matching `CHANGELOG.md` section.**
+
+  **This is the check the 1.80.0 re-pin asked for, and it is overdue.** That entry said: "A gap
+  reported twice and recurring a third time is a process defect, not an oversight, and the honest
+  fix is a check that fails when `metadata.version` moves without a matching section - not a fourth
+  apology in a fourth re-pin." It then recurred anyway: **1.81.0** bumped the registry and wrote no
+  section, so the holes now stand at **1.76.0, 1.78.0 and 1.81.0**.
+
+  The check is **enforcing**, because an advisory version of it is the reminder that already failed
+  three times. Its scope is deliberately narrow: it asserts a section exists for the **current**
+  version only. It does not backfill history and does not fail on the three existing holes, because
+  failing CI on a past omission would block every unrelated pull request until someone invented a
+  changelog entry for a bump they did not make.
+
+  Verified by running it against this tree **before** the section above existed, and observing it
+  fail. A check that has never gone red is a report, not a gate.
+
 ## [1.80.0] - 2026-09-14
 
 ### Changed
