@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.86.0"
+    "version": "1.87.0"
   },
   "plugins": [
     {
@@ -70,10 +70,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/product-lifecycle-templates.git",
-        "sha": "1b96a043c1ba8ccfe8f063406353edc7b6e8ded6"
+        "sha": "2cb05303a541fe0e14aad6552ffaf0f7d3a87d10"
       },
-      "description": "30 researched product-lifecycle document templates covering the complete Tier-1 floor of a 205-type artifact catalog, plus five Tier-2 types: PRD, epic, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes, status report, spike report, project retrospective and test summary report. Each ships a lean and a full template, a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Every bundle is also readable at https://product-on-purpose.github.io/product-lifecycle-templates/. An MCP server ships with it, giving an agent five tools to search the catalog, fetch any of the 63 template variants, fetch a grading pack, and validate or stamp a filled document; every tool returns a typed {ok, data, error} envelope as structuredContent. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
-      "version": "0.11.2",
+      "description": "31 researched product-lifecycle document templates covering the complete Tier-1 floor of a 205-type artifact catalog, plus six Tier-2 types: PRD, epic, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes, status report, spike report, project retrospective, test summary report and launch coordination checklist. Each ships a lean template and, for 29 of the 31, a full one, plus a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Every bundle is also readable at https://product-on-purpose.github.io/product-lifecycle-templates/. An MCP server ships with it, giving an agent five tools to search the catalog, fetch any of the 65 template variants, fetch a grading pack, and validate or stamp a filled document; every tool returns a typed {ok, data, error} envelope as structuredContent. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
+      "version": "0.12.0",
       "strict": true
     }
   ]
