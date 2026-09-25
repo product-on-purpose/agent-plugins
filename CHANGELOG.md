@@ -13,6 +13,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.90.0] - 2026-09-24
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` from **`v0.16.0`** (`a08c4e6`) to **`v0.17.0`** (`b8c6cb9`).
+
+  ```
+  sha              a08c4e6 -> b8c6cb9
+  entry version    0.16.0  -> 0.17.0
+  metadata.version 1.89.0  -> 1.90.0
+  ```
+
+  A minor release on the member's side with no catalog change (56 core skills + 7 contested lenses).
+  It adds two reasoning subagents, `think-stress-test-decision` and `think-audit-reasoning`, each
+  of which runs its recipe's whole chain in its own context and returns only the finished artifact.
+  They are Claude Code only (Codex plugins cannot ship subagents), so what installs on Codex does not
+  change. The listing description and README row are unchanged: the member's manifest description
+  did not move in this release.
+
 ## [1.89.0] - 2026-09-23
 
 ### Changed
