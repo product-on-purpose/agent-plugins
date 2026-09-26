@@ -13,6 +13,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.91.0] - 2026-09-25
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.13.0`** (`afc0554`) to **`v0.14.0`** (`34685bd`).
+
+  ```
+  sha              afc0554 -> 34685bd
+  entry version    0.13.0  -> 0.14.0
+  metadata.version 1.90.0  -> 1.91.0
+  ```
+
+  A minor release on the member's side carrying two bundles at once: `announcement-internal-comms`, the
+  34th, and `change-request`, the 35th, the ninth and tenth Tier-2 types, both in its `delivery-docs`
+  family. The listing description moves with them (35 templates, ten Tier-2 types, a full variant for 31
+  of the 35, 71 template variants), and the README row the same way. `announcement-internal-comms` ships
+  lean only, which is why the full-variant count rises by one for two bundles.
+
 ## [1.90.0] - 2026-09-24
 
 ### Changed
