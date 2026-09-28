@@ -13,6 +13,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Upgraded `CONTRIBUTING.md` into the Standard-bound thin listing contract (clauses L1-L6, the re-pin checklist, and the enforcement ratchet), per `standards/GOVERNANCE.md` Section 2. Committed the program roadmap and convergence packet docs (written 2026-06-07) and queued the family conformance audit (`docs/internal/convergence/audit-plan.md`: one packet per member, writing-style-catalog first). Registry data unchanged.
 - Ran the family conformance audits (2026-06-10): packets added for `agent-skills-toolkit` (audited @ `1fd44b7`, L1-L6 PASS, P0: 0), `thinking-framework-skills` (audited @ `d0b4a33`, L1-L6 PASS, P0: 0), and `pm-skills` (audited @ `ac0acfb`, P0: 2 - no `library.json`, embedded marketplace). Executed the `writing-style-catalog` convergence packet (its repo PR #19, open: `library.json` at tier universal / standard 0.11, skill slug canonicalized, embedded marketplace removed). Applied the audits' contract corrections to `CONTRIBUTING.md`: L2 scoped to machine-readable marketplace association (install docs are expected, not violations), L1 defers frontmatter law to the pinned Standard, L4 version agreement covers every emitted native manifest, L6 lineage note refreshed with the observed cross-member variance. Registry data unchanged.
 
+## [1.92.0] - 2026-09-27
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.17.1`** (`4ba1ae6`) to **`v1.19.0`** (`417afed`).
+  `strict: true` preserved; no other member entry moves.
+
+  ```
+  sha              4ba1ae6 -> 417afed
+  entry version    1.17.1  -> 1.19.0
+  metadata.version 1.91.0  -> 1.92.0
+  ```
+
+  This one re-pin carries two member releases. v1.18.0 documented and renamed the member's GitHub Action and published the full report beside the badge; it changed no check. v1.19.0 brought the member current with Claude Code and Codex: a new warn-first check for a Codex command that disappears without a trace, two tightened Gold checks, eight audit bug fixes, and the Standard at 0.16. The listing description is unchanged: nothing in either release changes what the plugin is for, and the listing contract's L4 (release hygiene) in `CONTRIBUTING.md` requires version agreement, not description agreement.
+
+- Applied by hand with `node scripts/check-registry-pins.mjs --apply agent-skills-toolkit`, not by `repin-watch`. The watch noticed v1.18.0 on 2026-09-04 and opened #98 with a prepared branch, which was never merged. From then on it logged `BEHIND ... latest v1.19.0` every day and did nothing more, because it skips a member while an issue naming that member's branch is open. This entry supersedes #98 and reuses its branch name.
+
 ## [1.91.0] - 2026-09-25
 
 ### Changed
