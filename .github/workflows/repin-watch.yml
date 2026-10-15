@@ -103,6 +103,9 @@ jobs:
 
       # An open issue for this member already carries the decision to the maintainer. Opening a second
       # one every morning would be noise, and noise is how a real signal gets ignored.
+      # The branch is QUOTED in the search. Unquoted, GitHub splits `repin/<name>` into separate words
+      # and matches any open issue whose body contains them all, in any order. The open bug report about
+      # this watch (#117) names every member, so it matched every run from 2026-10-05 to 2026-10-13.
       - name: Skip if a re-pin issue for this member is already open
         id: existing
         if: ${{ steps.pick.outputs.name != '' }}
@@ -110,7 +113,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.pick.outputs.branch }}
         run: |
-          COUNT="$(gh issue list --state open --search "$BRANCH in:body" --json number --jq 'length')"
+          COUNT="$(gh issue list --state open --search "\"$BRANCH\" in:body" --json number --jq 'length')"
           echo "open=$COUNT" >> "$GITHUB_OUTPUT"
           if [ "$COUNT" != "0" ]; then
             echo "A re-pin issue for $BRANCH is already open; nothing to do." >> "$GITHUB_STEP_SUMMARY"
