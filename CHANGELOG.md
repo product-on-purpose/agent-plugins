@@ -17,6 +17,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.99.0] - 2026-10-15
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` from **`v0.18.1`** (`4e4d8ee`) to **`v0.18.2`** (`5304a9e`).
+
+  ```
+  sha              4e4d8ee -> 5304a9e
+  entry version    0.18.1  -> 0.18.2
+  metadata.version 1.98.0  -> 1.99.0
+  ```
+
+  A patch release on the member's side with no catalog change and no evidence-tier change (56 core
+  skills + 7 contested lenses). The member audited its own published figures and corrected ten.
+  What installs changes: the Evidence lines in nine `SKILL.md` files, fourteen evidence dossiers,
+  one eval file's baseline prose, and the `think-woop` sidecar. Two corrections change what a user is told about effect size: WOOP rests
+  on 21 controlled field studies with a small-to-medium effect, not "25+ RCTs", and natural
+  frequencies lift accuracy from 16% to 46% in the original study, not "10% to 50-90%". The listing
+  description and README row are unchanged, because the member's manifest description did not move.
+
 ## [1.98.0] - 2026-10-15
 
 ### Changed
