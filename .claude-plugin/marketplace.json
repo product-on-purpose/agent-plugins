@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.101.0"
+    "version": "1.102.0"
   },
   "plugins": [
     {
@@ -59,10 +59,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/critique-skills.git",
-        "sha": "30ec6170b6c04bc2a7828804335f1181af0b8878"
+        "sha": "53eac2b6c2201dc94705e488a7c39ea0d66d64dd"
       },
-      "description": "Rubric-cited, machine-parseable critique skills that produce measured, evidence-graded findings (usability, accessibility, clarity) instead of freeform opinion. Use when you need a structured review of an interface, document, or piece of writing with defects cited against a rubric and reported in a machine-parseable output.",
-      "version": "0.1.6",
+      "description": "Rubric-cited, machine-parseable critique skills that produce measured, evidence-graded findings instead of freeform opinion, in seven domains: usability, accessibility, clarity, argument, documentation, microcopy and forms. Use when you need a structured review of an interface, document, or piece of writing with defects cited against a rubric and reported in a machine-parseable output.",
+      "version": "0.2.0",
       "strict": true
     },
     {
