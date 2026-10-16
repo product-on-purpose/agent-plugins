@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.98.0"
+    "version": "1.99.0"
   },
   "plugins": [
     {
@@ -26,10 +26,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/thinking-framework-skills.git",
-        "sha": "4e4d8ee6405e7b968f8b846c42ffc50e58de26dd"
+        "sha": "5304a9ea20f2d60fc9177d8b3b490b207c8a2d03"
       },
       "description": "Evidence-graded, agent-executable thinking-method skills: each is reduced to its working mechanism, graded honestly on its evidence, and produces a concrete artifact. Includes a published Framework Library, a research engine, and routing/applicator tools. Follows the agentskills.io specification.",
-      "version": "0.18.1",
+      "version": "0.18.2",
       "strict": true
     },
     {
