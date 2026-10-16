@@ -17,6 +17,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.102.0] - 2026-10-15
+
+### Changed
+
+- Re-pinned `critique-skills` from **`v0.1.6`** (`30ec617`) to **`v0.2.0`** (`53eac2b`).
+
+  ```
+  sha              30ec617 -> 53eac2b
+  entry version    0.1.6   -> 0.2.0
+  metadata.version 1.101.0 -> 1.102.0
+  ```
+
+  A minor release on the member's side. It adds `critique-forms`, the seventh skill, and its
+  benchmark harness now runs each skill against a copy of the plugin with no answer keys in it,
+  under a pinned Claude Code CLI. `critique-accessibility` now says it checks 22 of WCAG 2.2's 55
+  Level A and AA success criteria. The listing description moves with it: it named three domains,
+  the launch skills, and now names all seven, matching the member's own `library.json` at the tag.
+  The README row names no domains and does not move. Applied by hand with
+  `check-registry-pins.mjs --apply`, the day the member released, on the maintainer's go.
+  `strict: true` preserved; no other member entry moves.
+
 ## [1.101.0] - 2026-10-15
 
 ### Changed
