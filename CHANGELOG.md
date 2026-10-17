@@ -17,6 +17,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.104.0] - 2026-10-17
+
+### Changed
+
+- Re-pinned `pm-skills` from **`v2.33.0`** (`7a42570`) to **`v2.34.0`** (`31e4692`).
+  `strict: true` preserved; no other member entry moves.
+- Opened automatically by `repin-watch`, which noticed that product-on-purpose/pm-skills had published v2.34.0 while this registry was still pinned to v2.33.0. The re-pin checklist in `CONTRIBUTING.md` Section 7 is in the pull request body and is the maintainer's to complete; this automation does the noticing, not the deciding.
+
 ## [1.103.0] - 2026-10-16
 
 ### Changed
