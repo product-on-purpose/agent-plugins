@@ -17,6 +17,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.105.0] - 2026-10-17
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` from **`v0.18.3`** (`9337b00`) to **`v0.18.4`** (`d1e3264`).
+
+  ```
+  sha              9337b00 -> d1e3264
+  entry version    0.18.3  -> 0.18.4
+  metadata.version 1.104.0 -> 1.105.0
+  ```
+
+  A patch release on the member's side with no catalog change and no evidence-tier change (56 core
+  skills + 7 contested lenses). The member's maintainer decided the six items its two figure audits
+  had left open: a retracted 2002 study is flagged and no longer counted as evidence, four skills
+  gained checked caveats, the premortem "30%" wording was corrected, three citations were fixed,
+  four eval answer keys were widened, and the member's gate now ratchets deferred "confirm before a
+  public claim" notes. What installs changes: files in twelve skills, namely four `SKILL.md`
+  Evidence sections (`think-premortem`, `think-natural-frequency-bayesian`, `think-woop`,
+  `think-interval-calibration-check`), six skill evidence dossiers, six `eval/cases.md` files, and
+  `think-framework-advisor`'s worked example and `recommendable.json`. Eight library dossiers under
+  `frameworks/`, which the member's docs site renders, also changed. The listing description and
+  README row are unchanged, because the member's manifest description did not move.
+
 ## [1.104.0] - 2026-10-17
 
 ### Changed
