@@ -17,6 +17,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.106.0] - 2026-10-19
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` from **`v0.18.4`** (`d1e3264`) to **`v0.18.5`** (`96def02`).
+
+  ```
+  sha              d1e3264 -> 96def02
+  entry version    0.18.4  -> 0.18.5
+  metadata.version 1.105.0 -> 1.106.0
+  ```
+
+  A patch release on the member's side with no catalog change and no evidence-tier change (56 core
+  skills + 7 contested lenses). The member checked nine of its eleven deferred "confirm before a
+  public claim" dossier notes against their sources. The checks found that the premortem study
+  measured confidence rather than calibration, so the premortem pages no longer claim better
+  calibration. They also corrected a shareholder-letter year, a misquote, three titles and a
+  co-author's name. What installs changes: eight skill evidence dossiers
+  (`think-abstraction-laddering`, `think-affinity-mapping`, `think-backcasting`,
+  `think-decision-journal`, `think-iceberg-model`, `think-one-way-vs-two-way-door`,
+  `think-premortem`, `think-problem-restatement`). No `SKILL.md`, eval answer key or advisor
+  file changed. On the library side, `frameworks/premortem/dossier.md` changed, two source links
+  and a header comment in `frameworks/registry.mjs` changed, and the member added two maintainer
+  research tools under `scripts/`. The listing description and README row are unchanged, because
+  the member's manifest description did not move.
+
 ## [1.105.0] - 2026-10-17
 
 ### Changed
