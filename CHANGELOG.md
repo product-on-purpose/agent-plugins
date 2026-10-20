@@ -17,6 +17,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.107.0] - 2026-10-19
+
+### Changed
+
+- Re-pinned `thinking-framework-skills` from **`v0.18.5`** (`96def02`) to **`v0.18.6`** (`ecea97e`).
+
+  ```
+  sha              96def02 -> ecea97e
+  entry version    0.18.5  -> 0.18.6
+  metadata.version 1.106.0 -> 1.107.0
+  ```
+
+  A patch release on the member's side with no catalog change and no governing-tier change (56
+  core skills + 7 contested lenses). The member resolved its last two deferred "confirm before a
+  public claim" dossier notes and graded the premortem's confidence effect M rather than
+  S-leaning, because its one peer-reviewed study measured confidence in a deliberately flawed plan,
+  not overconfidence. What installs changes: `skills/think-premortem/SKILL.md` (the Evidence
+  section no longer says the premortem "reduces overconfidence in a plan"), three skill evidence
+  dossiers (`think-issue-tree`, `think-pyramid-principle`, `think-premortem`), and
+  `skills/think-framework-advisor/references/EXAMPLE.md`. No eval answer key or
+  `recommendable.json` changed. On the library side, `frameworks/premortem/dossier.md` and a
+  showcase page changed, along with internal research and backlog records. The listing
+  description and README row are unchanged, because the member's manifest description did not
+  move.
+
 ## [1.106.0] - 2026-10-19
 
 ### Changed
