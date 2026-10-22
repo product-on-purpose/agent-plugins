@@ -17,6 +17,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.109.0] - 2026-10-22
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.20.0`** (`c16e58a`) to **`v0.20.1`** (`c218b69`).
+
+  ```
+  sha              c16e58a -> c218b69
+  entry version    0.20.0  -> 0.20.1
+  metadata.version 1.108.0 -> 1.109.0
+  ```
+
+  A patch release on the member's side with no new bundle. `problem-statement` drops the alias "opportunity
+  statement" and gains "point of view statement", the opportunity statement becomes the member's catalog
+  entry 207, and two decision records specify a design brief and add a fifth admission check. The listing
+  description's catalog count moves from 206 to 207 types; its template, variant and Tier-2 counts do not
+  change, and neither does the README row. Applied by hand, the day the member released, on the
+  maintainer's go. `strict: true` preserved; no other member entry moves.
+
 ## [1.108.0] - 2026-10-21
 
 ### Changed
