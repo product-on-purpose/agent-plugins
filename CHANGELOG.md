@@ -17,6 +17,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.108.0] - 2026-10-21
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.19.0`** (`b95a5d9`) to **`v0.20.0`** (`c16e58a`).
+
+  ```
+  sha              b95a5d9 -> c16e58a
+  entry version    0.19.0  -> 0.20.0
+  metadata.version 1.107.0 -> 1.108.0
+  ```
+
+  A minor release on the member's side carrying two bundles: `test-strategy`, the 48th, and
+  `positioning-statement`, the 49th, which bring the Tier-2 types to twenty-four. The member's build-cost
+  reports now also count the agents a build runs outside its workflows. The listing description moves
+  with it (49 templates, twenty-four Tier-2 types, a full variant for 43 of the 49, 97 template
+  variants), and the README row the same way. Applied by hand with `check-registry-pins.mjs --apply`,
+  the day the member released, on the maintainer's go. `strict: true` preserved; no other member entry
+  moves.
+
 ## [1.107.0] - 2026-10-19
 
 ### Changed
