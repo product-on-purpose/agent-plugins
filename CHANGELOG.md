@@ -17,6 +17,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.110.0] - 2026-10-22
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.20.1`** (`c218b69`) to **`v0.21.0`** (`7c8db5a`).
+
+  ```
+  sha              c218b69 -> 7c8db5a
+  entry version    0.20.1  -> 0.21.0
+  metadata.version 1.109.0 -> 1.110.0
+  ```
+
+  A minor release on the member's side with one new bundle, `design-brief`, its 50th and its second at
+  `define`. The listing description moves from 49 to 50 templates, from a 207-type to a 209-type catalog, from
+  twenty-four to twenty-five Tier-2 types, from 43 to 44 full variants and from 97 to 99 template variants, and
+  its list of types gains the design brief. The README row moves from 49 to 50 templates and from 43 to 44 full
+  variants. Applied by hand, the day the member released, on the maintainer's go. `strict: true` preserved; no
+  other member entry moves.
+
 ## [1.109.0] - 2026-10-22
 
 ### Changed
