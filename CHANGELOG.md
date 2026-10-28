@@ -17,6 +17,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.113.0] - 2026-10-28
+
+### Changed
+
+- Re-pinned `writing-style-catalog` from **`v0.14.0`** (`09bd34a`) to **`v0.15.0`** (`5ac3922`).
+
+  ```
+  sha              09bd34a -> 5ac3922
+  entry version    0.14.0  -> 0.15.0
+  metadata.version 1.112.0 -> 1.113.0
+  ```
+
+  A minor release on the member's side that adds the `marketer` voice, its first voice for writing that sells (landing pages, launch copy, and outreach to a reader deciding whether to buy or try something), rendered on all twelve anchor topics. The release also opens the member's adherence evidence page with all three of its results and pins edition 0.17 of the Advanced Skill Library Standard. The listing description, mirrored byte-for-byte from the released `plugin.json`, moves from 97 to 98 entries and from 1193 to 1205 worked examples. The README row carries no counts and does not move. Applied by hand, the day the member released, on the maintainer's go. `strict: true` preserved; no other member entry moves.
+
 ## [1.112.0] - 2026-10-26
 
 ### Changed
