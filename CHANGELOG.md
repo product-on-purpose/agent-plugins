@@ -17,6 +17,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.114.0] - 2026-10-29
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.21.0`** (`9067dcb`) to **`v1.22.0`** (`49a03e0`).
+
+  ```
+  sha              9067dcb -> 49a03e0
+  entry version    1.21.0  -> 1.22.0
+  ```
+
+  A minor release on the member's side: an advisory layer of three screens that report beside the grade
+  without changing it, and the `askit-onboard` skill. The Standard edition stays 0.17. The listing
+  description and the README row do not move.
+- Re-pinned `product-lifecycle-templates` from **`v0.22.0`** (`3d03db6`) to **`v0.22.1`** (`879bd4d`).
+
+  ```
+  sha              3d03db6 -> 879bd4d
+  entry version    0.22.0  -> 0.22.1
+  ```
+
+  A patch release on the member's side: its `library.json` pins Standard 0.17, up from 0.12, and its CI
+  grades it with `agent-skills-toolkit` v1.22.0. No bundle changed, so the listing description and the
+  README row do not move.
+- `metadata.version` moves from 1.113.0 to 1.114.0, one bump for both re-pins. Applied by hand, the day both
+  members released, on the maintainer's go. `strict: true` preserved; no other member entry moves.
+
 ## [1.113.0] - 2026-10-28
 
 ### Changed
