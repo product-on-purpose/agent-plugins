@@ -17,6 +17,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.115.0] - 2026-10-29
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.22.1`** (`879bd4d`) to **`v0.23.0`** (`7fcea68`).
+
+  ```
+  sha              879bd4d -> 7fcea68
+  entry version    0.22.1  -> 0.23.0
+  metadata.version 1.114.0 -> 1.115.0
+  ```
+
+  A minor release on the member's side with one new bundle, `user-research-report`, its 52nd. It completes
+  the member's `research-docs` family. The listing description moves from 51 to 52 templates, from
+  twenty-six to twenty-seven Tier-2 types, from 45 to 46 full variants and from 101 to 103 template variants,
+  and its list of types gains the user research report. The catalog stays at 210 types, because the report
+  already had a catalog row. The README row moves from 51 to 52 templates and from 45 to 46 full variants.
+  Applied by hand, the day the member released, on the maintainer's go. `strict: true` preserved; no other
+  member entry moves.
+
 ## [1.114.0] - 2026-10-29
 
 ### Changed
