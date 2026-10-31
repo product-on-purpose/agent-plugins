@@ -17,6 +17,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.117.0] - 2026-10-30
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.23.0`** (`7fcea68`) to **`v0.24.0`** (`aa4544c`).
+
+  ```
+  sha              7fcea68 -> aa4544c
+  entry version    0.23.0  -> 0.24.0
+  metadata.version 1.116.0 -> 1.117.0
+  ```
+
+  A minor release on the member's side with two new bundles, `lean-ux-canvas` and `lean-canvas`, its 53rd and
+  54th. Each ships one size. The listing description moves from 52 to 54 templates, from a 210-type to a 211-type
+  catalog, from twenty-seven to twenty-nine Tier-2 types, from "46 of the 52" to "46 of the 54" full variants and
+  from 103 to 105 template variants, and its list of types gains the Lean UX Canvas and the Lean Canvas. The
+  catalog grows by one because the Lean UX Canvas was added as entry 211; the Lean Canvas already had a row. The
+  README row moves from 52 to 54 templates; its full-variant count stays at 46. Applied by hand, the day the
+  member released, on the maintainer's go. `strict: true` preserved; no other member entry moves.
+
 ## [1.116.0] - 2026-10-30
 
 ### Changed
