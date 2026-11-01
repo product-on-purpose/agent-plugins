@@ -17,6 +17,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.118.0] - 2026-11-01
+
+### Changed
+
+- Re-pinned `agent-skills-toolkit` from **`v1.22.0`** (`49a03e0`) to **`v1.23.0`** (`eb6bfc3`).
+
+  ```
+  sha              49a03e0 -> eb6bfc3
+  entry version    1.22.0  -> 1.23.0
+  metadata.version 1.117.0 -> 1.118.0
+  ```
+
+  A minor release on the member's side: its evaluation report gains a health number beside the grade, in
+  five categories, and a fourth advisory screen that looks for substance. Neither can change a grade or a
+  badge. The Standard edition stays 0.17. The listing description and the README row do not move,
+  because the release does not change what the member offers in those terms. Applied by hand, the day
+  the member released, on the maintainer's go. `strict: true` preserved; no other member entry moves.
+
 ## [1.117.0] - 2026-10-30
 
 ### Changed
