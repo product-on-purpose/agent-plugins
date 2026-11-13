@@ -17,6 +17,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.122.0] - 2026-11-13
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.25.0`** (`e846c59`) to **`v0.26.0`** (`46da105`).
+
+  ```
+  sha              e846c59 -> 46da105
+  entry version    0.25.0  -> 0.26.0
+  metadata.version 1.121.0 -> 1.122.0
+  ```
+
+  A minor release on the member's side with one new bundle, `platform-device-support-matrix`, its 56th, in one
+  lean size. The listing description moves from 55 to 56 templates and from a 211-type to a 212-type catalog,
+  because the type gained catalog entry 212. It moves from twenty-nine to thirty Tier-2 types, from "47 of the 55"
+  to "47 of the 56" full variants and from 107 to 108 template variants, and its list of types gains the platform
+  and device support matrix. The README row moves from 55 to 56 templates; its full-variant count stays at 47.
+  Applied by hand, the day the member released, on the maintainer's go. `strict: true` preserved; no other member
+  entry moves.
+
 ## [1.121.0] - 2026-11-07
 
 ### Changed
