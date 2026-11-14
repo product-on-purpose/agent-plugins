@@ -17,6 +17,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.124.0] - 2026-11-13
+
+### Changed
+
+- Re-pinned `pm-skills` from **`v2.35.0`** (`9236f26`) to **`v2.35.1`** (`38511f6`).
+
+  ```
+  sha              9236f26 -> 38511f6
+  entry version    2.35.0  -> 2.35.1
+  metadata.version 1.123.0 -> 1.124.0
+  ```
+
+  A documentation patch on the member's side. Its README and docs homepage now state what its
+  tests found, including where a skill adds nothing, and its evals page summarizes every no-skill
+  comparison to date. No skill changes; the catalog stays 68 skills and 6 sub-agents, so the
+  listing description and the README row do not move.
+
 ## [1.123.0] - 2026-11-13
 
 ### Changed
