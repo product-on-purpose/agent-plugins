@@ -17,6 +17,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.125.0] - 2026-11-22
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.26.0`** (`46da105`) to **`v0.27.0`** (`f3674a0`).
+
+  ```
+  sha              46da105 -> f3674a0
+  entry version    0.26.0  -> 0.27.0
+  metadata.version 1.124.0 -> 1.125.0
+  ```
+
+  A minor release on the member's side with two new bundles, `design-principles` and `product-principles`, its
+  57th and 58th, each in one lean size. The listing description moves from 56 to 58 templates and from a 212-type
+  to a 214-type catalog, because the types gained catalog entries 213 and 214. It moves from thirty to thirty-two
+  Tier-2 types, from "47 of the 56" to "47 of the 58" full variants and from 108 to 110 template variants, and its
+  list of types gains design principles and product principles. The README row moves from 56 to 58 templates; its
+  full-variant count stays at 47.
+
 ## [1.124.0] - 2026-11-13
 
 ### Changed
