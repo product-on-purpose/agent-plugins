@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Product on Purpose: thematic AI agent skill and tool collections for product work.",
-    "version": "1.126.0"
+    "version": "1.127.0"
   },
   "plugins": [
     {
@@ -70,10 +70,10 @@
       "source": {
         "source": "url",
         "url": "https://github.com/product-on-purpose/product-lifecycle-templates.git",
-        "sha": "3d90ebc799e229707065367fd43c36b9a246faac"
+        "sha": "7358fd60fc907029364ceafbcb41eee57fd20871"
       },
       "description": "59 researched product-lifecycle document templates covering the complete Tier-1 floor of a 214-type artifact catalog, plus thirty-three Tier-2 types and one Tier-3 type: PRD, epic, user stories, acceptance criteria, backlogs, release notes, ADR, RFC, SDD, risk register, RAID log, KPI dashboard, test plan, test case, bug report, product vision, strategy, roadmap, OKRs, business case, user persona, definition of done, runbook, incident postmortem, retrospective notes, status report, spike report, project retrospective, test summary report, launch coordination checklist, issue log, definition of ready, internal announcement, change request, change log, production readiness review, project brief, experiment design doc, experiment readout, tracking plan, problem statement, North Star metrics, business continuity plan, data dictionary, use case specification, trade study, test strategy, positioning statement, design brief, user research plan, user research report, Lean UX Canvas, Lean Canvas, requirements traceability matrix, platform and device support matrix, design principles, product principles and competitive analysis. Each ships a lean template and, for 48 of the 59, a full one, plus a worked example on one continuous scenario, an operator guide with a self-grade rubric, and the research log every claim traces to. Every bundle is also readable at https://product-on-purpose.github.io/product-lifecycle-templates/. An MCP server ships with it, giving an agent five tools to search the catalog, fetch any of the 112 template variants, fetch a grading pack, and validate or stamp a filled document; every tool returns a typed {ok, data, error} envelope as structuredContent. Use when writing or grading a product document and you want a shape that is defensible rather than invented.",
-      "version": "0.28.0",
+      "version": "0.28.1",
       "strict": true
     }
   ]
