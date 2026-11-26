@@ -17,6 +17,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `repin-watch` no longer mistakes any issue that mentions a member for that member's open re-pin issue. Its skip step searched open issues for the branch name without quotes. GitHub splits an unquoted `repin/<name>` into separate words and matches any issue body that contains all of them. The open bug report about the watch, #117, names every member, so from 2026-10-05 to 2026-10-13 the watch logged `agent-skills-toolkit` as behind on nine daily runs and skipped each time; #120 re-pinned it by hand. The search now quotes the branch. Measured on 2026-10-14: the quoted search matches no open issue for any of the six members, and against closed issues it still finds every real re-pin issue (#98, #92 and #90 for `agent-skills-toolkit`, #88 for `product-lifecycle-templates`). This is the third defect recorded on #117; the other two are not fixed here. Registry data unchanged.
 
+## [1.126.0] - 2026-11-25
+
+### Changed
+
+- Re-pinned `product-lifecycle-templates` from **`v0.27.0`** (`f3674a0`) to **`v0.28.0`** (`3d90ebc`).
+
+  ```
+  sha              f3674a0 -> 3d90ebc
+  entry version    0.27.0  -> 0.28.0
+  metadata.version 1.125.0 -> 1.126.0
+  ```
+
+  A minor release on the member's side with one new bundle, `competitive-analysis`, its 59th, in lean and full
+  sizes. The listing description moves from 58 to 59 templates, from thirty-two to thirty-three Tier-2 types, from
+  "47 of the 58" to "48 of the 59" full variants and from 110 to 112 template variants, and its list of types gains
+  competitive analysis. The catalog stays at 214 types, because the type already had catalog entry 11. The README
+  row moves from 58 to 59 templates and from 47 to 48 full variants.
+
 ## [1.125.0] - 2026-11-22
 
 ### Changed
